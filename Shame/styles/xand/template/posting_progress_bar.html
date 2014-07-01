@@ -1,0 +1,135 @@
+<!-- INCLUDE simple_header.html -->
+<script type="text/javascript">
+// <![CDATA[
+	/**
+	* Close upload popup
+	*/
+	function close_popup()
+	{
+		if (opener != null)
+		{
+			if (opener.close_waitscreen != null)
+			{
+				if (opener.close_waitscreen == 1)
+				{
+					opener.close_waitscreen = 0;
+					self.close();
+					return 0;
+				}
+			}
+		}
+		setTimeout("close_popup()", 1000);
+		return 0;
+	}
+// ]]>
+</script>
+
+<script language="JavaScript">
+<!-- Begin
+
+var up,down;
+
+var min1,sec1;
+
+var cmin1,csec1,cmin2,csec2;
+
+function Minutes(data) {
+
+	for(var i=0;i<data.length;i++) if(data.substring(i,i+1)==":") break;
+
+	return(data.substring(0,i)); }
+
+function Seconds(data) {
+
+	for(var i=0;i<data.length;i++) if(data.substring(i,i+1)==":") break;
+
+	return(data.substring(i+1,data.length)); }
+
+function Display(min,sec) {
+
+	var disp;
+
+	if(min<=9) disp="0";
+
+	else disp=" ";
+
+	disp+=min+":";
+
+	if(sec<=9) disp+="0"+sec;
+
+	else disp+=sec;
+
+	return(disp); }
+
+function Up() {
+
+	cmin1=0;
+
+	csec1=0;
+
+	min1=0+Minutes(document.sw.beg1.value);
+
+	sec1=0+Seconds(document.sw.beg1.value);
+
+	UpRepeat(); }
+
+function UpRepeat() {
+
+	csec1++;
+
+	if(csec1==60) { csec1=0; cmin1++; }
+
+	document.sw.disp1.value=Display(cmin1,csec1);
+
+	if((cmin1==min1)&&(csec1==sec1)) {
+	alert("The upload time is taking more than one hour. Now it stops."); window.close();
+	}
+
+	else up=setTimeout("UpRepeat()",1000); }
+
+function Down() {
+
+	cmin2=1*Minutes(document.sw.beg2.value);
+
+	csec2=0+Seconds(document.sw.beg2.value);
+
+	DownRepeat(); }
+
+function DownRepeat() {
+
+	csec2--;
+
+	if(csec2==-1) { csec2=59; cmin2--; }
+
+	document.sw.disp2.value=Display(cmin2,csec2);
+
+	if((cmin2==0)&&(csec2==0)) alert("Countdown Stopped");
+
+	else down=setTimeout("DownRepeat()",1000); }
+
+// End -->
+</script>
+
+<table width="400" border="0" cellspacing="0" cellpadding="10">
+<tr>
+	<td>
+		<table width="400" border="0" cellspacing="1" cellpadding="4">
+		<tr> 
+			<td valign="top" class="row1" align="center"><br /><span class="genmed">{L_UPLOAD_IN_PROGRESS}</span><br /><br /><div style="align:center">{PROGRESS_BAR}</div><br /><br />Time expired:<br /><br />
+			<form name="sw">
+			<input type="hidden" name="beg1" size="7" value="59:59">
+			<body onLoad="Up()">
+
+			<input type="text" name="disp1" size="5"></form>
+			<br /><br /><span class="genmed"><a href="#" onClick="window.close(); return false;">{L_CLOSE_WINDOW}</a></span><br /><br /><br /><br /></td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+
+<script type="text/javascript">
+// <![CDATA[
+     close_popup();   
+// ]]>
+</script>
