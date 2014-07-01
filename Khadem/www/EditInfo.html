@@ -1,0 +1,90 @@
+<!DOCTYPE html> 
+
+<html>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/rtl.jquery.mobile-1.4.0.js"></script>
+<link rel="stylesheet" type="text/css" href="css/rtl.jquery.mobile-1.4.0.css" />
+<script type="text/javascript" src="phonegap.js"></script>
+<meta charset="utf-8">
+<script type="text/javascript">
+
+    $(function (){
+        $("#name").val(localStorage["name"]);
+        $("#family").val(localStorage["family"]);
+        // $("#machine").val(localStorage["machine"])
+    });
+    function saveInfo()
+    {
+        localStorage["name"] = $("#name")[0].value;
+        localStorage["family"] = $("#family")[0].value;
+        localStorage["machine"] = $("#machine")[0].value;
+        window.location = "Main.html";
+    }    
+    
+
+</script>
+</head>
+
+<body dir="rtl">
+
+<div data-role="page">
+
+    <div data-role="header">
+        <h1>وارد کردن مشخصات</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <form>
+            <label for="name">نام:</label>
+            <input type="text" data-clear-btn="true" name="name" id="name" value="">
+            <label for="family">نام خانوادگی:</label>
+            <input type="text" data-clear-btn="true" name="family" id="family" value="">
+            <label for="machine">نوع ماشین:</label>
+            <select name="machine" id="machine">
+                <option value="1">ام‌وی‌ام</option>
+                <option value="2">بنز</option>
+                <option value="3">بی‌ام‌و</option>
+                <option value="4">پراید صندوق دار</option>
+                <option value="5">پراید هاچ‌بک</option>
+                <option value="6">پژو ۲۰۶‍</option>
+                <option value="7">پژو ۲۰۶‍ صندوق‌دار</option>
+                <option value="8">پژو ۲۰۷</option>
+                <option value="9">پژو ۴۰۵</option>
+                <option value="10">پژو پارس</option>
+                <option value="11">پژو روآ / آر‌دی</option>
+                <option value="12">پیکان</option>
+                <option value="13">تندر ۹۰</option>
+                <option value="14">تویوتا</option>
+                <option value="15">تیبا</option>
+                <option value="16">دوو</option>
+                <option value="17">رانا</option>
+                <option value="18">رنو</option>
+                <option value="19">زانتیا</option>
+                <option value="20">سمند</option>
+                <option value="21">کیا</option>
+                <option value="22">گل</option>
+                <option value="23">لیفان</option>
+                <option value="24">مزدا</option>
+                <option value="25">نیسان</option>
+                <option value="26">وانت</option>
+                <option value="27">هیوندای آزرا</option>
+                <option value="28">هیوندای سوناتا</option>
+                <option value="29">هیوندای (غیره)</option>
+                <option value="30">سایر</option>
+            </select>
+            <button class="ui-btn" onclick="saveInfo()">ذخیره</button>
+        </form>
+    </div><!-- /content -->
+
+    <div data-role="footer">
+        <h4>خادم</h4>
+    </div><!-- /footer -->
+</div><!-- /page -->
+
+
+</body>
+
+</html>
