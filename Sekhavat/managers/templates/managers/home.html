@@ -12,7 +12,7 @@
                 el: '#map',
                 lat: 35.7206573,
                 lng: 51.3166525,
-                height:"400px"
+                height:"637px"
             });
             map.drawOverlay({
                 lat: 35.7206573,
@@ -24,6 +24,29 @@
                 lng: 51.3136520,
                 content: '<div class="mapoverlay">امداد رسان سایپا</div>'
             });
+
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var data = [
+                {
+                    value: 300,
+                    color:"#52A6D6",
+                    highlight: "#0A344A",
+                    label: "Red"
+                },
+                {
+                    value: 50,
+                    color: "#51C4D6 ",
+                    highlight: "#52A6D6",
+                    label: "Green"
+                },
+                {
+                    value: 100,
+                    color: "#A0E7F2",
+                    highlight: "#A0E7F2",
+                    label: "Yellow"
+                }
+            ];
+            var myPieChart = new Chart(ctx).Pie(data);
         });
     </script>
     <div class="row">
@@ -36,33 +59,90 @@
                     <div id="map"></div>
                 </div>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    گزارش رضایت مشتریان
-                </div>
-                <div class="panel-body">
-                    test
-                </div>
-            </div>
         </div>
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    نقشه‌ی امدادگران
+                    گزارش‌های مالی
                 </div>
                 <div class="panel-body">
-                    test
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>
+                                    ماه
+                                </td>
+                                <td>
+                                    تعداد امداد
+                                </td>
+                                <td>
+                                    سود خالص (تومان)
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>فروردین</td>
+                                <td>۱۳۳</td>
+                                <td>۱۳۳,۰۰۰</td>
+                            </tr>
+                            <tr>
+                                <td>اردیبهشت</td>
+                                <td>۱۰۴</td>
+                                <td>۱۰۴,۰۰۰</td>
+                            </tr>
+                            <tr>
+                                <td>خرداد</td>
+                                <td>۱۷۵</td>
+                                <td>۱۷۵,۰۰۰</td>
+                            </tr>
+                            <tr>
+                                <td>تیر</td>
+                                <td>۱۰۲</td>
+                                <td>۲۰۴,۰۰۰</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    گزارش رضایت مشتریان
+                    گزارش درصد امدادها
                 </div>
-                <div class="panel-body">
-                    test
+                <div class="panel-body" style="text-align: center">
+                    <canvas id="myChart" width="200" height="200"></canvas>
+                    <hr>
+                    <div class="legend">
+                        <span class="color" style="background-color: #52A6D6"></span>
+                        <div class="desc">
+                            امداد خودرو ایران خودرو
+                        </div>
+                    </div>
+                    <div class="legend">
+                        <span class="color" style="background-color: #51C4D6"></span>
+                        <div class="desc">
+امداد خودرو سایپا
+                        </div>
+                    </div>
+                    <div class="legend">
+                        <span class="color" style="background-color: #A0E7F2"></span>
+                        <div class="desc">
+                            امداد خودرو پارس خودرو
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="row"><div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+گزارش ارسال امدادگران
+            </div>
+            <div class="panel-body">
+                test
+            </div>
+        </div>
+    </div></div>
 
 {% endblock %}
