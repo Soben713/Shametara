@@ -21,6 +21,9 @@
         socket.on('welcome', function(data) {
             $('#conn_status').html('اتصال برقرار شد');
         });
+        socket.on('notification', function(msg) {
+            console.log("Notification: ", msg)
+        });
         socket.on('disconnect', function() {
             $('#conn_status').html('ارتباط با سرور قطع شد');
         });
