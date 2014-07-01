@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "dependencies": {
     "bootstrap": "3.*",
-    "less": "~1.7.3"
+    "less": "~1.7.3",
+    "gmaps": "~0.4.13"
   },
   "private": true
 }

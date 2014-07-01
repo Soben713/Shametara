@@ -8,3 +8,29 @@
   font-family: BYekan !important;
   font-weight: normal;
 }
+
+.mapoverlay {
+  background-color: #52A6D6;
+  color:  white;
+  padding: 10px 15px;
+  border-radius: 3px;
+  position: relative;
+}
+
+.mapoverlay:after, .mapoverlay:before {
+  top: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.mapoverlay:after {
+  border-color: rgba(136, 183, 213, 0);
+  border-top-color: #52A6D6;
+  border-width: 8px;
+  margin-left: -8px;
+}
