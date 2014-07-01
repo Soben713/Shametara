@@ -10,5 +10,6 @@ parts
 src/*.egg-info
 lib
 lib64
+*.pyc
 **/*.pyc
 Sekhavat/node_modules/**

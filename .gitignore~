@@ -1,2 +1,14 @@
 .idea/**
 Sekhavat/Sekhavat/static/components/**
+.installed.cfg
+bin
+develop-eggs
+dist
+downloads
+eggs
+parts
+src/*.egg-info
+lib
+lib64
+**/*.pyc
+Sekhavat/node_modules/**
