@@ -5,14 +5,35 @@
 {% endblock %}
 
 {% block container %}
+    <script>
+        var map;
+        $(document).ready(function(){
+            map = new GMaps({
+                el: '#map',
+                lat: 35.7206573,
+                lng: 51.3166525,
+                height:"400px"
+            });
+            map.drawOverlay({
+                lat: 35.7206573,
+                lng: 51.3166525,
+                content: '<div class="mapoverlay">امداد رسان ایران‌خودرو</div>'
+            });
+            map.drawOverlay({
+                lat: 35.7245350,
+                lng: 51.3136520,
+                content: '<div class="mapoverlay">امداد رسان سایپا</div>'
+            });
+        });
+    </script>
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     نقشه‌ی امدادگران
                 </div>
-                <div class="panel-body">
-                    test
+                <div class="panel-body" style="padding: 0 !important;">
+                    <div id="map"></div>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -43,4 +64,5 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
