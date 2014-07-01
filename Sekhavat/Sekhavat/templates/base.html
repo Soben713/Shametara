@@ -1,6 +1,13 @@
+{% load staticfiles %}
+
 <html>
 <head>
     {% block  jscss %}
+        <link rel="stylesheet" href="{% static "components/bootstrap/dist/css/bootstrap.css" %}">
+        <link rel="stylesheet" href="{% static "bootstrap-rtl.css" %}">
+
+        <script src="{% static "components/jquery/dist/jquery.js" %}"></script>
+        <script src="{% static "components/bootstrap/dist/js/bootstrap.js" %}"></script>
     {% endblock %}
 </head>
 <body>
