@@ -11,6 +11,11 @@ io.on('connection', function(socket) {
         console.log("Message received from " + from + " saying " + msg);
     });
 
+    socket.on('emdaad', function (msg) {
+        console.log('New message : ');
+        console.log(msg);
+    });
+
     socket.on('disconnect', function() {
     });
 });
