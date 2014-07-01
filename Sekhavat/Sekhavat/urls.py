@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^home$', TemplateView.as_view(template_name='layout.html'))
+    url(r'^home$', TemplateView.as_view(template_name='layout.html')),
+    url(r'^helpdesk/', include('helpdesk.urls'))
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

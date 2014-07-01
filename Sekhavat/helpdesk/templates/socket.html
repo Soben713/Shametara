@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% load staticfiles %}
+
+{% block jscss %}
+    {{ block.super }}
+    <script src="{% static 'components/socket.io/socket.io.js' %}"></script>
+    <script type="text/javascript">
+        var socket = io.connect('http://localhost:8080');
+        socket.on('welcome', function(data) {
+            console.log(data);
+            socket.emit('message', { note: "nothing"});
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    {{ block.super }}
+    Salam
+{% endblock %}
