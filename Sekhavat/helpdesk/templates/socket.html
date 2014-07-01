@@ -3,17 +3,106 @@
 
 {% block jscss %}
     {{ block.super }}
+    <script src="{% static 'components/bootstrap3-typeahead/bootstrap3-typeahead.js' %}"></script>
     <script src="{% static 'components/socket.io/socket.io.js' %}"></script>
+
     <script type="text/javascript">
-        var socket = io.connect('http://localhost:8080');
-        socket.on('welcome', function(data) {
-            console.log(data);
-            socket.emit('message', { note: "nothing"});
+    $(function() {
+        var socket = io.connect('http://localhost:8080', { 'force new connection' : true });
+        socket.on('connect_error', function() {
+            $('#conn_status').html('خطا در اتصال به سرور');
         });
+        socket.on('reconnect_error', function() {
+            $('#conn_status').html('خطا در اتصال دوباره به سرور');
+        });
+        socket.on('reconnect_failed', function() {
+            $('#conn_status').html('اتصال دوباره به سرور ناممکن است. لطفا صفحه را دوباره بارگیری کنید.');
+        });
+        socket.on('welcome', function(data) {
+            $('#conn_status').html('اتصال برقرار شد');
+        });
+        socket.on('disconnect', function() {
+            $('#conn_status').html('ارتباط با سرور قطع شد');
+        });
+        var car = ["ام‌وی‌ام",
+            "بنز",
+            "بی‌ام‌و",
+            "پراید صندوق دار",
+            "پراید هاچ‌بک",
+            "پژو ۲۰۶‍",
+            "پژو ۲۰۶‍ صندوق‌دار",
+            "پژو ۲۰۷",
+            "پژو ۴۰۵",
+            "پژو پارس",
+            "پژو روآ / آر‌دی",
+            "پیکان",
+            "تندر ۹۰",
+            "تویوتا",
+            "تیبا",
+            "دوو",
+            "رانا",
+            "رنو",
+            "زانتیا",
+            "سمند",
+            "کیا",
+            "گل",
+            "لیفان",
+            "مزدا",
+            "نیسان",
+            "وانت",
+            "هیوندای آزرا",
+            "هیوندای سوناتا",
+            "هیوندای (غیره)"];
+        $("#carModel").typeahead({ source: car});
+
+        var problems = [
+                'تمام کردن بنزین',
+                'پنجری چرخ',
+                'جوش آوردن ماشین',
+                'تصادف'
+        ];
+
+        $("#problem").typeahead({ source: problems });
+    });
     </script>
 {% endblock %}
 
 {% block body %}
     {{ block.super }}
-    Salam
+    <div id="conn_status"></div>
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="rescueName" class="col-sm-2 control-label">نام امدادخواه</label>
+
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="rescueName" placeholder="نام امدادخواه">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber" class="col-sm-2 control-label">تلفن همراه</label>
+
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="phoneNumber" placeholder="تلفن همراه">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="carModel" class="col-sm-2 control-label">مدل ماشین</label>
+
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="carModel" data-provide="typeahead" placeholder="مدل ماشین">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="problem" class="col-sm-2 control-label">مورد امداد</label>
+
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="problem" data-provide="typeahead" placeholder="مورد امداد">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">ثبت امداد در سخاوت</button>
+            </div>
+        </div>
+    </form>
 {% endblock %}

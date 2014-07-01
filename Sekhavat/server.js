@@ -10,4 +10,7 @@ io.on('connection', function(socket) {
     socket.on('message', function (from, msg) {
         console.log("Message received from " + from + " saying " + msg);
     });
+
+    socket.on('disconnect', function() {
+    });
 });

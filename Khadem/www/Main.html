@@ -1,0 +1,139 @@
+<!DOCTYPE html> 
+
+<html>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/rtl.jquery.mobile-1.4.0.js"></script>
+<link rel="stylesheet" type="text/css" href="css/rtl.jquery.mobile-1.4.0.css" />
+<script type="text/javascript" src="phonegap.js"></script>
+<script type="text/javascript">
+    function goToEdit()
+    {
+        window.location = "EditInfo.html"
+    }
+    function sendRequest()
+    {
+        var a = 1 ;
+        if ( a == 1) {
+            $("#okDialog").popup("open");
+        }
+        else {
+            $("#failDialog").popup("open");   
+        }
+    }
+
+</script>
+
+<meta charset="utf-8">
+
+</head>
+
+<body dir="rtl">
+
+<div data-role="page">
+
+    <div data-role="header">
+        <h1>صفحه‌ی اصلی</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+            <div class="ui-body ui-body-b ui-corner-all">
+                <h3>مشخصات فعلی</h3>
+                <label for="name" style="display: inline">نام:</label>
+                <label name="name" style="display: inline" id="name"></label>
+                <br>
+                <br>
+                <label for="family" style="display: inline" >نام خانوادگی:</label>
+                <label name="family" id="family" style="display: inline"></label>
+                <br>
+                <br>
+                <label for="machine" style="display: inline">نوع ماشین:</label>
+                <label name="machine" id="machine" style="display: inline"></label>
+                <button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-right ui-icon-edit" onclick="goToEdit()">ویرایش</button>
+            </div>
+            <div class="ui-body ui-body-a ui-corner-all">
+                <h3>درخواست امداد</h3>
+                <label for="type" style="display: inline">لطفن مشکل خود را مشخص کنید:</label>
+                <select name="type" id="type">
+                  <option value="1">تمام کردن بنزین</option>
+                  <option value="2">پنچر شدن چرخ</option>
+                  <option value="3">جوش‌آوردن ماشین</option>
+                  <option value="4">تصادف</option>
+                  <option value="5">سایر موارد</option>
+                </select>
+                 <label for="desc">توضیحات بیشتر:</label>
+                 <textarea name="desc" id="desc"></textarea>
+                 <button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-right ui-icon-action" onclick="sendRequest()">ارسال درخواست</button>
+            </div>
+            <div data-role="popup" id="okDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
+                <div data-role="header" data-theme="a">
+                    <h1>نتیجه</h1>
+                </div>
+                <div role="main" class="ui-content">
+                    <h3 class="ui-title">درخواست با موفقیت انجام شد</h3>
+                    <p>امدادگر <span name="helper-name"></span> به شما ارسال شد.</p>
+                    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">تایید</a>
+                </div>
+            </div>
+            <div data-role="popup" id="failDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
+                <div data-role="header" data-theme="a">
+                    <h1>نتیجه</h1>
+                </div>
+                <div role="main" class="ui-content">
+                    <h3 class="ui-title">درخواست با شکست مواجه شد</h3>
+                    <p>درخواست شما با شکست مواجه شد.</p>
+                    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">تایید</a>
+                </div>
+            </div>
+
+
+    </div><!-- /content -->
+
+    <div data-role="footer">
+        <h4>خادم</h4>
+    </div><!-- /footer -->
+</div><!-- /page -->
+
+
+</body>
+<script type="text/javascript">
+    car = new Array();
+    car[1]="ام‌وی‌ام";
+    car[2]="بنز";
+    car[3]="بی‌ام‌و";
+    car[4]="پراید صندوق دار";
+    car[5]="پراید هاچ‌بک";
+    car[6]="پژو ۲۰۶‍";
+    car[7]="پژو ۲۰۶‍ صندوق‌دار";
+    car[8]="پژو ۲۰۷";
+    car[9]="پژو ۴۰۵";
+    car[10]="پژو پارس";
+    car[11]="پژو روآ / آر‌دی";
+    car[12]="پیکان";
+    car[13]="تندر ۹۰";
+    car[14]="تویوتا";
+    car[15]="تیبا";
+    car[16]="دوو";
+    car[17]="رانا";
+    car[18]="رنو";
+    car[19]="زانتیا";
+    car[20]="سمند";
+    car[21]="کیا";
+    car[22]="گل";
+    car[23]="لیفان";
+    car[24]="مزدا";
+    car[25]="نیسان";
+    car[26]="وانت";
+    car[27]="هیوندای آزرا";
+    car[28]="هیوندای سوناتا";
+    car[29]="هیوندای (غیره)";
+    car[30]="سایر";
+
+    $("#name").text(localStorage['name']);
+    $("#family").text(localStorage['family']);
+    $("#machine").text(car[localStorage['machine']]);
+</script>
+
+</html>
