@@ -12,7 +12,7 @@
                 el: '#map',
                 lat: 35.7206573,
                 lng: 51.3166525,
-                height:"400px"
+                height:"600px"
             });
             map.drawOverlay({
                 lat: 35.7206573,
@@ -36,22 +36,53 @@
                     <div id="map"></div>
                 </div>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    گزارش رضایت مشتریان
-                </div>
-                <div class="panel-body">
-                    test
-                </div>
-            </div>
         </div>
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    نقشه‌ی امدادگران
+                    گزارش‌های مالی
                 </div>
                 <div class="panel-body">
-                    test
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>
+                                    ماه
+                                </td>
+                                <td>
+                                    تعداد امداد
+                                </td>
+                                <td>
+                                    سود خالص (تومان)
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>فروردین</td>
+                                <td>۱۳۳</td>
+                                <td>۱۳۳,۰۰۰</td>
+                            </tr>
+                            <tr>
+                                <td>اردیبهشت</td>
+                                <td>۱۰۴</td>
+                                <td>۱۰۴,۰۰۰</td>
+                            </tr>
+                            <tr>
+                                <td>خرداد</td>
+                                <td>۱۷۵</td>
+                                <td>۱۷۵,۰۰۰</td>
+                            </tr>
+                            <tr>
+                                <td>تیر</td>
+                                <td>۱۰۲</td>
+                                <td>۱۰۲,۰۰۰</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    تست
                 </div>
             </div>
             <div class="panel panel-default">
@@ -64,5 +95,15 @@
             </div>
         </div>
     </div>
+    <div class="row"><div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+گزارش ارسال امدادگران
+            </div>
+            <div class="panel-body">
+                test
+            </div>
+        </div>
+    </div></div>
 
 {% endblock %}

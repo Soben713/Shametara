@@ -1,9 +1,16 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block body %}
     {% block menu %}{% endblock %}
     <div class="container">
         {% block container %}
         {% endblock %}
+    </div>
+    <hr>
+    <div class="footer">
+        <img src="{% static "Logo.png" %}" width="65" height="40">
+        <br><br>
+        تمامی حقوق مادی و معنوی سامانه‌ی سخاوت متعلق به شرکت نوین تحلیل‌گر شرق می‌باشد
     </div>
 {% endblock %}
