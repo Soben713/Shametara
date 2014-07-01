@@ -4,6 +4,7 @@
   "dependencies": {
     "bootstrap": "3.*",
     "less": "~1.7.3",
+    "bootstrap3-typeahead": "*",
     "gmaps": "~0.4.13"
   },
   "private": true
