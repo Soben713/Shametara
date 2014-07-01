@@ -5,8 +5,10 @@
     {% block  jscss %}
         <link rel="stylesheet" href="{% static "components/bootstrap/dist/css/bootstrap.css" %}">
         <link rel="stylesheet" href="{% static "bootstrap-rtl.css" %}">
+        <link rel="stylesheet/less" type="text/css" href="{% static 'global.less' %}" />
 
         <script src="{% static "components/jquery/dist/jquery.js" %}"></script>
+        <script src="{% static "components/less/dist/less-1.7.3.js" %}"></script>
         <script src="{% static "components/bootstrap/dist/js/bootstrap.js" %}"></script>
     {% endblock %}
 </head>
