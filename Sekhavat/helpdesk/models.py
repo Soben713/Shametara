@@ -11,6 +11,7 @@ class HelpTask(models.Model):
                                      verbose_name=u'تاریخ امدادرسانی')
     longitude = models.IntegerField(verbose_name=u'طول جغرافیایی')
     latitude = models.IntegerField(verbose_name=u'عرض جغرافیایی')
+    is_from_khadem = models.BooleanField(verbose_name=u'آیا این درخواست از سمت خادم است')
 
     class Meta:
         verbose_name = u'عمل امداد'
