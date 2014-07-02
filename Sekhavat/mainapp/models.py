@@ -13,11 +13,16 @@ class Person(models.Model):
 
 
 class ShamManager(Person, User):
-    pass
+    def __unicode__(self):
+        return self.name + " " + self.family
+
 
 
 class CompanyManager(Person, User):
     company = models.ForeignKey('Company', verbose_name=u'شرکت امداد رسان')
+
+    def __unicode__(self):
+        return self.name + " " + self.family
 
     class Meta:
         verbose_name = u'مدیر'
@@ -27,6 +32,9 @@ class CompanyManager(Person, User):
 class Company(models.Model):
     name = models.CharField(max_length=100, verbose_name=u'نام')
     curPrice = models.IntegerField(verbose_name=u'سود فعلی به ازای هر امداد')
+
+    def __unicode__(self):
+        return self.name
 
     class Meta:
         verbose_name = u'شرکت امدادرسان'
@@ -40,10 +48,15 @@ class Helper(Person, User):
         (3, 'در حال انجام عملیات'),
     )
     status = models.IntegerField(choices=STATUS_TYPES, default=2,
-                                 verbose_name=u'وضعیت')
+                                 verbose_name=u'وضعیت', blank=True, null=True)
     company = models.ForeignKey('Company', verbose_name=u'شرکت امدادرسان')
-    longitude = models.IntegerField(verbose_name=u'طول جغرافیایی')
-    latitude = models.IntegerField(verbose_name=u'عرض جغرافیایی')
+    longitude = models.IntegerField(verbose_name=u'طول جغرافیایی',
+                                    blank=True, null=True)
+    latitude = models.IntegerField(verbose_name=u'عرض جغرافیایی',
+                                   blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name + " " + self.family
 
     class Meta:
         verbose_name = u'امدادگر'
@@ -54,7 +67,11 @@ class Helpee(Person):
     machine_model = models.CharField(max_length=100, verbose_name=u'مدل خودرو')
     help_type = models.CharField(max_length=100, verbose_name=u'نوع درخواست')
     named_address = models.TextField(max_length=200,
-                                     verbose_name=u'آدرس توضیحی')
+                                     verbose_name=u'آدرس توضیحی',
+                                     blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name + " " + self.family
 
     class Meta:
         verbose_name = u'امدادخواه'
@@ -67,12 +84,19 @@ class Payment(models.Model):
     pay_date = models.DateTimeField(auto_now_add=True,
                                     verbose_name=u'تاریخ پرداخت')
 
+    def __unicode__(self):
+        return self.company + "L " + self.value
+
     class Meta:
         verbose_name = u'پرداخت'
         verbose_name_plural = u'پرداخت‌ها'
 
 
 class Operator(Person, User):
+    company = models.ForeignKey('Company', verbose_name='شرکت امدادرسان')
+
+    def __unicode__(self):
+        return self.name + " " + self.family
     class Meta:
         verbose_name = u'اپراتور'
         verbose_name_plural = u'اپراتورها'
