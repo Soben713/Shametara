@@ -1,15 +1,32 @@
 from django.contrib import admin
-#from mainapp.models import Company, Helper
-#from django.contrib.auth.models import User
+from mainapp.models import Company, Helper, Operator, CompanyManager
+from django.contrib.auth.models import User
 # from django.contrib.sites.models import Site
-#from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group
 
 # Register your models here.
 
 
-#admin.site.unregister(User)
-#admin.site.unregister(Group)
+class CompanyManagerAdmin(admin.ModelAdmin):
+    fields = ('name', 'family', 'phone', 'company', 'username', 'password')
+
+
+class CompanyAdmin(admin.ModelAdmin):
+    fields = ('name', 'curPrice')
+
+
+class HelperAdmin(admin.ModelAdmin):
+    fields = ('name', 'family', 'phone', 'company', 'username', 'password')
+
+
+class OperatorAdmin(admin.ModelAdmin):
+    fields = ('name', 'family', 'phone', 'company', 'username', 'password')
+
+admin.site.unregister(User)
+admin.site.unregister(Group)
 # admin.site.unregister(Site)
 
-#admin.site.register(Company)
-#admin.site.register(Helper)
+admin.site.register(Company, CompanyAdmin)
+admin.site.register(Helper, HelperAdmin)
+admin.site.register(Operator, OperatorAdmin)
+admin.site.register(CompanyManager, CompanyManagerAdmin)
