@@ -1,7 +1,16 @@
 {% extends "layout.html" %}
 
 {% block menu %}
-    {% include "managers/menu.html" %}
+    {% include "managers/shamtara/menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        سامانه‌ی سخاوت
+    </li>
+    <li><a href="{% url "shametara_admin_home" %}">
+        صفحه‌ی اصلی مدیریت
+    </a></li>
 {% endblock %}
 
 {% block container %}
@@ -47,12 +56,56 @@
                 }
             ];
             var myPieChart = new Chart(ctx).Pie(data);
+
+            ///////////////////////////////////////////////////////////////////
+
+            var ctx2 = document.getElementById("myChart2").getContext("2d");
+            var data2 = {
+                labels: ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"],
+                datasets: [
+                    {
+                        label: "My First dataset",
+                        fillColor: "#52A6D6",
+                        data: [5, 7, 10, 11, 17, 20, 30, 35, 60, 90, 150, 180]
+                    },
+                    {
+                        label: "My Second dataset",
+                        fillColor: "#934CB0",
+                        data: [48, 40, 19, 86, 27, 90, 48, 40, 19, 86, 27, 90]
+                    }
+                ]
+            };
+            var myBarChart = new Chart(ctx2).Bar(data2, {});
         });
     </script>
+    <div class="row"><div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                گزارش ارسال امدادگران
+            </div>
+            <div class="panel-body">
+                <canvas id="myChart2" width="1120" height="240"></canvas>
+                <hr>
+                <div class="legend" style="display: inline-block; margin-left: 20px">
+                    <span class="color" style="background-color: #52A6D6"></span>
+                    <div class="desc">
+                        امدادخواهان خادم
+                    </div>
+                </div>
+                <div class="legend" style="display: inline-block">
+                    <span class="color" style="background-color: #934CB0"></span>
+                    <div class="desc">
+                        امدادخواهان شرکت‌های امدادرسان
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div></div>
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    <span class="glyphicon glyphicon-adjust"></span>
                     نقشه‌ی امدادگران
                 </div>
                 <div class="panel-body" style="padding: 0 !important;">
@@ -61,6 +114,33 @@
             </div>
         </div>
         <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    گزارش درصد امدادها
+                </div>
+                <div class="panel-body" style="text-align: center">
+                    <canvas id="myChart" width="200" height="200"></canvas>
+                    <hr>
+                    <div class="legend">
+                        <span class="color" style="background-color: #52A6D6"></span>
+                        <div class="desc">
+                            امداد خودرو ایران خودرو
+                        </div>
+                    </div>
+                    <div class="legend">
+                        <span class="color" style="background-color: #51C4D6"></span>
+                        <div class="desc">
+                            امداد خودرو سایپا
+                        </div>
+                    </div>
+                    <div class="legend">
+                        <span class="color" style="background-color: #A0E7F2"></span>
+                        <div class="desc">
+                            امداد خودرو پارس خودرو
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     گزارش‌های مالی
@@ -105,44 +185,7 @@
                     </table>
                 </div>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    گزارش درصد امدادها
-                </div>
-                <div class="panel-body" style="text-align: center">
-                    <canvas id="myChart" width="200" height="200"></canvas>
-                    <hr>
-                    <div class="legend">
-                        <span class="color" style="background-color: #52A6D6"></span>
-                        <div class="desc">
-                            امداد خودرو ایران خودرو
-                        </div>
-                    </div>
-                    <div class="legend">
-                        <span class="color" style="background-color: #51C4D6"></span>
-                        <div class="desc">
-امداد خودرو سایپا
-                        </div>
-                    </div>
-                    <div class="legend">
-                        <span class="color" style="background-color: #A0E7F2"></span>
-                        <div class="desc">
-                            امداد خودرو پارس خودرو
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
-    <div class="row"><div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-گزارش ارسال امدادگران
-            </div>
-            <div class="panel-body">
-                test
-            </div>
-        </div>
-    </div></div>
 
 {% endblock %}

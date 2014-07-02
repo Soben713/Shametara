@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+
+{% block menu %}
+    {% include "managers/shamtara/menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        سامانه‌ی سخاوت
+    </li>
+    <li><a href="{% url "shametara_admin_home" %}">
+        صفحه‌ی اصلی مدیریت
+    </a></li>
+    <li><a href="{% url "shametara_admin_report_financial" %}">
+        گزارش‌های مالی
+    </a></li>
+{% endblock %}
+
+{% block container %}
+    <script>
+        var map;
+    </script>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    گزارش‌های مالی
+                </div>
+                <div class="panel-body" style="padding: 0 !important;">
+                    <form class="form form-inline">
+                    <div style="text-align: center; padding: 15px">
+                        نمایش اطلاعات از تاریخ
+                        <input type="text" class="form-control" value="۱۳/۱/۱۳۹۳">
+                        تا
+                        <input type="text" class="form-control" value="۲۱/۱۲/۱۳۹۳">
+                    </div>
+                    </form>
+                    <hr>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>
+تاریخ
+                            </td>
+                            <td>
+                                تعداد امداد
+                            </td>
+                            <td>
+                                تعداد امداد به امدادخواهان خادم
+                            </td>
+                            <td>
+                                سود خالص (تومان)
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>فروردین</td>
+                            <td>۱۳۳</td>
+                            <td>۱۹</td>
+                            <td>۱۳۳,۰۰۰</td>
+                        </tr>
+                        <tr>
+                            <td>اردیبهشت</td>
+                            <td>۱۰۴</td>
+                            <td>۱۹</td>
+                            <td>۱۰۴,۰۰۰</td>
+                        </tr>
+                        <tr>
+                            <td>خرداد</td>
+                            <td>۱۷۵</td>
+                            <td>۳۹</td>
+                            <td>۱۷۵,۰۰۰</td>
+                        </tr>
+                        <tr>
+                            <td>تیر</td>
+                            <td>۱۷۲</td>
+                            <td>۸۰</td>
+                            <td>۲۰۴,۰۰۰</td>
+                        </tr>
+                        <tr class="success">
+                            <td>جمع</td>
+                            <td>538</td>
+                            <td>225</td>
+                            <td>832,000</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
