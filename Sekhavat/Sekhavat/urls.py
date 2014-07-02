@@ -18,6 +18,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^home$', TemplateView.as_view(template_name='layout.html')),
     url(r'^helpdesk/', include('helpdesk.urls')),
-    url(r'^main/', include('mainapp.urls')),
+    url(r'^', include('mainapp.urls')),
     url(r'^managers/', include('managers.urls')),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

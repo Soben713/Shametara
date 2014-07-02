@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+{% block menu %}
+    {% include "managers/company/menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        سامانه‌ی سخاوت
+    </li>
+    <li><a href="{% url "company_admin_home" %}">
+        صفحه‌ی اصلی مدیریت
+    </a></li>
+    <li><a href="{% url "company_admin_report_satisfaction" %}">
+        رضایت‌سنجی امدادخواهان
+    </a></li>
+{% endblock %}
+
+{% block container %}
+    <script>
+        $(document).ready(function(){
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var data = {
+                labels: ["رسیدن به موقع", "نحوه‌ی برخورد با امدادخواه", "لوازم کافی", "دانش کافی", "دیگر موارد"],
+                datasets: [
+                    {
+                        label: "My First dataset",
+                        fillColor: "rgba(110,255,110,0.3)",
+                        strokeColor: "rgba(110,220,110,1)",
+                        pointColor: "rgba(110,220,110,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: [65, 59, 40, 81, 80]
+                    },
+                    {
+                        label: "My Second dataset",
+                        fillColor: "rgba(151,187,205,0.3)",
+                        strokeColor: "rgba(151,187,205,1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: [28, 48, 100, 19, 60]
+                    },
+                    {
+                        label: "My Third dataset",
+                        fillColor: "rgba(200,187,205,0.3)",
+                        strokeColor: "rgba(220,187,205,1)",
+                        pointColor: "rgba(230,187,205,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: [57, 80, 80, 80, 60]
+                    }
+                ]
+            };
+            var myRadarChart = new Chart(ctx).Radar(data, {});
+        });
+    </script>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    رضایت‌سنجی امدادخواهان
+                </div>
+                <div class="panel-body" style="padding: 0 !important; text-align: center">
+                    <form class="form form-inline">
+                        <div style="text-align: center; padding: 15px">
+                            نمایش اطلاعات از تاریخ
+                            <input type="text" class="form-control" value="۱۳/۱/۱۳۹۳">
+                            تا
+                            <input type="text" class="form-control" value="۲۱/۱۲/۱۳۹۳">
+                        </div>
+                    </form>
+                    <hr>
+                    <div style="text-align: center">
+                        <div class="legend" style="display: inline-block; margin-left: 20px">
+                            <span class="color" style="background-color: rgba(110,220,110,1)"></span>
+                            <div class="desc">
+                                سایپا
+                            </div>
+                        </div>
+                        <div class="legend" style="display: inline-block; margin-left: 20px">
+                            <span class="color" style="background-color: rgba(151,187,205,1)"></span>
+                            <div class="desc">
+                                ایران خودرو
+                            </div>
+                        </div>
+                        <div class="legend" style="display: inline-block; margin-left: 20px">
+                            <span class="color" style="background-color: rgba(220,187,205,1)"></span>
+                            <div class="desc">
+                                پارس‌خودرو
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <canvas id="myChart" width="600" height="600"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
