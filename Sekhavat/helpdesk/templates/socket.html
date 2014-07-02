@@ -10,22 +10,37 @@
     $(function() {
         var socket = io.connect('http://localhost:8080', { 'force new connection' : true });
         socket.on('connect_error', function() {
-            $('#conn_status').html('خطا در اتصال به سرور');
+            $('#conn_status').html('خطا در اتصال به سرور').removeClass('alert-success')
+                    .removeClass('alert-danger')
+                    .addClass('alert-warning').show();
         });
         socket.on('reconnect_error', function() {
-            $('#conn_status').html('خطا در اتصال دوباره به سرور');
+            $('#conn_status').html('خطا در اتصال دوباره به سرور').removeClass('alert-success')
+                    .removeClass('alert-danger')
+                    .addClass('alert-warning').show();
         });
         socket.on('reconnect_failed', function() {
-            $('#conn_status').html('اتصال دوباره به سرور ناممکن است. لطفا صفحه را دوباره بارگیری کنید.');
+            $('#conn_status').html('اتصال دوباره به سرور ناممکن است. لطفا صفحه را دوباره بارگیری کنید.')
+                    .removeClass('alert-success')
+                    .removeClass('alert-danger')
+                    .addClass('alert-warning').show();
         });
         socket.on('welcome', function(data) {
-            $('#conn_status').html('اتصال برقرار شد');
+            $('#conn_status').removeClass('alert-warning')
+                    .removeClass('alert-danger')
+                    .addClass('alert-success')
+                    .html('اتصال برقرار شد').show();
+            window.setTimeout(function() {
+                 $('#conn_status').hide();
+            },2000);
         });
         socket.on('notification', function(msg) {
             console.log("Notification: ", msg)
         });
         socket.on('disconnect', function() {
-            $('#conn_status').html('ارتباط با سرور قطع شد');
+            $('#conn_status').html('ارتباط با سرور قطع شد').removeClass('alert-success')
+                    .removeClass('alert-warning')
+                    .addClass('alert-danger');
         });
         var car = ["ام‌وی‌ام",
             "بنز",
@@ -69,8 +84,8 @@
 
         var map = new GMaps({
             el: '#map',
-            lat: -12.043333,
-            lng: -77.028333,
+            lat: 35.7314640605354,
+            lng: 51.549997329711914,
             height: '400px'
         });
 
@@ -110,14 +125,15 @@
 
         $("#sendToSekhavat").submit(function(event) {
             event.preventDefault();
+            console.log(map.markers);
             socket.emit('emdaad', {
                 name: $("#rescueName").val(),
                 phoneNumber: $("#phoneNumber").val(),
                 carModel: $("#carModel").val(),
                 problem: $("#problem").val(),
                 position: {
-                    lat: map.markers[0].position.lat(),
-                    lng: map.markers[0].position.lng()
+                    lat: map.markers[0].getPosition().lat(),
+                    lng: map.markers[0].getPosition().lng()
                 }
             });
             return false;
@@ -125,64 +141,107 @@
     });
 
     </script>
+
+    <style>
+    .notif {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid grey;
+    }
+    </style>
+{% endblock %}
+
+{% block menu %}
+    {% include 'menu.html' %}
 {% endblock %}
 
 {% block container %}
-    {{ block.super }}
-    <div id="conn_status"></div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            ارجاع امداد به سخاوت
+{#    <div style="text-align: center; margin-bottom: 20px"><h4><span class="label label-warning" id="conn_status">New</span></h4></div>#}
+    <div id="conn_status" class="alert alert-warning" style="display: none"></div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    ارجاع امداد به سخاوت
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" role="form" id="sendToSekhavat">
+                        <div class="form-group">
+                            <label for="rescueName" class="col-sm-2 control-label">نام امدادخواه</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="rescueName" placeholder="نام امدادخواه">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber" class="col-sm-2 control-label">تلفن همراه</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="phoneNumber" placeholder="تلفن همراه">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="carModel" class="col-sm-2 control-label">مدل ماشین</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="carModel" data-provide="typeahead" placeholder="مدل ماشین">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="problem" class="col-sm-2 control-label">مورد امداد</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="problem" data-provide="typeahead" placeholder="مورد امداد">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="col-sm-2 control-label">آدرس حدودی</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="address" placeholder="آدرس">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="map" class="col-sm-2 control-label">مکان امدادخواه</label>
+                            <div class="col-sm-10">
+                                <div id="map"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">ثبت امداد در سخاوت</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="panel-body">
-            <form class="form-horizontal" role="form" id="sendToSekhavat">
-                <div class="form-group">
-                    <label for="rescueName" class="col-sm-2 control-label">نام امدادخواه</label>
-
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="rescueName" placeholder="نام امدادخواه">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    لیست درخواست‌های امداد به شما
+                </div>
+                <div class="panel-body">
+                    <div class="alert alert-info">
+                        <b class="rescue"> ایران خودرو</b><br />
+                        متقاضی استفاده از امدادگر
+                        <b>عباس عباسی</b> است.<br />
+                        <div style="text-align: left; padding-top: 7px">
+                            <button class="btn btn-success">قبول امداد</button>
+                            <button class="btn btn-danger">رد امداد</button>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning rescue">
+                        <b class="rescue">پارس خزر</b><br />
+                        متقاضی استفاده از امدادگر
+                        <b>داریوش اقبالی</b> است.<br />
+                        <div style="text-align: left; padding-top: 7px">
+                            <button class="btn btn-success">قبول امداد</button>
+                            <button class="btn btn-danger">رد امداد</button>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="phoneNumber" class="col-sm-2 control-label">تلفن همراه</label>
-
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="phoneNumber" placeholder="تلفن همراه">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="carModel" class="col-sm-2 control-label">مدل ماشین</label>
-
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="carModel" data-provide="typeahead" placeholder="مدل ماشین">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="problem" class="col-sm-2 control-label">مورد امداد</label>
-
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="problem" data-provide="typeahead" placeholder="مورد امداد">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="address" class="col-sm-2 control-label">آدرس حدودی</label>
-
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="address" placeholder="آدرس">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="map" class="col-sm-2 control-label">مکان امدادخواه</label>
-                    <div class="col-sm-10">
-                        <div id="map"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">ثبت امداد در سخاوت</button>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 {% endblock %}

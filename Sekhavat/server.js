@@ -29,7 +29,10 @@ io.on('connection', function(socket) {
         };
         var req = http.request(options, function(res) {
             var nearest = sockets[0];
-            nearest.emit('notification', msg);
+            nearest.emit('notification', {
+                info: msg,
+                data: res
+            });
         });
         req.end();
     });
