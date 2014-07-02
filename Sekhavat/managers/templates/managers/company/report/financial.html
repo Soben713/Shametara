@@ -1,17 +1,17 @@
 {% extends "layout.html" %}
 
 {% block menu %}
-    {% include "managers/shamtara/menu.html" %}
+    {% include "managers/company/menu.html" %}
 {% endblock %}
 
 {% block breadcrumb %}
     <li>
         سامانه‌ی سخاوت
     </li>
-    <li><a href="{% url "shametara_admin_home" %}">
+    <li><a href="{% url "company_admin_home" %}">
         صفحه‌ی اصلی مدیریت
     </a></li>
-    <li><a href="{% url "shametara_admin_report_financial" %}">
+    <li><a href="{% url "company_admin_report_financial" %}">
         گزارش‌های مالی
     </a></li>
 {% endblock %}
@@ -21,7 +21,7 @@
         var map;
     </script>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     گزارش‌های مالی
@@ -83,47 +83,6 @@
                             <td>538</td>
                             <td>225</td>
                             <td>832,000</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    حساب شرکت‌های امدادرسان
-                </div>
-                <div class="panel-body">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <td>
-                                شرکت
-                            </td>
-                            <td>
-                                بدهی
-                            </td>
-                            <td>
-                                طلب
-                            </td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>خودرو</td>
-                            <td>۱۳۳</td>
-                            <td>۱۹</td>
-                        </tr>
-                        <tr>
-                            <td>سایپا</td>
-                            <td>۱۰۴</td>
-                            <td>۱۹</td>
-                        </tr>
-                        <tr>
-                            <td>پارس‌خودرو</td>
-                            <td>۱۷۵</td>
-                            <td>۳۹</td>
                         </tr>
                         </tbody>
                     </table>

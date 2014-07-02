@@ -1,0 +1,191 @@
+{% extends "layout.html" %}
+
+{% block menu %}
+    {% include "managers/company/menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        سامانه‌ی سخاوت
+    </li>
+    <li><a href="{% url "shametara_admin_home" %}">
+        صفحه‌ی اصلی مدیریت
+    </a></li>
+{% endblock %}
+
+{% block container %}
+    <script>
+        var map;
+        $(document).ready(function(){
+            map = new GMaps({
+                el: '#map',
+                lat: 35.7206573,
+                lng: 51.3166525,
+                height:"637px"
+            });
+            map.drawOverlay({
+                lat: 35.7206573,
+                lng: 51.3166525,
+                content: '<div class="mapoverlay">امداد رسان ایران‌خودرو</div>'
+            });
+            map.drawOverlay({
+                lat: 35.7245350,
+                lng: 51.3136520,
+                content: '<div class="mapoverlay">امداد رسان سایپا</div>'
+            });
+
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var data = [
+                {
+                    value: 300,
+                    color:"#52A6D6",
+                    highlight: "#0A344A",
+                    label: "Red"
+                },
+                {
+                    value: 50,
+                    color: "#51C4D6 ",
+                    highlight: "#52A6D6",
+                    label: "Green"
+                },
+                {
+                    value: 100,
+                    color: "#A0E7F2",
+                    highlight: "#A0E7F2",
+                    label: "Yellow"
+                }
+            ];
+            var myPieChart = new Chart(ctx).Pie(data);
+
+            ///////////////////////////////////////////////////////////////////
+
+            var ctx2 = document.getElementById("myChart2").getContext("2d");
+            var data2 = {
+                labels: ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"],
+                datasets: [
+                    {
+                        label: "My First dataset",
+                        fillColor: "#52A6D6",
+                        data: [5, 7, 10, 11, 17, 20, 30, 35, 60, 90, 150, 180]
+                    },
+                    {
+                        label: "My Second dataset",
+                        fillColor: "#934CB0",
+                        data: [48, 40, 19, 86, 27, 90, 48, 40, 19, 86, 27, 90]
+                    }
+                ]
+            };
+            var myBarChart = new Chart(ctx2).Bar(data2, {});
+        });
+    </script>
+    <div class="row"><div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                گزارش ارسال امدادگران
+            </div>
+            <div class="panel-body">
+                <canvas id="myChart2" width="1120" height="240"></canvas>
+                <hr>
+                <div class="legend" style="display: inline-block; margin-left: 20px">
+                    <span class="color" style="background-color: #52A6D6"></span>
+                    <div class="desc">
+                        امدادخواهان خادم
+                    </div>
+                </div>
+                <div class="legend" style="display: inline-block">
+                    <span class="color" style="background-color: #934CB0"></span>
+                    <div class="desc">
+                        امدادخواهان شرکت‌های امدادرسان
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div></div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-adjust"></span>
+                    نقشه‌ی امدادگران
+                </div>
+                <div class="panel-body" style="padding: 0 !important;">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+گزارش نسبت امدادها
+                </div>
+                <div class="panel-body" style="text-align: center">
+                    <canvas id="myChart" width="200" height="200"></canvas>
+                    <hr>
+                    <div class="legend">
+                        <span class="color" style="background-color: #52A6D6"></span>
+                        <div class="desc">
+                            امداد خودرو ایران خودرو
+                        </div>
+                    </div>
+                    <div class="legend">
+                        <span class="color" style="background-color: #51C4D6"></span>
+                        <div class="desc">
+                            امداد خودرو سایپا
+                        </div>
+                    </div>
+                    <div class="legend">
+                        <span class="color" style="background-color: #A0E7F2"></span>
+                        <div class="desc">
+                            امداد خودرو پارس خودرو
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    گزارش‌های مالی
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>
+                                    ماه
+                                </td>
+                                <td>
+                                    تعداد امداد
+                                </td>
+                                <td>
+                                    سود خالص (تومان)
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>فروردین</td>
+                                <td>۱۳۳</td>
+                                <td>۱۳۳,۰۰۰</td>
+                            </tr>
+                            <tr>
+                                <td>اردیبهشت</td>
+                                <td>۱۰۴</td>
+                                <td>۱۰۴,۰۰۰</td>
+                            </tr>
+                            <tr>
+                                <td>خرداد</td>
+                                <td>۱۷۵</td>
+                                <td>۱۷۵,۰۰۰</td>
+                            </tr>
+                            <tr>
+                                <td>تیر</td>
+                                <td>۱۰۲</td>
+                                <td>۲۰۴,۰۰۰</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
