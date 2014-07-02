@@ -6,5 +6,5 @@ from django.views.generic.base import TemplateView
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^socket$', TemplateView.as_view(template_name='socket.html'))
+    url(r'^$', TemplateView.as_view(template_name='socket.html'))
 )
