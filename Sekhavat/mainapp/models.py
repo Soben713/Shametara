@@ -4,24 +4,20 @@ from django.contrib.auth.models import User
 
 
 class Person(models.Model):
-    name = models.CharField(max_length=100)
-    family = models.CharField(max_length=100)
-    phone = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, verbose_name=u'نام')
+    family = models.CharField(max_length=100, verbose_name=u'نام خانوادگی')
+    phone = models.CharField(max_length=100, verbose_name=u'تلفن همراه')
 
     class Meta:
         abstract = True
 
 
-class HelpPerson (Person):
-    longitude = models.IntegerField()
-    latitude = models.IntegerField()
-
-    class Meta:
-        abstract = True
+class ShamManager(Person, User):
+    pass
 
 
-class Manager(Person, User):
-    company = models.ForeignKey('Company')
+class CompanyManager(Person, User):
+    company = models.ForeignKey('Company', verbose_name=u'شرکت امداد رسان')
 
     class Meta:
         verbose_name = u'مدیر'
@@ -29,32 +25,36 @@ class Manager(Person, User):
 
 
 class Company(models.Model):
-    name = models.CharField(max_length=100)
-    curPrice = models.IntegerField()
+    name = models.CharField(max_length=100, verbose_name=u'نام')
+    curPrice = models.IntegerField(verbose_name=u'سود فعلی به ازای هر امداد')
 
     class Meta:
         verbose_name = u'شرکت امدادرسان'
         verbose_name_plural = u'شرکت‌های امدادرسان'
 
 
-class Helper(HelpPerson, User):
+class Helper(Person, User):
     STATUS_TYPES = (
         (1, 'در دسترس'),
         (2, 'دور از دسترس'),
         (3, 'در حال انجام عملیات'),
     )
-    status = models.IntegerField(choices=STATUS_TYPES, default=2)
-    company = models.ForeignKey('Company')
+    status = models.IntegerField(choices=STATUS_TYPES, default=2,
+                                 verbose_name=u'وضعیت')
+    company = models.ForeignKey('Company', verbose_name=u'شرکت امدادرسان')
+    longitude = models.IntegerField(verbose_name=u'طول جغرافیایی')
+    latitude = models.IntegerField(verbose_name=u'عرض جغرافیایی')
 
     class Meta:
         verbose_name = u'امدادگر'
         verbose_name_plural = u'امدادگران'
 
 
-class Helpee(HelpPerson):
-    machine_model = models.CharField(max_length=100)
-    help_type = models.CharField(max_length=100)
-    named_address = models.CharField(max_length=200)
+class Helpee(Person):
+    machine_model = models.CharField(max_length=100, verbose_name=u'مدل خودرو')
+    help_type = models.CharField(max_length=100, verbose_name=u'نوع درخواست')
+    named_address = models.TextField(max_length=200,
+                                     verbose_name=u'آدرس توضیحی')
 
     class Meta:
         verbose_name = u'امدادخواه'
@@ -62,8 +62,10 @@ class Helpee(HelpPerson):
 
 
 class Payment(models.Model):
-    company = models.ForeignKey('Company')
-    value = models.IntegerField()
+    company = models.ForeignKey('Company', verbose_name='شرکت امدادرسان')
+    value = models.IntegerField(verbose_name=u'مقدار پرداخت')
+    pay_date = models.DateTimeField(auto_now_add=True,
+                                    verbose_name=u'تاریخ پرداخت')
 
     class Meta:
         verbose_name = u'پرداخت'
