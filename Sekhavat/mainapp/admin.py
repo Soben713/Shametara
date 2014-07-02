@@ -1,5 +1,5 @@
 from django.contrib import admin
-from mainapp.models import Company, Helper, Operator, CompanyManager
+from mainapp.models import Company, Helper, Operator, CompanyManager, Payment
 from django.contrib.auth.models import User
 # from django.contrib.sites.models import Site
 from django.contrib.auth.models import Group
@@ -13,6 +13,10 @@ class CompanyManagerAdmin(admin.ModelAdmin):
 
 class CompanyAdmin(admin.ModelAdmin):
     fields = ('name', 'curPrice')
+
+
+class PaymentAdmin(admin.ModelAdmin):
+    fields = ('company', 'value')
 
 
 class HelperAdmin(admin.ModelAdmin):
@@ -30,3 +34,4 @@ admin.site.register(Company, CompanyAdmin)
 admin.site.register(Helper, HelperAdmin)
 admin.site.register(Operator, OperatorAdmin)
 admin.site.register(CompanyManager, CompanyManagerAdmin)
+admin.site.register(Payment, PaymentAdmin)
