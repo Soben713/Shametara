@@ -70,3 +70,9 @@ class Payment(models.Model):
     class Meta:
         verbose_name = u'پرداخت'
         verbose_name_plural = u'پرداخت‌ها'
+
+
+class Operator(Person, User):
+    class Meta:
+        verbose_name = u'اپراتور'
+        verbose_name_plural = u'اپراتورها'
