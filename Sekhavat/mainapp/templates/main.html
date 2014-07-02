@@ -6,6 +6,49 @@
 
 
 {% endblock %}
-{% block container %}
 
+{% block container %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jumbotron" style="text-align: center">
+                <img src="{% static "Logo.png" %}" width="95" height="60">
+                <h2>
+                    به سامانه‌ی یکپارچه‌ی خدمات الکترونیکی پیوند با همکاران (سخاوت) خوش آمدید.
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="jumbotron" style="text-align: center">
+                <span class="glyphicon glyphicon-phone" style="font-size: 70px"></span>
+                <br>
+                <p>
+                با نصب برنامه‌ی خادم بر روی تلفن همراه هوشمند خود بدون استفاده از اینترنت به شام‌تارا درخواست امداد دهید.
+                </p>
+                <br><br>
+                <hr>
+                <p><a class="btn btn-primary btn-lg btn-block" role="button">دانلود برنامه‌ی خادم</a></p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="jumbotron" style="text-align: center">
+                <span class="glyphicon glyphicon-road" style="font-size: 70px"></span>
+                <br>
+                <p>
+                    امدادگرانی که شرکت امدادرسان آن‌ها عضو شبکه‌ی شام‌تارا می‌باشد با دریافت برنامه‌ی «بکهام» می‌توانند از امکانات این برنامه استفاده کنند.
+                </p>
+                <hr>
+                <p><a class="btn btn-primary btn-lg btn-block" role="button">دانلود برنامه‌ی بکهام</a></p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="jumbotron" style="text-align: center">
+                <p><a href="{% url "login" %}" class="btn btn-success btn-lg btn-block" role="button">
+                    ورود به سامانه
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
 {% endblock %}
