@@ -4,6 +4,10 @@
 {% block body %}
     {% block menu %}{% endblock %}
     <div class="container">
+        <ol class="breadcrumb">
+            {% block breadcrumb %}
+            {% endblock %}
+        </ol>
         {% block container %}
         {% endblock %}
     </div>

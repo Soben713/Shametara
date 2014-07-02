@@ -6,7 +6,7 @@
     "less": "~1.7.3",
     "bootstrap3-typeahead": "*",
     "gmaps": "~0.4.13",
-    "chartjs": "~0.2.0"
+    "chartjs": "~0.2.0",
     "socket.io-client" : "1"
   },
   "private": true

@@ -6,5 +6,13 @@ from django.views.generic.base import TemplateView
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^home$', TemplateView.as_view(template_name='managers/home.html'))
+    url(r'^home/shametara$', TemplateView.as_view(template_name='managers/shamtara/home.html'), name="shametara_admin_home"),
+    url(r'^home/shametara/report/map$', TemplateView.as_view(template_name='managers/shamtara/report/map.html'),
+        name="shametara_admin_report_map"),
+    url(r'^home/shametara/report/financial$', TemplateView.as_view(template_name='managers/shamtara/report/financial.html'),
+        name="shametara_admin_report_financial"),
+    url(r'^home/shametara/report/helper', TemplateView.as_view(template_name='managers/shamtara/report/helper.html'),
+        name="shametara_admin_report_helper"),
+    url(r'^home/shametara/report/satisfaction', TemplateView.as_view(template_name='managers/shamtara/report/satisfaction.html'),
+        name="shametara_admin_report_satisfaction"),
 )
