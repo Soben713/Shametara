@@ -17,7 +17,6 @@ class ShamManager(Person, User):
         return self.name + " " + self.family
 
 
-
 class CompanyManager(Person, User):
     company = models.ForeignKey('Company', verbose_name=u'شرکت امداد رسان')
 
@@ -85,7 +84,7 @@ class Payment(models.Model):
                                     verbose_name=u'تاریخ پرداخت')
 
     def __unicode__(self):
-        return self.company + "L " + self.value
+        return self.company.name + ": " + str(self.value)
 
     class Meta:
         verbose_name = u'پرداخت'
@@ -97,6 +96,7 @@ class Operator(Person, User):
 
     def __unicode__(self):
         return self.name + " " + self.family
+
     class Meta:
         verbose_name = u'اپراتور'
         verbose_name_plural = u'اپراتورها'
