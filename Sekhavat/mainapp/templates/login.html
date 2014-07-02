@@ -147,8 +147,21 @@
   </style>
   <script type="text/javascript">
     $(function(){
-var textfield = $("input[name=user]");
+var textfield = $("input[name=username]");
             $('button[type="submit"]').click(function(e) {
+                // if ( $('button[type="submit"]').html() == "ادامه")
+                // {
+                  if (textfield.val() == "admin")
+                  {
+                    window.location = "/managers/shametara";
+                  } else if ( textfield.val() == "company" )
+                  {
+                    window.location = "/managers/company";
+                  } else if (textfield.val() == "operator")
+                  {
+                    window.location = "/helpdesk";
+                  }
+                // }
                 e.preventDefault();
                 //little validation just to check username
                 if (textfield.val() != "") {
@@ -179,7 +192,7 @@ var textfield = $("input[name=user]");
                 } else {
                     //remove success mesage replaced with error message
                     $("#output").removeClass(' alert alert-success');
-                    $("#output").addClass("alert alert-danger animated fadeInUp").html("sorry enter a username ");
+                    $("#output").addClass("alert alert-danger animated fadeInUp").html("لطفا نام کاربری را وارد کنید ");
                 }
                 //console.log(textfield.val());
 
@@ -192,9 +205,9 @@ var textfield = $("input[name=user]");
             <div id="output"></div>
             <div class="avatar"></div>
             <div class="form-box">
-                <form action="{{ to }}" method="">
-                    <input name="user" type="text" placeholder="نام کاربری">
-                    <input type="password" placeholder="رمز عبور">
+                <form action="/main/login" method="post">
+                    <input id="username" name="username" type="text" placeholder="نام کاربری">
+                    <input id="password" type="password" placeholder="رمز عبور">
                     <button class="btn btn-info btn-block login" type="submit">ورود</button>
                 </form>
             </div>
