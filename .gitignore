@@ -13,3 +13,7 @@ lib64
 *.pyc
 **/*.pyc
 Sekhavat/node_modules/**
+Shame/cache/**
+**/*.orig
+Sekhavat/db.sqlite3
+Khadem/platforms/**
