@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'helpdesk',
     'mainapp',
     'managers',
+    'khadem'
 )
 
 MIDDLEWARE_CLASSES = (

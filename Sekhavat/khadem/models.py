@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 
-class Comment(models.Model):
+class UserComment(models.Model):
     RATE_TYPES = (
         (1, 'ضعیف'),
         (2, 'متوسط'),
