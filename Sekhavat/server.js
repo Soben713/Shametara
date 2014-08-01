@@ -2,8 +2,9 @@
  * Created by mohammad on 7/1/14.
  */
 
-var io = require('socket.io')(8080);
+var io = require('socket.io')(8090);
 var http = require('http');
+var url = require('url');
 
 var sockets = [];
 
@@ -12,32 +13,24 @@ io.on('connection', function(socket) {
 
     socket.emit('welcome', { hello: 'world'});
 
-    socket.on('message', function (from, msg) {
-        console.log("Message received from " + from + " saying " + msg);
-    });
-
-    socket.on('emdaad', function (msg) {
-        console.log('New message : ');
-        console.log(msg);
-
-        // find the nearest rescuer e.g. nearest
-        var options = {
-            host: 'localhost',
-            port: 8000,
-            path: '/path/to/ajax',
-            method: 'GET'
-        };
-        var req = http.request(options, function(res) {
-            var nearest = sockets[0];
-            nearest.emit('notification', {
-                info: msg,
-                data: res
-            });
-        });
-        req.end();
+    socket.on('identify', function (msg) {
+        console.log("Identify message received from " + this + " saying " + msg);
+        socket.company_id = msg.company_id;
     });
 
     socket.on('disconnect', function() {
         sockets.splice(sockets.indexOf(socket), 1);
     });
 });
+
+var server = http.createServer(function(req, res) {
+    var _get = url.parse(req.url, true).query;
+    for (var i = 0; i < sockets.length; i++) {
+        if (sockets[i].company_id == _get['company_id']) {
+            sockets[i].emit('notif', _get);
+            break;
+        }
+    }
+});
+
+server.listen(3030);
