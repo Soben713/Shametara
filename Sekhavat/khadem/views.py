@@ -9,10 +9,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def proccess_req(request):
-    print(request.POST, request.GET)
-    if request.method == 'POST':
-        phone = request.POST['from']
-        text = request.POST['text']
+    if request.method == 'GET':
+        phone = request.GET['from']
+        text = request.GET['text']
         parts = text.split(" ")
 
         if parts[0] == 'h':  # help task request

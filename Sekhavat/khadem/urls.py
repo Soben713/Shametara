@@ -5,5 +5,5 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^proccess$', proccess_req),
+    url(r'^proccess.php$', proccess_req),
 )
