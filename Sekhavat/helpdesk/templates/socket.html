@@ -82,11 +82,25 @@
 
         $("#problem").typeahead({ source: problems });
 
+        var init_lat = 35.7046415, init_lng = 51.3581155;
+
         var map = new GMaps({
             el: '#map',
-            lat: 35.7314640605354,
-            lng: 51.549997329711914,
+            lat: init_lat,
+            lng: init_lng,
             height: '400px'
+        });
+
+        $("#latitude").val(init_lat);
+        $("#longitude").val(init_lng);
+
+        map.addMarker({
+            lat: init_lat,
+            lng: init_lng,
+            title: 'Marker #1',
+            infoWindow: {
+                content: "مکان امدادخواه"
+            }
         });
 
         GMaps.on('click', map.map, function (event) {
@@ -102,6 +116,8 @@
                     content: "مکان امدادخواه"
                 }
             });
+            $("#latitude").val(lat);
+            $("#longitude").val(lng);
         });
 
         $("#address").keypress(function(key) {
@@ -123,21 +139,21 @@
             }
         });
 
-        $("#sendToSekhavat").submit(function(event) {
-            event.preventDefault();
-            console.log(map.markers);
-            socket.emit('emdaad', {
-                name: $("#rescueName").val(),
-                phoneNumber: $("#phoneNumber").val(),
-                carModel: $("#carModel").val(),
-                problem: $("#problem").val(),
-                position: {
-                    lat: map.markers[0].getPosition().lat(),
-                    lng: map.markers[0].getPosition().lng()
-                }
-            });
-            return false;
-        });
+{#        $("#sendToSekhavat").submit(function(event) {#}
+{#            event.preventDefault();#}
+{#            console.log(map.markers);#}
+{#            socket.emit('emdaad', {#}
+{#                name: $("#rescueName").val(),#}
+{#                phoneNumber: $("#phoneNumber").val(),#}
+{#                carModel: $("#carModel").val(),#}
+{#                problem: $("#problem").val(),#}
+{#                position: {#}
+{#                    lat: map.markers[0].getPosition().lat(),#}
+{#                    lng: map.markers[0].getPosition().lng()#}
+{#                }#}
+{#            });#}
+{#            return false;#}
+{#        });#}
     });
 
     </script>
@@ -156,7 +172,6 @@
 {% endblock %}
 
 {% block container %}
-{#    <div style="text-align: center; margin-bottom: 20px"><h4><span class="label label-warning" id="conn_status">New</span></h4></div>#}
     <div id="conn_status" class="alert alert-warning" style="display: none"></div>
     <div class="row">
         <div class="col-md-8">
@@ -165,40 +180,41 @@
                     ارجاع امداد به سخاوت
                 </div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" id="sendToSekhavat">
+                    <form class="form-horizontal" role="form" action="/helpdesk/add-help" method="POST">
+                        {% csrf_token %}
                         <div class="form-group">
                             <label for="rescueName" class="col-sm-2 control-label">نام امدادخواه</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="rescueName" placeholder="نام امدادخواه">
+                                <input type="text" class="form-control" id="rescueName" name="rescueName" placeholder="نام امدادخواه">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="phoneNumber" class="col-sm-2 control-label">تلفن همراه</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="phoneNumber" placeholder="تلفن همراه">
+                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="تلفن همراه">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="carModel" class="col-sm-2 control-label">مدل ماشین</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="carModel" data-provide="typeahead" placeholder="مدل ماشین">
+                                <input type="text" class="form-control" id="carModel" name="carModel" data-provide="typeahead" placeholder="مدل ماشین">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="problem" class="col-sm-2 control-label">مورد امداد</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="problem" data-provide="typeahead" placeholder="مورد امداد">
+                                <input type="text" class="form-control" id="problem" name="problem" data-provide="typeahead" placeholder="مورد امداد">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="address" class="col-sm-2 control-label">آدرس حدودی</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="address" placeholder="آدرس">
+                                <input type="text" class="form-control" id="address" name="address" placeholder="آدرس">
                             </div>
                         </div>
                         <div class="form-group">
@@ -212,6 +228,8 @@
                                 <button type="submit" class="btn btn-default">ثبت امداد در سخاوت</button>
                             </div>
                         </div>
+                        <input type="hidden" name="latitude" id="latitude" />
+                        <input type="hidden" name="longitude" id="longitude" />
                     </form>
                 </div>
             </div>
