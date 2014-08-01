@@ -50,9 +50,9 @@ class Helper(Person, User):
     status = models.IntegerField(choices=STATUS_TYPES, default=2,
                                  verbose_name=u'وضعیت', blank=True, null=True)
     company = models.ForeignKey('Company', verbose_name=u'شرکت امدادرسان')
-    longitude = models.IntegerField(verbose_name=u'طول جغرافیایی',
+    longitude = models.FloatField(verbose_name=u'طول جغرافیایی',
                                     blank=True, null=True)
-    latitude = models.IntegerField(verbose_name=u'عرض جغرافیایی',
+    latitude = models.FloatField(verbose_name=u'عرض جغرافیایی',
                                    blank=True, null=True)
 
     def __unicode__(self):
@@ -61,7 +61,6 @@ class Helper(Person, User):
     class Meta:
         verbose_name = u'امدادگر'
         verbose_name_plural = u'امدادگران'
-
 
 
 class Helpee(Person):

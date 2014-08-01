@@ -55,6 +55,10 @@ def login(request):
             operator = Operator.objects.get(username=username)
         except Operator.DoesNotExist:
             operator = None
+            try:
+                helper = Helper.objects.get(username=username)
+            except Helper.DoesNotExist:
+                helper = None
     if user is not None and username == "admin":
         auth.login(request, user)
         return HttpResponse("admin")
@@ -66,6 +70,10 @@ def login(request):
         if user is not None and operator is not None:
             auth.login(request, user)
             return HttpResponse("operator")
+        else:
+            if user is not None and helper is not None:
+                auth.login(request, user)
+                return HttpResponse("helper")
     #message the user to re enter username and password
     return HttpResponse("None")
 

@@ -33,10 +33,14 @@
             window.setTimeout(function() {
                  $('#conn_status').hide();
             },2000);
+
+            socket.emit('identify', { company_id: $("#company_id").val() });
         });
-        socket.on('notification', function(msg) {
+
+        socket.on('notif', function(msg) {
             console.log("Notification: ", msg)
         });
+
         socket.on('disconnect', function() {
             $('#conn_status').html('ارتباط با سرور قطع شد').removeClass('alert-success')
                     .removeClass('alert-warning')
@@ -230,6 +234,7 @@
                         </div>
                         <input type="hidden" name="latitude" id="latitude" />
                         <input type="hidden" name="longitude" id="longitude" />
+                        <input type="hidden" name="company_id" id="company_id" value="{{ company_id }}" />
                     </form>
                 </div>
             </div>
