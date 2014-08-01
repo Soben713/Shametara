@@ -147,54 +147,35 @@
   </style>
   <script type="text/javascript">
     $(function(){
-var textfield = $("input[name=username]");
             $('button[type="submit"]').click(function(e) {
-                // if ( $('button[type="submit"]').html() == "ادامه")
-                // {
-                  if (textfield.val() == "admin")
-                  {
-                    window.location = "/managers/shametara";
-                  } else if ( textfield.val() == "company" )
-                  {
-                    window.location = "/managers/company";
-                  } else if (textfield.val() == "operator")
-                  {
-                    window.location = "/helpdesk";
-                  }
-                // }
+
                 e.preventDefault();
                 //little validation just to check username
-                if (textfield.val() != "") {
-                    //$("body").scrollTo("#output");
-                    $("#output").addClass("alert alert-success animated fadeInUp").html("خوش آمدید " + "<span style='text-transform:uppercase'>" + textfield.val() + "</span>");
-                    $("#output").removeClass(' alert-danger');
-                    $("input").css({
-                    "height":"0",
-                    "padding":"0",
-                    "margin":"0",
-                    "opacity":"0"
-                    });
-                    //change button text 
-                    $('button[type="submit"]').html("ادامه")
-                    .removeClass("btn-info")
-                    .addClass("btn-default").click(function(){
-                    $("input").css({
-                    "height":"auto",
-                    "padding":"10px",
-                    "opacity":"1"
-                    }).val("");
-                    });
-                    
-                    //show avatar
-                    $(".avatar").css({
-                        "background-image": "url('http://sharif.edu/~abtahi/images/Abtahi2.jpg')"
-                    });
-                } else {
-                    //remove success mesage replaced with error message
-                    $("#output").removeClass(' alert alert-success');
-                    $("#output").addClass("alert alert-danger animated fadeInUp").html("لطفا نام کاربری را وارد کنید ");
-                }
-                //console.log(textfield.val());
+                 var $form = $( "#loginForm" ),
+                 user = $form.find( "input[name='username']" ).val(),
+                 pass = $form.find( "input[name='password']" ).val(),
+                 csrf = $form.find( "input[name='csrfmiddlewaretoken']" ).val();
+                 console.log(user);
+                 console.log(pass);
+                console.log(csrf);
+                 // Send the data using post
+                 var posting = $.post( "/doLogin", { username: user , password:pass , csrfmiddlewaretoken:csrf  } );
+                 // Put the results in a div
+                 posting.done(function( data ) {
+                    if (data == "manager")
+                    {
+                        window.location = "/managers/shametara";
+                    } else if ( data == "operator" )
+                    {
+                        window.location = "/helpdesk";
+                    } else if(data == "admin")
+                    {
+                        window.location ="/managers/shametara"
+                    }else {
+                        $("#output").removeClass(' alert alert-success');
+                        $("#output").addClass("alert alert-danger animated fadeInUp").html("نام کاربری یا رمز عبور اشتباه است");
+                    }
+                 });
 
             });
 });
@@ -205,9 +186,10 @@ var textfield = $("input[name=username]");
             <div id="output"></div>
             <div class="avatar"></div>
             <div class="form-box">
-                <form action="/main/login" method="post">
-                    <input id="username" name="username" type="text" placeholder="نام کاربری">
-                    <input id="password" type="password" placeholder="رمز عبور">
+                <form  method="post" id ="loginForm">
+                    {% csrf_token %}
+                    <input name="username" id="username" type="text" placeholder="نام کاربری">
+                    <input name="password" id="password" type="password" placeholder="رمز عبور">
                     <button class="btn btn-info btn-block login" type="submit">ورود</button>
                 </form>
             </div>

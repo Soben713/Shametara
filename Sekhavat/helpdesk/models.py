@@ -10,8 +10,8 @@ class HelpTask(models.Model):
     help_price = models.IntegerField(verbose_name=u'سود شام‌تارا')
     help_date = models.DateTimeField(auto_now_add=True,
                                      verbose_name=u'تاریخ امدادرسانی')
-    longitude = models.IntegerField(verbose_name=u'طول جغرافیایی')
-    latitude = models.IntegerField(verbose_name=u'عرض جغرافیایی')
+    longitude = models.FloatField(verbose_name=u'طول جغرافیایی')
+    latitude = models.FloatField(verbose_name=u'عرض جغرافیایی')
     is_from_khadem = models.BooleanField(verbose_name=
                                          u'آیا این درخواست از سمت خادم است')
 

@@ -1,0 +1,145 @@
+{% extends 'layout.html' %}
+{% load staticfiles %}
+
+{% block jscss %}
+    {{ block.super }}
+    <script src="{% static 'components/bootstrap3-typeahead/bootstrap3-typeahead.js' %}"></script>
+
+    <script type="text/javascript">
+           function checkConfirmValidity(inp){
+{#               console.log(a);#}
+                var pass = $('#password').val();
+                var repass = $('#repassword').val();
+                if ( pass != repass ) {
+                    inp.setCustomValidity("رمز عبور و تکرار آن یکسان نمی‌‌باشند.");
+                } else {
+                    inp.setCustomValidity("");
+                }
+            }
+
+
+
+            $(function(){
+                        $('button[type="submit"]').click(function(e) {
+
+                        e.preventDefault();
+                        //little validation just to check username
+                         var $form = $( "#addCompanyToSekhavat" ),
+                         pass=$form.find( "input[name='password']" ).val(),
+                         user = $form.find( "input[name='userName']" ).val(),
+                         csrf = $form.find( "input[name='csrfmiddlewaretoken']" ).val(),
+                         name=$form.find( "input[name='managerName']" ).val(),
+                         family=$form.find( "input[name='managerFamily']" ).val(),
+                         phone=$form.find( "input[name='phoneNumber']" ).val(),
+                         company=$form.find( "input[name='companyName']" ).val();
+                         console.log(user);
+                         console.log(pass);
+                         console.log(csrf);
+                         // Send the data using post
+                         var posting = $.post( "/userNameChecking", { username: user , csrfmiddlewaretoken:csrf  } );
+                         // Put the results in a div
+                         posting.done(function( data ) {
+                            if (data == "OK")
+                            {
+                                window.location("/addcompany")
+                            } else if ( data == "wrongUserName" )
+                            {
+                                window.location = "/helpdesk";
+                            }
+                         });
+
+                    });
+            });
+
+    </script>
+
+    <style>
+    .notif {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid grey;
+    }
+    </style>
+{% endblock %}
+
+{% block menu %}
+    {% include 'menu.html' %}
+{% endblock %}
+
+{% block container %}
+{#    <div style="text-align: center; margin-bottom: 20px"><h4><span class="label label-warning" id="conn_status">New</span></h4></div>#}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+اضافه کردن شرکت امدادرسان جدید
+                </div>
+                <div class="panel-body">
+                    <form method="post" class="form-horizontal"  role="form" id="addCompanyToSekhavat">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="managerName" class="col-sm-3 control-label" >نام مدیر</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="managerName" class="form-control" id="managerName" pattern="[آ-ی ]+"
+                                       oninvalid="setCustomValidity('با حروف فارسی پر کنید')"
+                                       onchange="try{setCustomValidity('')}catch(e){}" placeholder="نام" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="managerFamily" class="col-sm-3 control-label">نام خانوادگی مدیر</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="managerFamily" class="form-control" id="managerFamily" pattern="[آ-ی ]+"
+                                       oninvalid="setCustomValidity('با حروف فارسی پر کنید')"
+                                       onchange="try{setCustomValidity('')}catch(e){}" placeholder="نام خانوادگی"required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="companyName" class="col-sm-3 control-label">نام شرکت</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="companyName" class="form-control" id="companyName" pattern="[0-9۰-۹آ-ی ]+"
+                                       oninvalid="setCustomValidity('با حروف فارسی یا اعداد پر شود')"
+                                       onchange="try{setCustomValidity('')}catch(e){}" placeholder="شرکت امداد رسان"required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber" class="col-sm-3 control-label">تلفن همراه</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="phoneNumber" class="form-control" id="phoneNumber"
+                                       oninvalid="setCustomValidity('شماره تلفن همراه ۱۱ رقمی است و با ۰۹ شروع میشود')"
+                                       onchange="try{setCustomValidity('')}catch(e){}" pattern = "[0۰][۹9][0-9۰-۹]{9}" placeholder="تلفن همراه" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="userName" class="col-sm-3 control-label">نام کاربری مدیر</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="userName" class="form-control" id="userName"
+                                       oninvalid="setCustomValidity('تنها از حروف و اعداد انگلیسی برای نام کاربری استفاده شود')"
+                                       onchange="try{setCustomValidity('')}catch(e){}"pattern="[0-9a-zA-Z]+" placeholder="نام کاربری"required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-3 control-label">  رمز عبور مدیر</label>
+                            <div class="col-sm-9">
+                                <input id="password" name="password" type="password" class="form-control"
+                                       oninvalid="setCustomValidity('طول پسورد لااقل بایستی ۸ و حداقل یک حرف و رقم انگلیسی داشته باشد')"
+                                       onchange="try{setCustomValidity('')}catch(e){}"
+                                       pattern="(?=^.{8,}$)(?=.*\d)(?=.*[a-zA-Z]).*$" placeholder="رمز عبور" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="repassword" class="col-sm-3 control-label">تکرار رمز عبور</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" onchange="checkConfirmValidity(this)" id="repassword" placeholder="تکرار رمز عبور"required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-4">
+                                <button type="submit" class="btn btn-default">ثبت شرکت امدادرسان جدید</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -63,6 +63,7 @@ class Helper(Person, User):
         verbose_name_plural = u'امدادگران'
 
 
+
 class Helpee(Person):
     machine_model = models.CharField(max_length=100, verbose_name=u'مدل خودرو')
     help_type = models.CharField(max_length=100, verbose_name=u'نوع درخواست')
