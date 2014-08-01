@@ -33,12 +33,12 @@ def add_operator(request):
 
 
 def add_helper(request):
-    helper = Helper()
+    operator = Operator.objects.get(username=request.user.username)
+    helper = Helper.objects.create_user(username=request.POST['userName'],
+                                            password=request.POST['password'],company=operator.company)
     helper.name = request.POST['helperName']
     helper.family = request.POST['helperFamily']
     helper.phone = request.POST['phoneNumber']
-    helper.username = request.POST['userName']
-    helper.password = request.POST['password']
     helper.save()
     return HttpResponse()
 
