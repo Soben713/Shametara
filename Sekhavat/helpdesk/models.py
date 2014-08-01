@@ -16,6 +16,13 @@ class HelpTask(models.Model):
                                          u'آیا این درخواست از سمت خادم است')
 
     user_comment = models.ForeignKey(UserComment, verbose_name=u'رضایت سنجی')
+    STATUS_TYPES = (
+        (1, 'وارد شده'),
+        (2, 'ارسال رضایت'),
+        (3, 'اتمام'),
+    )
+    status = models.IntegerField(choices=STATUS_TYPES, default=1,
+                                 verbose_name=u'وضعیت امداد')
 
     class Meta:
         verbose_name = u'عمل امداد'

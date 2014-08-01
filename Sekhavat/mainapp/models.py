@@ -13,6 +13,8 @@ class Person(models.Model):
 
 
 class ShamManager(Person, User):
+    percent = models.IntegerField(verbose_name=u'درصد سود')
+
     def __unicode__(self):
         return self.name + " " + self.family
 
@@ -30,7 +32,6 @@ class CompanyManager(Person, User):
 
 class Company(models.Model):
     name = models.CharField(max_length=100, verbose_name=u'نام')
-    curPrice = models.IntegerField(verbose_name=u'سود فعلی به ازای هر امداد')
 
     def __unicode__(self):
         return self.name
