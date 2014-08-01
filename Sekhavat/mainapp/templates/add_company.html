@@ -16,6 +16,41 @@
                     inp.setCustomValidity("");
                 }
             }
+
+
+
+            $(function(){
+                        $('button[type="submit"]').click(function(e) {
+
+                        e.preventDefault();
+                        //little validation just to check username
+                         var $form = $( "#addCompanyToSekhavat" ),
+                         pass=$form.find( "input[name='password']" ).val(),
+                         user = $form.find( "input[name='userName']" ).val(),
+                         csrf = $form.find( "input[name='csrfmiddlewaretoken']" ).val(),
+                         name=$form.find( "input[name='managerName']" ).val(),
+                         family=$form.find( "input[name='managerFamily']" ).val(),
+                         phone=$form.find( "input[name='phoneNumber']" ).val(),
+                         company=$form.find( "input[name='companyName']" ).val();
+                         console.log(user);
+                         console.log(pass);
+                         console.log(csrf);
+                         // Send the data using post
+                         var posting = $.post( "/userNameChecking", { username: user , csrfmiddlewaretoken:csrf  } );
+                         // Put the results in a div
+                         posting.done(function( data ) {
+                            if (data == "OK")
+                            {
+                                window.location("/addcompany")
+                            } else if ( data == "wrongUserName" )
+                            {
+                                window.location = "/helpdesk";
+                            }
+                         });
+
+                    });
+            });
+
     </script>
 
     <style>
@@ -40,7 +75,7 @@
 اضافه کردن شرکت امدادرسان جدید
                 </div>
                 <div class="panel-body">
-                    <form method="post" action="/addcompany" class="form-horizontal"  role="form" id="addCompanyToSekhavat">
+                    <form method="post" class="form-horizontal"  role="form" id="addCompanyToSekhavat">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="managerName" class="col-sm-3 control-label" >نام مدیر</label>

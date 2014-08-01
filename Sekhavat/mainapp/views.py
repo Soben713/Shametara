@@ -69,4 +69,19 @@ def login(request):
     #message the user to re enter username and password
     return HttpResponse("None")
 
+def multi_user_checking(request):
+    user=request.POST['username']
+    try:
+        manager = CompanyManager.objects.get(username=user)
+    except CompanyManager.DoesNotExist:
+        try:
+            operator = Operator.objects.get(username=user)
+        except Operator.DoesNotExist:
+            if user != "admin":
+                return HttpResponse("OK")
+    return HttpResponse("wrongUserName")
+
+
+
+
 

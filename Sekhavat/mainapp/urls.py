@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from mainapp.views import add_manager,add_helper,add_operator,login
+from mainapp.views import add_manager,add_helper,add_operator,login,multi_user_checking
 
 from django.contrib import admin
 from django.views.generic.base import TemplateView
@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^addoperator$', add_operator),
     url(r'^addhelper$', add_helper),
     url(r'^doLogin$', login),
+    url(r'^userNameChecking',multi_user_checking),
     url(r'^$', TemplateView.as_view(template_name='main.html'))
 
 )
