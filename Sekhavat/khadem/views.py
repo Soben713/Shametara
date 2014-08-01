@@ -1,7 +1,7 @@
 # Create your views here.
 import sms
 from django.http import HttpResponse
-from helpdesk.views import help_proccess_start
+from helpdesk.views import help_process_start
 from khadem.models import UserComment
 from helpdesk.models import HelpTask
 from django.views.decorators.csrf import csrf_exempt
@@ -16,7 +16,7 @@ def proccess_req(request):
         parts = text.split(" ")
 
         if parts[0] == 'h':  # help task request
-            help_proccess_start(phone, parts[1], parts[2])
+            help_process_start(phone, parts[1], parts[2])
         if parts[0].isdigit():
             doCommentDoingThings(parts[0], phone)
         return HttpResponse("OK")

@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.http.response import HttpResponse
 from django.shortcuts import render
+import math
 from helpdesk.models import HelpTask
 from mainapp.models import Helpee, Helper
 import urllib
@@ -28,12 +29,36 @@ def add_help(request):
     helpee.save()
     task.helpee = helpee
 
-    #TODO task.helper = Helper.objects....
-
     task.save()
 
-    params = urllib.urlencode({'lat': task.latitude, 'lng': task.longitude})
+    proposed_helper = find_nearest_helper(task.latitude, task.longitude)
+
+    params = urllib.urlencode(
+        {
+            'task_id': task.id,
+            'lat': task.latitude,
+            'lng': task.longitude,
+            'helper_id': proposed_helper.id,
+            'company_id': proposed_helper.company.id
+        })
     f = urllib.urlopen('http://localhost:4000/?%s' % params)
     f.read()
 
     return HttpResponse()
+
+
+def find_nearest_helper(lat, lng):
+    helpers = Helper.objects.all()
+    nearest = None
+    dist = float("inf")
+    # compute manhattan distance
+    for helper in helpers:
+        dist_ = math.fabs(helper.latitude - lat) + math.fabs(helper.longitude - lng)
+        if dist_ < dist:
+            dist = dist_
+            nearest = helper
+    return nearest
+
+
+def help_process_start(a, b, c):
+    pass
