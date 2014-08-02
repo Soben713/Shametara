@@ -1,6 +1,10 @@
 {% extends 'layout.html' %}
 {% load staticfiles %}
 
+{% block menu %}
+    {% include "managers/shamtara/menu.html" %}
+{% endblock %}
+
 {% block jscss %}
     {{ block.super }}
     <script src="{% static 'components/bootstrap3-typeahead/bootstrap3-typeahead.js' %}"></script>
@@ -17,39 +21,25 @@
                 }
             }
 
+           function setUsernameChange(input){
+                 console.log("karime kiri");
+                 var $form = $( "#addCompanyToSekhavat" ),
+                 user = $form.find( "input[name='userName']" ).val(),
+                 csrf = $form.find( "input[name='csrfmiddlewaretoken']" ).val();
 
+                 // Send the data using post
+                 var posting = $.post( "/userNameChecking", { username: user , csrfmiddlewaretoken:csrf  } );
+                 // Put the results in a div
+                 posting.done(function( data ) {
+                    if (data == "wrongUserName"){
+                        input.setCustomValidity("نام کاربری قبلا انتخاب شده است");
+                    } else{
+                        input.setCustomValidity("");
+                    }
 
-            $(function(){
-                        $('button[type="submit"]').click(function(e) {
+                 });
+           }
 
-                        e.preventDefault();
-                        //little validation just to check username
-                         var $form = $( "#addCompanyToSekhavat" ),
-                         pass=$form.find( "input[name='password']" ).val(),
-                         user = $form.find( "input[name='userName']" ).val(),
-                         csrf = $form.find( "input[name='csrfmiddlewaretoken']" ).val(),
-                         name=$form.find( "input[name='managerName']" ).val(),
-                         family=$form.find( "input[name='managerFamily']" ).val(),
-                         phone=$form.find( "input[name='phoneNumber']" ).val(),
-                         company=$form.find( "input[name='companyName']" ).val();
-                         console.log(user);
-                         console.log(pass);
-                         console.log(csrf);
-                         // Send the data using post
-                         var posting = $.post( "/userNameChecking", { username: user , csrfmiddlewaretoken:csrf  } );
-                         // Put the results in a div
-                         posting.done(function( data ) {
-                            if (data == "OK")
-                            {
-                                window.location("/addcompany")
-                            } else if ( data == "wrongUserName" )
-                            {
-                                window.location = "/helpdesk";
-                            }
-                         });
-
-                    });
-            });
 
     </script>
 
@@ -65,7 +55,6 @@
 {% block menu %}
     {% include 'menu.html' %}
 {% endblock %}
-
 {% block container %}
 {#    <div style="text-align: center; margin-bottom: 20px"><h4><span class="label label-warning" id="conn_status">New</span></h4></div>#}
     <div class="row">
@@ -75,7 +64,13 @@
 اضافه کردن شرکت امدادرسان جدید
                 </div>
                 <div class="panel-body">
-                    <form method="post" class="form-horizontal"  role="form" id="addCompanyToSekhavat">
+                     {% if usernameError  %}
+                            <div class="alert alert-warning">{{ usernameError }}</div>
+                     {% endif %}
+                     {% if success  %}
+                            <div class="alert alert-warning">{{ success }}</div>
+                     {% endif %}
+                    <form method="post" action="/addcompany" class="form-horizontal"  role="form" id="addCompanyToSekhavat">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="managerName" class="col-sm-3 control-label" >نام مدیر</label>
@@ -113,8 +108,8 @@
                             <label for="userName" class="col-sm-3 control-label">نام کاربری مدیر</label>
                             <div class="col-sm-9">
                                 <input type="text" name="userName" class="form-control" id="userName"
-                                       oninvalid="setCustomValidity('تنها از حروف و اعداد انگلیسی برای نام کاربری استفاده شود')"
-                                       onchange="try{setCustomValidity('')}catch(e){}"pattern="[0-9a-zA-Z]+" placeholder="نام کاربری"required>
+                                       onchange='setUsernameChange(this)'
+                                       pattern="[۰-۹0-9a-zA-Z]+" placeholder="نام کاربری"required>
                             </div>
                         </div>
                         <div class="form-group">

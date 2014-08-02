@@ -40,8 +40,15 @@
 اضافه کردن نفر امدادرسان
                 </div>
                 <div class="panel-body">
+                    {% if usernameError  %}
+                            <div class="alert alert-warning">{{ usernameError }}</div>
+                    {% endif %}
+                    {% if success  %}
+                            <div class="alert alert-warning">{{ success }}</div>
+                    {% endif %}
                     <form method="post"  action="/addhelper" class="form-horizontal" role="form" id="addHelperToSekhavat">
                         {% csrf_token %}
+
                         <div class="form-group">
                             <label for="helperName" class="col-sm-3 control-label">نام امدادرسان</label>
                             <div class="col-sm-9">
@@ -71,7 +78,7 @@
                             <div class="col-sm-9">
                                 <input type="text" name="userName" class="form-control" id="userName"
                                        oninvalid="setCustomValidity('تنها از حروف و اعداد انگلیسی برای نام کاربری استفاده شود')"
-                                       onchange="try{setCustomValidity('')}catch(e){}"pattern="[0-9a-zA-Z]+" placeholder="نام کاربری"required>
+                                       onchange="try{setCustomValidity('')}catch(e){}"pattern="[۰-۹0-9a-zA-Z]+" placeholder="نام کاربری"required>
                             </div>
                         </div>
                         <div class="form-group">

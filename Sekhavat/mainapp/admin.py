@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib import admin
 from mainapp.models import Company, Helper, Operator, CompanyManager, Payment
 from django.contrib.auth.models import User
