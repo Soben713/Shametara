@@ -14,12 +14,9 @@
 
         window.location = "EditInfo.html"
     }
-    function sendRequest()
+
+    function sendSMS(position)
     {
-         $("#sendreq").attr("disabled", "disabled");
-         $("#sendreq").html("در حال ارسال درخواست");
-         // var smsplugin = cordova.require("info.asankan.phonegap.smsplugin.smsplugin");
-          navigator.geolocation.getCurrentPosition(function (position){
               console.log("here here here");
               
               var intent = "INTENT"; //leave empty for sending sms using default intent
@@ -37,11 +34,17 @@
          
               $("#okDialog").popup("open");
                     
-        }, function () {
-            $("#failDialog").popup("open");   
-            // sms.send(number, "assert.fail(actual, expected, message, operator, stackStartFunction);", intent, success, error);
+    }
+
+    function sendRequest()
+    {
+        $("#sendreq").attr("disabled", "disabled");
+        $("#sendreq").html("در حال ارسال درخواست");
+        // var smsplugin = cordova.require("info.asankan.phonegap.smsplugin.smsplugin");
           
-       });
+        navigator.geolocation.getCurrentPosition(sendSMS, function (error) {
+            $("#failDialog").popup("open");   
+        });
     }
 
 </script>
