@@ -17,4 +17,4 @@ Shame/cache/**
 **/*.orig
 Sekhavat/db.sqlite3
 Khadem/platforms/**
-Sekhavat/.idea/**
+Sekhavat/.idea

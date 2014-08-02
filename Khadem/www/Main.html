@@ -15,13 +15,20 @@
     }
     function sendRequest()
     {
-        var a = 1 ;
-        if ( a == 1) {
+        navigator.geolocation.getCurrentPosition(function (position){
+          var intent = "INTENT"; //leave empty for sending sms using default intent
+          var success = function () { alert('Message sent successfully'); };
+          var error = function (e) { alert('Message Failed:' + e); };
+          var message = "h " + position.coords.latitude + " " + position.coords.longitude ; // TODO : add position
+              
+          var number = "30009900666554";
+              
+          sms.send(number, message, intent, success, error);
             $("#okDialog").popup("open");
-        }
-        else {
-            $("#failDialog").popup("open");   
-        }
+            
+        }, function () {
+              $("#failDialog").popup("open");   
+       });
     }
 
 </script>
