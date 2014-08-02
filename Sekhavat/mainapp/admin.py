@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 from django.contrib import admin
-from mainapp.models import Company, Helper, Operator, CompanyManager, Payment
+from mainapp.models import Company, Helper, Operator, CompanyManager, Payment, Helpee
 from django.contrib.auth.models import User
 # from django.contrib.sites.models import Site
 from django.contrib.auth.models import Group
@@ -12,7 +13,7 @@ class CompanyManagerAdmin(admin.ModelAdmin):
 
 
 class CompanyAdmin(admin.ModelAdmin):
-    fields = ('name', 'curPrice')
+    fields = ('name',)
 
 
 class PaymentAdmin(admin.ModelAdmin):
@@ -20,7 +21,7 @@ class PaymentAdmin(admin.ModelAdmin):
 
 
 class HelperAdmin(admin.ModelAdmin):
-    fields = ('name', 'family', 'phone', 'company', 'username', 'password')
+    fields = ('name', 'family', 'phone', 'company', 'username', 'password', 'latitude', 'longitude', 'status')
 
 
 class OperatorAdmin(admin.ModelAdmin):
@@ -32,6 +33,7 @@ admin.site.unregister(Group)
 
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Helper, HelperAdmin)
+admin.site.register(Helpee, admin.ModelAdmin)
 admin.site.register(Operator, OperatorAdmin)
 admin.site.register(CompanyManager, CompanyManagerAdmin)
 admin.site.register(Payment, PaymentAdmin)

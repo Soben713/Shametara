@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.contrib.auth import authenticate
 from django.http.response import HttpResponse
 from django.shortcuts import render
 import math
@@ -39,7 +40,9 @@ def add_help(request):
             'lat': task.latitude,
             'lng': task.longitude,
             'helper_id': proposed_helper.id,
-            'company_id': proposed_helper.company.id
+            'helper_name': proposed_helper.name + ' ' + proposed_helper.family,
+            'company_id': proposed_helper.company.id,
+            'company_name': proposed_helper.company.name
         })
     f = urllib.urlopen('http://localhost:4000/?%s' % params)
     f.read()
@@ -62,3 +65,16 @@ def find_nearest_helper(lat, lng):
 
 def help_process_start(a, b, c):
     pass
+
+
+def update_location(request):
+    user = authenticate(username=request.GET['username'], password=request.GET['password'])
+    if user is None:
+        return None
+
+    helper = Helper.objects.find(username=request.GET['username'])
+    helper.latitude = float(request.GET['lat'])
+    helper.longitude = float(request.GET['lng'])
+    helper.status = int(request.GET['status'])
+
+    helper.save()

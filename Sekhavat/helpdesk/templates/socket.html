@@ -39,6 +39,7 @@
 
         socket.on('notif', function(msg) {
             console.log("Notification: ", msg)
+
         });
 
         socket.on('disconnect', function() {
@@ -160,6 +161,23 @@
 {#        });#}
     });
 
+    function addAlert(msg) {
+        var company = msg.company_name;
+        var emdaadgar = msg.helper_name;
+
+        var html = "<div class=\"alert alert-warning rescue\">" +
+                        "<b class=\"rescue\">" + company + "</b><br />" +
+                        "متقاضی استفاده از امدادگر " +
+                        "<b>" + emdaadgar + "</b> است.<br />" +
+                        "<div style=\"text-align: left; padding-top: 7px\">" +
+                            "<button class=\"btn btn-success\">قبول امداد</button> " +
+                            "<button class=\"btn btn-danger\">رد امداد</button>" +
+                        "</div>" +
+                    "</div>";
+
+        $(html).prependTo($("#alerts"));
+    }
+
     </script>
 
     <style>
@@ -244,7 +262,7 @@
                 <div class="panel-heading">
                     لیست درخواست‌های امداد به شما
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" id="alerts">
                     <div class="alert alert-info">
                         <b class="rescue"> ایران خودرو</b><br />
                         متقاضی استفاده از امدادگر

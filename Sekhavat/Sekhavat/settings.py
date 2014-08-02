@@ -46,7 +46,8 @@ INSTALLED_APPS = (
     'helpdesk',
     'mainapp',
     'managers',
-    'khadem'
+    'khadem',
+    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (
