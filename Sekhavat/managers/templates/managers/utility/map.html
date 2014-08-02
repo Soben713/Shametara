@@ -1,0 +1,31 @@
+<script>
+    var map;
+    $(document).ready(function(){
+        map = new GMaps({
+            el: '#map',
+            lat: 35.7206573,
+            lng: 51.3166525,
+            height:"637px"
+        });
+        {% for helper in map.helpers %}
+            map.drawOverlay({
+                lat: {{ helper.latitude|stringformat:"f" }},
+                lng: {{ helper.longitude|stringformat:"f" }},
+                content: '<div class="mapoverlay">' +
+                        '{{ helper.full_name }}' + '،' +
+                        'امداد رسان ' +
+                        '{{ helper.company.name }}' +
+                        '</div>'
+            });
+        {% endfor %}
+    });
+</script>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        نقشه‌ی امدادگران
+    </div>
+    <div class="panel-body" style="padding: 0 !important;">
+        <div id="map"></div>
+    </div>
+</div>

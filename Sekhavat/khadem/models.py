@@ -10,6 +10,18 @@ class UserComment(models.Model):
         (3, 'خوب'),
         (4, 'بسیار خوب'),
     )
-    service_rate = models.IntegerField(choices=RATE_TYPES, default=2,
-                                       verbose_name=u'نمره‌ی سرویس‌دهی',
+    other_rate = models.IntegerField(choices=RATE_TYPES, default=2,
+                                       verbose_name=u'دیگر موارد',
                                        blank=True, null=True)
+    coming_on_time = models.IntegerField(choices=RATE_TYPES, default=2,
+                                       verbose_name=u'رسیدن به موقع',
+                                       blank=True, null=True)
+    nahve_barkhord = models.IntegerField(choices=RATE_TYPES, default=2,
+                                                        verbose_name=u'نحوه‌ی برخورد با مشتری',
+                                                        blank=True, null=True)
+    lavazem_kafi = models.IntegerField(choices=RATE_TYPES, default=2,
+                                       verbose_name=u'لوازم کافی',
+                                       blank=True, null=True)
+    danesh_kafi = models.IntegerField(choices=RATE_TYPES, default=2,
+                                                  verbose_name=u'دانش کافی',
+                                                  blank=True, null=True)
