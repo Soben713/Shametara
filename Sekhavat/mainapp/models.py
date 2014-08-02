@@ -37,6 +37,36 @@ class CompanyManager(Person, User):
 class Company(models.Model):
     name = models.CharField(max_length=100, verbose_name=u'نام')
 
+    def _rate(self, field_str):
+        sum = 0
+        num = 0
+        for helper in self.helper_set.all():
+            for task in helper.helptask_set.all():
+                if task.user_comment is not None:
+                    num += 1
+                    sum += getattr(task.user_comment, field_str)
+        return float(sum)/num
+
+    @property
+    def average_other_rate(self):
+        return self._rate('other_rate')
+
+    @property
+    def average_coming_on_time(self):
+        return self._rate('coming_on_time')
+
+    @property
+    def average_nahve_barkhord(self):
+        return self._rate('nahve_barkhord')
+
+    @property
+    def average_lavazem_kafi(self):
+        return self._rate('lavazem_kafi')
+
+    @property
+    def average_danesh_kafi(self):
+        return self._rate('danesh_kafi')
+
     def __unicode__(self):
         return self.name
 
