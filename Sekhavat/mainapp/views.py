@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
-from mainapp.models import CompanyManager, Company, Operator, Helper
+from mainapp.models import CompanyManager, Company, Operator, Helper, ShamManager
 from django.shortcuts import redirect
 from django.contrib import auth
 from django.db import IntegrityError
@@ -91,21 +91,22 @@ def login(request):
                 helper = Helper.objects.get(username=username)
             except Helper.DoesNotExist:
                 helper = None
-    if user is not None and username == "admin":
+                try:
+                    shamManager = ShamManager.objects.get(username=username)
+                except ShamManager.DoesNotExist:
+                    shamManager = None
+    if user is not None and shamManager is not None:
         auth.login(request, user)
         return HttpResponse("admin")
-
-    if user is not None and manager is not None:
-        auth.login(request, user)
-        return HttpResponse("manager")
-    else:
-        if user is not None and operator is not None:
+    elif user is not None and manager is not None:
+            auth.login(request, user)
+            return HttpResponse("manager")
+    elif user is not None and operator is not None:
             auth.login(request, user)
             return HttpResponse("operator")
-        else:
-            if user is not None and helper is not None:
-                auth.login(request, user)
-                return HttpResponse("helper")
+    elif user is not None and helper is not None:
+            auth.login(request, user)
+            return HttpResponse("helper")
     #message the user to re enter username and password
     return HttpResponse("None")
 

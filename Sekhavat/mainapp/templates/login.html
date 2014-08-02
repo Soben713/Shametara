@@ -167,6 +167,7 @@
                 var posting = $.post("/doLogin", { username: user, password: pass, csrfmiddlewaretoken: csrf  });
                 // Put the results in a div
                 posting.done(function (data) {
+                    console.log(data);
                     if (data == "manager") {
                         window.location = "/managers/shametara";
                     } else if (data == "operator") {

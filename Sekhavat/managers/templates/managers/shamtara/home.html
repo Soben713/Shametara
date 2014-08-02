@@ -15,25 +15,7 @@
 
 {% block container %}
     <script>
-        var map;
         $(document).ready(function(){
-            map = new GMaps({
-                el: '#map',
-                lat: 35.7206573,
-                lng: 51.3166525,
-                height:"637px"
-            });
-            map.drawOverlay({
-                lat: 35.7206573,
-                lng: 51.3166525,
-                content: '<div class="mapoverlay">امداد رسان ایران‌خودرو</div>'
-            });
-            map.drawOverlay({
-                lat: 35.7245350,
-                lng: 51.3136520,
-                content: '<div class="mapoverlay">امداد رسان سایپا</div>'
-            });
-
             var ctx = document.getElementById("myChart").getContext("2d");
             var data = [
                 {
@@ -103,15 +85,7 @@
     </div></div>
     <div class="row">
         <div class="col-md-8">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="glyphicon glyphicon-adjust"></span>
-                    نقشه‌ی امدادگران
-                </div>
-                <div class="panel-body" style="padding: 0 !important;">
-                    <div id="map"></div>
-                </div>
-            </div>
+            {% include "managers/utility/map.html" %}
         </div>
         <div class="col-md-4">
             <div class="panel panel-default">

@@ -8,6 +8,10 @@ class Person(models.Model):
     family = models.CharField(max_length=100, verbose_name=u'نام خانوادگی')
     phone = models.CharField(max_length=100, verbose_name=u'تلفن همراه')
 
+    @property
+    def full_name(self):
+        return self.name + " " + self.family
+
     class Meta:
         abstract = True
 
