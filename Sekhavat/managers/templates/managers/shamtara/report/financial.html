@@ -21,21 +21,12 @@
         var map;
     </script>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     گزارش‌های مالی
                 </div>
                 <div class="panel-body" style="padding: 0 !important;">
-                    <form class="form form-inline">
-                    <div style="text-align: center; padding: 15px">
-                        نمایش اطلاعات از تاریخ
-                        <input type="text" class="form-control" value="۱۳/۱/۱۳۹۳">
-                        تا
-                        <input type="text" class="form-control" value="۲۱/۱۲/۱۳۹۳">
-                    </div>
-                    </form>
-                    <hr>
                     <table class="table">
                         <thead>
                         <tr>
@@ -43,93 +34,67 @@
 تاریخ
                             </td>
                             <td>
-                                تعداد امداد
-                            </td>
-                            <td>
-                                تعداد امداد به امدادخواهان خادم
-                            </td>
-                            <td>
-                                سود خالص (تومان)
-                            </td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>فروردین</td>
-                            <td>۱۳۳</td>
-                            <td>۱۹</td>
-                            <td>۱۳۳,۰۰۰</td>
-                        </tr>
-                        <tr>
-                            <td>اردیبهشت</td>
-                            <td>۱۰۴</td>
-                            <td>۱۹</td>
-                            <td>۱۰۴,۰۰۰</td>
-                        </tr>
-                        <tr>
-                            <td>خرداد</td>
-                            <td>۱۷۵</td>
-                            <td>۳۹</td>
-                            <td>۱۷۵,۰۰۰</td>
-                        </tr>
-                        <tr>
-                            <td>تیر</td>
-                            <td>۱۷۲</td>
-                            <td>۸۰</td>
-                            <td>۲۰۴,۰۰۰</td>
-                        </tr>
-                        <tr class="success">
-                            <td>جمع</td>
-                            <td>538</td>
-                            <td>225</td>
-                            <td>832,000</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    حساب شرکت‌های امدادرسان
-                </div>
-                <div class="panel-body">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <td>
                                 شرکت
                             </td>
                             <td>
-                                بدهی
-                            </td>
-                            <td>
-                                طلب
+                                مبلغ پرداختی به شام تارا (ریال)
                             </td>
                         </tr>
                         </thead>
                         <tbody>
+                        {% for payment in payments %}
                         <tr>
-                            <td>خودرو</td>
-                            <td>۱۳۳</td>
-                            <td>۱۹</td>
+                            <td>{{ payment.pay_date }}</td>
+                            <td>{{ payment.company.name }}</td>
+                            <td>{{ payment.value }}</td>
                         </tr>
-                        <tr>
-                            <td>سایپا</td>
-                            <td>۱۰۴</td>
-                            <td>۱۹</td>
-                        </tr>
-                        <tr>
-                            <td>پارس‌خودرو</td>
-                            <td>۱۷۵</td>
-                            <td>۳۹</td>
-                        </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+{#        <div class="col-md-4">#}
+{#            <div class="panel panel-default">#}
+{#                <div class="panel-heading">#}
+{#                    حساب شرکت‌های امدادرسان#}
+{#                </div>#}
+{#                <div class="panel-body">#}
+{#                    <table class="table">#}
+{#                        <thead>#}
+{#                        <tr>#}
+{#                            <td>#}
+{#                                شرکت#}
+{#                            </td>#}
+{#                            <td>#}
+{#                                بدهی#}
+{#                            </td>#}
+{#                            <td>#}
+{#                                طلب#}
+{#                            </td>#}
+{#                        </tr>#}
+{#                        </thead>#}
+{#                        <tbody>#}
+{#                        <tr>#}
+{#                            <td>خودرو</td>#}
+{#                            <td>۱۳۳</td>#}
+{#                            <td>۱۹</td>#}
+{#                        </tr>#}
+{#                        <tr>#}
+{#                            <td>سایپا</td>#}
+{#                            <td>۱۰۴</td>#}
+{#                            <td>۱۹</td>#}
+{#                        </tr>#}
+{#                        <tr>#}
+{#                            <td>پارس‌خودرو</td>#}
+{#                            <td>۱۷۵</td>#}
+{#                            <td>۳۹</td>#}
+{#                        </tr>#}
+{#                        </tbody>#}
+{#                    </table>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
     </div>
 
 {% endblock %}

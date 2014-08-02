@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.views.generic.base import TemplateView, View, ContextMixin
 from helpdesk.models import HelpTask
-from mainapp.models import Helper, Company
+from mainapp.models import Helper, Company, Payment
 
 
 def add_map_context(context):
@@ -41,6 +41,7 @@ class ShamTaraHelpTasksView(TemplateView):
         context['shametara_poorsant_sum'] = s_p_s
         return context
 
+
 class ShamTaraSatisfaction(TemplateView):
     template_name = "managers/shamtara/report/satisfaction.html"
 
@@ -54,3 +55,10 @@ class ShamTaraSatisfaction(TemplateView):
         } for company in Company.objects.all()]
         return context
 
+
+class ShamTaraFinancial(TemplateView):
+    template_name = "managers/shamtara/report/financial.html"
+
+    def get_context_data(self, **context):
+        context['payments'] = Payment.objects.all()
+        return context

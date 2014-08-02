@@ -45,6 +45,8 @@ class Company(models.Model):
                 if task.user_comment is not None:
                     num += 1
                     sum += getattr(task.user_comment, field_str)
+        if num==0:
+            return 0
         return float(sum)/num
 
     @property
