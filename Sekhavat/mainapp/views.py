@@ -81,30 +81,36 @@ def login(request):
     user = auth.authenticate(username=username, password=passw)
     try:
         manager =CompanyManager.objects.get(username=username)
+        print("kooni")
     except CompanyManager.DoesNotExist:
         manager = None
-        try:
-            operator = Operator.objects.get(username=username)
-        except Operator.DoesNotExist:
-            operator = None
-            try:
-                helper = Helper.objects.get(username=username)
-            except Helper.DoesNotExist:
-                helper = None
-                try:
-                    shamManager = ShamManager.objects.get(username=username)
-                except ShamManager.DoesNotExist:
-                    shamManager = None
-    if user is not None and shamManager is not None:
+    try:
+        operator = Operator.objects.get(username=username)
+        print(operator)
+    except Operator.DoesNotExist:
+        operator = None
+    try:
+        helper = Helper.objects.get(username=username)
+        print(helper)
+    except Helper.DoesNotExist:
+        helper = None
+    try:
+        shammanager = ShamManager.objects.get(username=username)
+        print(shammanager)
+    except ShamManager.DoesNotExist:
+        shammanager = None
+    if user is not None and shammanager is not None:
         auth.login(request, user)
         return HttpResponse("admin")
     elif user is not None and manager is not None:
             auth.login(request, user)
             return HttpResponse("manager")
     elif user is not None and operator is not None:
+            print("op")
             auth.login(request, user)
             return HttpResponse("operator")
     elif user is not None and helper is not None:
+            print("help")
             auth.login(request, user)
             return HttpResponse("helper")
     #message the user to re enter username and password
@@ -127,6 +133,7 @@ def multi_user_checking(request):
 
 def is_logged_in(request, addr):
         user=request.user
+        print("kalle")
         c={}
         c.update(csrf(request))
         c['denied'] = 1
