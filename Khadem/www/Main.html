@@ -11,23 +11,36 @@
 <script type="text/javascript">
     function goToEdit()
     {
+
         window.location = "EditInfo.html"
     }
     function sendRequest()
     {
-        navigator.geolocation.getCurrentPosition(function (position){
-          var intent = "INTENT"; //leave empty for sending sms using default intent
-          var success = function () { alert('Message sent successfully'); };
-          var error = function (e) { alert('Message Failed:' + e); };
-          var message = "h " + position.coords.latitude + " " + position.coords.longitude ; // TODO : add position
+         $("#sendreq").attr("disabled", "disabled");
+         $("#sendreq").html("در حال ارسال درخواست");
+         // var smsplugin = cordova.require("info.asankan.phonegap.smsplugin.smsplugin");
+          navigator.geolocation.getCurrentPosition(function (position){
+              console.log("here here here");
               
-          var number = "30009900666554";
+              var intent = "INTENT"; //leave empty for sending sms using default intent
+              var success = function () { alert('Message sent successfully'); };
+              var error = function (e) { alert('Message Failed:' + e); };
+              var message = "h " + position.coords.latitude + " " + position.coords.longitude + " "
+                 + " " +  $("#type").val() + " " + $("#machine").val() + " " + $("#desc").val() ; // TODO : add position
+                  
+              var number = "30009900666554";
+                  
+              sms.send(number, message, intent, success, error);
               
-          sms.send(number, message, intent, success, error);
-            $("#okDialog").popup("open");
-            
+              $("#sendreq").attr("disabled", "enabled");
+              $("#sendreq").html("ارسال درخواست");
+         
+              $("#okDialog").popup("open");
+                    
         }, function () {
-              $("#failDialog").popup("open");   
+            $("#failDialog").popup("open");   
+            // sms.send(number, "assert.fail(actual, expected, message, operator, stackStartFunction);", intent, success, error);
+          
        });
     }
 
@@ -72,15 +85,15 @@
                 </select>
                  <label for="desc">توضیحات بیشتر:</label>
                  <textarea name="desc" id="desc"></textarea>
-                 <button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-right ui-icon-action" onclick="sendRequest()">ارسال درخواست</button>
+                 <button id="sendreq" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-right ui-icon-action" onclick="sendRequest()">ارسال درخواست</button>
             </div>
             <div data-role="popup" id="okDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
                 <div data-role="header" data-theme="a">
                     <h1>نتیجه</h1>
                 </div>
                 <div role="main" class="ui-content">
-                    <h3 class="ui-title">درخواست با موفقیت انجام شد</h3>
-                    <p>امدادگر <span name="helper-name"></span> به شما ارسال شد.</p>
+                    <h3 class="ui-title">تبریک</h3>
+                    <p>درخواست با موفقیت به کارگذار فرستاده شد منتظر اس‌ام‌اس نتیجه باشید</p>
                     <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">تایید</a>
                 </div>
             </div>

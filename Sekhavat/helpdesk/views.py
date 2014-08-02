@@ -2,6 +2,7 @@ from datetime import datetime
 from django.contrib.auth import authenticate
 from django.http.response import HttpResponse
 from django.shortcuts import render
+from django.contrib import auth
 import math
 from helpdesk.models import HelpTask
 from mainapp.models import Helpee, Helper
@@ -78,3 +79,24 @@ def update_location(request):
     helper.status = int(request.GET['status'])
 
     helper.save()
+
+
+def login_helper(request):
+    print("get")
+    username = request.GET['username']
+    password = request.GET['password']
+    user = auth.authenticate(username=username, password=password)
+    try:
+        helper = Helper.objects.get(username=username)
+    except Helper.DoesNotExist:
+        helper = None
+    result = "None"
+    print(username)
+    print(password)
+    if user is not None and helper is not None:
+        result = "helper"
+        print("logged in")
+    else:
+        print("wrong user pass")
+    return HttpResponse(result)
+
