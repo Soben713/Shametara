@@ -26,7 +26,7 @@ def proccess_req(request):
                                         parts[5], parts[6],  # name family
                                         parts[7])  # desc
 
-            if result:
+            if result == 1:
                 sms.send_sms(phone, u"عملیات امداد با موفقیت شروع شد")
             else:
                 sms.send_sms(phone, u"امدادگر مناسبی برای شما یافت نشد")
@@ -37,20 +37,21 @@ def proccess_req(request):
         return HttpResponse("FAULT")
 
 
-def endTaskGetComment(helperNum):
+def endTaskGetComment(username, value):
     try:
-        task = HelpTask.objects.get(helper__phone=helperNum)
+        task = HelpTask.objects.get(helper__username=username)
         phone = task.helpee.phone
         task.status = 2  # set status to waiting for comment
+        task.help_price = value
         task.save()
         sms.send_sms(phone,
                      "به سوالات زیر با اعداد بین ۱-۴ به "
                      "صورت یک عدد پنج رقمی پاسخ دهید\n"
-                     "1-دانش کافی امدادگر?\n"
-                     "2-رسیدن به موقع?\n"
-                     "3-نحوه برخورد امدادگر?\n"
-                     "4-لوازم کافی امدادگر?\n"
-                     "5-دیگر موارد\n")
+                     "۱-دانش کافی امدادگر?\n"
+                     "۲-رسیدن به موقع?\n"
+                     "۳-نحوه برخورد امدادگر?\n"
+                     "۴-لوازم کافی امدادگر?\n"
+                     "۵-دیگر موارد\n")
         return True
     except HelpTask.DoesNotExists:
         return False
