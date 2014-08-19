@@ -108,7 +108,6 @@ def login(request):
                 auth.login(request, user)
                 return HttpResponse("manager")
             else :
-                return HttpResponse("manager")
                 return HttpResponse("NotAuthenticatedManager")
 
     elif user is not None and operator is not None:
