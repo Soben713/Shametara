@@ -3,7 +3,7 @@
 # Create your views here.
 import sms
 from django.http import HttpResponse
-from helpdesk.views import help_process_start
+from helpdesk.util import help_process_start
 from khadem.models import UserComment
 from helpdesk.models import HelpTask
 from django.views.decorators.csrf import csrf_exempt

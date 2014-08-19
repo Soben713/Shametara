@@ -49,7 +49,6 @@ INSTALLED_APPS = (
     'managers',
     'khadem',
     'django_extensions',
-    'easy_pdf',
 )
 
 MIDDLEWARE_CLASSES = (

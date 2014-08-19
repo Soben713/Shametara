@@ -71,9 +71,3 @@ class Financial(TemplateView):
     def get_context_data(self, **context):
         context['payments'] = Payment.objects.all()
         return context
-
-
-from easy_pdf.views import PDFTemplateView
-
-class HelloPDFView(PDFTemplateView):
-    template_name = "managers/utility/pdf.html"
