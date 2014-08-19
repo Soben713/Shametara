@@ -21,6 +21,10 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="{% url "shametara_admin_report_map" %}">نقشه‌ی امدادگران</a></li>
                         <li><a href="{% url "shametara_admin_report_helper" %}">گزارش امداد</a></li>
+                        {% if userrole == 'admin' %}
+                        <li><a href="{% url  "check_requests"%}">گزارش درخواست همکاری</a></li>
+                        {% endif %}
+
                         {% if userrole == 'manager' %}
                             <li><a href="{% url "company_uptime" %}">
                                 زمان آماده به کار بودن امدادگران
@@ -50,6 +54,9 @@
                     </a></li>
                 {% endif %}
                 </a></li>
+                <li><a href="/editInformation">
+                        ویرایش مشخصات فردی
+                </a>
             </ul>
             <ul class="nav navbar-nav navbar-left">
                 <p class="navbar-text">

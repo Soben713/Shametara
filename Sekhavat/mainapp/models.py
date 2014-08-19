@@ -50,6 +50,7 @@ class Payment(models.Model):
 
 class Company(models.Model):
     name = models.CharField(max_length=100, verbose_name=u'نام')
+    accepted = models.BooleanField(default=False, verbose_name=u'پذیرفته شد')
 
     def _rate(self, field_str, khadem_only):
         sum = 0

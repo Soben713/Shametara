@@ -11,31 +11,27 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def proccess_req(request):
-    if request.method == 'GET':
-        phone = request.GET['from']
-        text = request.GET['text']
-        parts = text.split(",")
+    phone = request.POST['from']
+    text = request.POST['text'].strip()
+    parts = text.split(",")
+    print 'Testing ... ', text, parts
 
-        if parts[0] == 'h':  # help task request
-            while len(parts) < 7:
-                parts.append("")
-            result = help_process_start(phone,  # phone
-                                        parts[1], parts[2],  # lat lng
-                                        parts[3],  # problem
-                                        parts[4],  # machine
-                                        parts[5], parts[6],  # name family
-                                        parts[7])  # desc
-            result = 1
-
-            if result == 1:
-                sms.send_sms(phone, u"عملیات امداد با موفقیت شروع شد")
-            else:
-                sms.send_sms(phone, u"امدادگر مناسبی برای شما یافت نشد")
-        if parts[0].isdigit():
-            doCommentDoingThings(parts[0], phone)
-        return HttpResponse("OK")
-    else:
-        return HttpResponse("FAULT")
+    if parts[0] == 'h':  # help task request
+        while len(parts) < 7:
+            parts.append("")
+        result = help_process_start(phone,  # phone
+                                    parts[1].strip(), parts[2].strip(),  # lat lng
+                                    parts[3].strip(),  # problem
+                                    parts[4].strip(),  # machine
+                                    parts[5].strip(), parts[6].strip(),  # name family
+                                    parts[7].strip())  # desc
+        if result == 1:
+            sms.send_sms(phone, u"عملیات امداد با موفقیت شروع شد")
+        else:
+            sms.send_sms(phone, u"امدادگر مناسبی برای شما یافت نشد")
+    if parts[0].isdigit():
+        doCommentDoingThings(parts[0], phone)
+    return HttpResponse("OK")
 
 
 def endTaskGetComment(username, value):

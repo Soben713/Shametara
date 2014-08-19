@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from mainapp.models import Helper, Helpee, ShamManager
+from mainapp.models import Helper, Helpee, ShamManager, Company
 from khadem.models import UserComment
 
 
@@ -14,6 +14,7 @@ class HelpTask(models.Model):
     latitude = models.FloatField(verbose_name=u'عرض جغرافیایی')
     is_from_khadem = models.BooleanField(verbose_name=
                                          u'آیا این درخواست از سمت خادم است')
+    requesting_company = models.ForeignKey(Company, verbose_name=u'شرکت درخواست‌دهنده', null=True)
 
     user_comment = models.ForeignKey(UserComment, verbose_name=u'رضایت سنجی', null=True)
     STATUS_TYPES = (
@@ -23,7 +24,6 @@ class HelpTask(models.Model):
     )
     status = models.IntegerField(choices=STATUS_TYPES, default=1,
                                  verbose_name=u'وضعیت امداد', null=True)
-
     @property
     def shametara_poorsant(self):
         return float(ShamManager.objects.all()[0].percent) * self.help_price / 100

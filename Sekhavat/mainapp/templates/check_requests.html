@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% load gre_to_per %}
+
+{% block menu %}
+    {% include "managers/menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        سامانه‌ی سخاوت
+    </li>
+    <li><a href="{% url "shametara_admin_home" %}">
+        صفحه‌ی اصلی مدیریت
+    </a></li>
+    <li><a href="{% url "shametara_admin_report_financial" %}">
+        گزارش درخواست های رسیده
+    </a></li>
+{% endblock %}
+
+{% block container %}
+    <script>
+        var map;
+    </script>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+گزارش درخواست های رسیده
+                </div>
+                <div class="panel-body" style="padding: 0 !important;">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>
+نام مدیر
+                            </td>
+                            <td>
+نام خانوادگی مدیر
+                            </td>
+                            <td>
+                                شرکت
+                            </td>
+                            <td>
+تلفن همراه
+                            </td>
+                            <td>
+                                پذیرش
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for pendingCompany in pendingCompanies%}
+                        <tr>
+                            <td>{{ pendingCompany.manager.name }}</td>
+                            <td>{{ pendingCompany.manager.family }}</td>
+                            <td>{{ pendingCompany.company.name }}</td>
+                            <td>{{ pendingCompany.manager.phone}}</td>
+                            <td><a href="acceptNewCompany/{{pendingCompany.company.name}}"> پذیرش همکاری</a></td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

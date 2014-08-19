@@ -174,7 +174,12 @@
                         window.location = "/helpdesk";
                     } else if (data == "admin") {
                         window.location = "/managers/";
-                    } else {
+                    } else if(data == "NotAuthenticatedManager"){
+                        window.location="NotAuthenticatedManager";
+                    }
+                    else
+                     {
+
                         $("#output").removeClass(' alert alert-success');
                         $("#output").addClass("alert alert-danger animated fadeInUp").html("نام کاربری یا رمز عبور اشتباه است");
                     }

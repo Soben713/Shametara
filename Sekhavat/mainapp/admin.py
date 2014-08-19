@@ -12,10 +12,6 @@ class CompanyManagerAdmin(admin.ModelAdmin):
     fields = ('name', 'family', 'phone', 'company', 'username', 'password')
 
 
-class CompanyAdmin(admin.ModelAdmin):
-    fields = ('name',)
-
-
 class PaymentAdmin(admin.ModelAdmin):
     fields = ('company', 'value')
 
@@ -31,7 +27,7 @@ admin.site.unregister(User)
 admin.site.unregister(Group)
 # admin.site.unregister(Site)
 
-admin.site.register(Company, CompanyAdmin)
+admin.site.register(Company, admin.ModelAdmin)
 admin.site.register(Helper, HelperAdmin)
 admin.site.register(Helpee, admin.ModelAdmin)
 admin.site.register(Operator, OperatorAdmin)

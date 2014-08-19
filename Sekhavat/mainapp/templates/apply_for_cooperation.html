@@ -19,7 +19,7 @@
 
            function setUsernameChange(input){
                  console.log("karime kiri");
-                 var $form = $( "#addCompanyToSekhavat" ),
+                 var $form = $( "#sendCooperationRequest" ),
                  user = $form.find( "input[name='userName']" ).val(),
                  csrf = $form.find( "input[name='csrfmiddlewaretoken']" ).val();
 
@@ -57,7 +57,7 @@
        صفحه نخست
     </a></li>
     <li>
-    اضافه کردن شرکت امدادرسان
+    درخواست همکاری
     </li>
 {% endblock %}
 
@@ -67,7 +67,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-اضافه کردن شرکت امدادرسان جدید
+درخواست همکاری
                 </div>
                 <div class="panel-body">
                      {% if usernameError  %}
@@ -76,7 +76,7 @@
                      {% if success  %}
                             <div class="alert alert-warning">{{ success }}</div>
                      {% endif %}
-                    <form method="post" action="/addcompany" class="form-horizontal"  role="form" id="addCompanyToSekhavat">
+                    <form method="post" action="/sendCooperationRequest" class="form-horizontal"  role="form" id="sendCooperationRequest">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="managerName" class="col-sm-3 control-label" >نام مدیر</label>
@@ -135,7 +135,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-4">
-                                <button type="submit" class="btn btn-default">ثبت شرکت امدادرسان جدید</button>
+                                <button type="submit" class="btn btn-default">ارسال درخواست همکاری</button>
                             </div>
                         </div>
                     </form>
