@@ -7,6 +7,7 @@ from django.contrib import auth
 from django.db import IntegrityError
 from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
+from django.views.generic.base import TemplateView, View, ContextMixin
 
 
 def add_manager(request):
@@ -102,8 +103,14 @@ def login(request):
         auth.login(request, user)
         return HttpResponse("admin")
     elif user is not None and manager is not None:
-            auth.login(request, user)
-            return HttpResponse("manager")
+            company = manager.company
+            if company.accepted :
+                auth.login(request, user)
+                return HttpResponse("manager")
+            else :
+                return HttpResponse("manager")
+                return HttpResponse("NotAuthenticatedManager")
+
     elif user is not None and operator is not None:
             print("op")
             auth.login(request, user)
@@ -194,3 +201,49 @@ def password_validity_checking(request):
         user.set_password(request.POST['newpassword'])
         user.save()
         return HttpResponse("success")
+
+def send_cooperation_request(request):
+        company = Company()
+        company.curPrice = 0
+        company.name = request.POST['companyName']
+        company.save()
+
+        c = {}
+        c.update(csrf(request))
+
+        try:
+            manager = CompanyManager.objects.create_user(username=request.POST['userName'],
+                                                    password=request.POST['password'],company=company)
+        except IntegrityError:
+            c["usernameError"] = "نام کاربری قبلا انتخاب شده است"
+            return render_to_response('add_company.html', c
+                                 )
+
+        manager.name = request.POST['managerName']
+        manager.family = request.POST['managerFamily']
+        manager.phone = request.POST['phoneNumber']
+        manager.company = company
+        manager.save()
+
+        return HttpResponse()
+
+class CompanyRequests(TemplateView):
+
+    template_name = "check_requests.html"
+    def get_context_data(self, **context):
+        context['pendingCompanies'] = [{
+            'manager': x.companymanager_set.all()[0],
+            'company': x
+        } for x in Company.objects.filter(accepted = False)]
+
+        return context
+
+
+def acceptNewCompany(request, companyName):
+    try:
+        company=Company.objects.all().get(name = companyName)
+    except:
+        return HttpResponse()
+    company.accepted = True
+    company.save()
+    return HttpResponse()

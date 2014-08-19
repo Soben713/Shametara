@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="js/rtl.jquery.mobile-1.4.0.js"></script>
+<script type="text/javascript" src="js/persianDate.js"></script>
 <link rel="stylesheet" type="text/css" href="css/rtl.jquery.mobile-1.4.0.css" />
 <script type="text/javascript" src="phonegap.js"></script>
 <script type="text/javascript">
@@ -14,34 +15,36 @@
 
         window.location = "EditInfo.html"
     }
+
+    function sendSMS(position)
+    {
+        var intent = "INTENT"; //leave empty for sending sms using default intent
+        var message = "h," + position.coords.latitude + "," + position.coords.longitude + "," +  $("#type").val() + "," + $("#machine").val() + "," + localStorage["name"] + "," + localStorage["family"] + "," + $("#desc").val() ; 
+        
+        var number = "30009900666554";
+        
+        sms.send(number, message, intent, function(){
+            $("#sendreq").removeAttr('disabled');
+            $("#sendreq").html("ارسال درخواست");
+            $("#okDialog").popup("open");
+        }, function (e){
+            $("#sendreq").removeAttr('disabled');
+            $("#sendreq").html("ارسال درخواست");
+            $("#smsFailDialog").popup("open");   
+        });               
+    }
+
     function sendRequest()
     {
-         $("#sendreq").attr("disabled", "disabled");
-         $("#sendreq").html("در حال ارسال درخواست");
-         // var smsplugin = cordova.require("info.asankan.phonegap.smsplugin.smsplugin");
-          navigator.geolocation.getCurrentPosition(function (position){
-              console.log("here here here");
-              
-              var intent = "INTENT"; //leave empty for sending sms using default intent
-              var success = function () { alert('Message sent successfully'); };
-              var error = function (e) { alert('Message Failed:' + e); };
-              var message = "h " + position.coords.latitude + " " + position.coords.longitude + " "
-                 + " " +  $("#type").val() + " " + $("#machine").val() + " " + $("#desc").val() ; // TODO : add position
-                  
-              var number = "30009900666554";
-                  
-              sms.send(number, message, intent, success, error);
-              
-              $("#sendreq").attr("disabled", "enabled");
-              $("#sendreq").html("ارسال درخواست");
-         
-              $("#okDialog").popup("open");
-                    
-        }, function () {
-            $("#failDialog").popup("open");   
-            // sms.send(number, "assert.fail(actual, expected, message, operator, stackStartFunction);", intent, success, error);
+        var options = { enableHighAccuracy: true, maximumAge: 100, timeout: 20000 };
+        $("#sendreq").attr("disabled", "disabled");
+        $("#sendreq").html("در حال ارسال درخواست");
           
-       });
+        navigator.geolocation.getCurrentPosition(sendSMS, function (error) {
+            $("#sendreq").removeAttr('disabled');
+            $("#sendreq").html("ارسال درخواست");
+            $("#failDialog").popup("open");   
+        },options);
     }
 
 </script>
@@ -107,12 +110,22 @@
                     <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">تایید</a>
                 </div>
             </div>
+            <div data-role="popup" id="smsFailDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
+                <div data-role="header" data-theme="a">
+                    <h1>نتیجه</h1>
+                </div>
+                <div role="main" class="ui-content">
+                    <h3 class="ui-title">درخواست با شکست مواجه شد</h3>
+                    <p>نتوانستیم درخواست شما را با اس ام اس بفرستیم.</p>
+                    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">تایید</a>
+                </div>
+            </div>
 
 
     </div><!-- /content -->
 
     <div data-role="footer">
-        <h4>خادم</h4>
+        <h4 id="date"></h4>
     </div><!-- /footer -->
 </div><!-- /page -->
 
@@ -154,6 +167,7 @@
     $("#name").text(localStorage['name']);
     $("#family").text(localStorage['family']);
     $("#machine").text(car[localStorage['machine']]);
+    $("#date").text( persianDate.getDay("name") + " " +persianDate.getDate() + " " + persianDate.getMonth("name") + " " + persianDate.getYear("short") );
 </script>
 
 </html>

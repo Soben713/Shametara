@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% load gre_to_per %}
 
 {% block menu %}
     {% include "managers/shamtara/menu.html" %}
@@ -55,7 +56,7 @@
                         {% for helptask in helptasks %}
                         <tr>
                             <td>
-                                {{ helptask.help_date }}
+                                {{ helptask.help_date | gre_to_per }}
                             </td>
                             <td>{{ helptask.helper.full_name }}</td>
                             <td>{{ helptask.helpee.full_name }}</td>

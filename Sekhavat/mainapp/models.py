@@ -36,6 +36,7 @@ class CompanyManager(Person, User):
 
 class Company(models.Model):
     name = models.CharField(max_length=100, verbose_name=u'نام')
+    accepted = models.BooleanField(default=False, verbose_name=u'پذیرفته شد')
 
     def _rate(self, field_str):
         sum = 0
