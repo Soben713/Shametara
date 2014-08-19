@@ -50,7 +50,7 @@ def endTaskGetComment(username, value):
                      "۴-لوازم کافی امدادگر?\n"
                      "۵-دیگر موارد\n")
         return True
-    except HelpTask.DoesNotExists:
+    except HelpTask.DoesNotExist:
         return False
 
 

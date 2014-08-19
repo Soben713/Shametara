@@ -110,8 +110,11 @@ def update_location(request):
     helper.save()
 
     if helper.status == 1:
-        HelpTask.objects.filter(helper=helper)
-
+        tasks = HelpTask.objects.filter(helper=helper, status=1)
+        if len(tasks) > 0:
+            helper.status = 3
+            helper.save()
+            return HttpResponse(('3,%f,%f' % (tasks[0].latitude, tasks[0].longitude)))
     return HttpResponse('0')
 
 
