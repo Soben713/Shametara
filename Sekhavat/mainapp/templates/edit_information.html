@@ -16,6 +16,35 @@
                     inp.setCustomValidity("");
                 }
             }
+
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#changeInfo').click(function (e) {
+                console.log("karim kiram");
+                e.preventDefault();
+                var $form = $( "#editInformationOnSekhavat" ),
+                pass = $form.find( "input[name='currentPassword']" ).val(),
+                newpass = $form.find("input[name='password']").val(),
+                csrf = $form.find( "input[name='csrfmiddlewaretoken']" ).val();
+
+                var posting = $.post( "/passwordChecking", { password: pass , csrfmiddlewaretoken:csrf ,  newpassword:newpass } );
+
+                posting.done(function( data ) {
+                    console.log(data);
+                    if (data == "wrong"){
+                        document.getElementById("wrong").style.display = "block";
+                        document.getElementById("success").style.display = "none";
+                    } else{
+                        document.getElementById("success").style.display = "block";
+                        document.getElementById("wrong").style.display = "none";
+                    }
+
+                 });
+
+            });
+        });
     </script>
 
     <style>
@@ -31,16 +60,35 @@
     {% include 'menu.html' %}
 {% endblock %}
 
+{% block breadcrumb %}
+    <li>
+    صفحه نخست
+    </li>
+    <li>
+        ویرایش مشخصات فردی
+    </li>
+{% endblock %}
+
+
 {% block container %}
 {#    <div style="text-align: center; margin-bottom: 20px"><h4><span class="label label-warning" id="conn_status">New</span></h4></div>#}
+
+
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">
+                       <div class="panel-heading">
 تغییر رمز عبور
-                </div>
-                <div class="panel-body">
-                    <form  class="form-horizontal" role="form" id="editInformationOnSekhavat">
+                       </div>
+                    <div class="panel-body">
+                    <form method="post"  class="form-horizontal" role="form" id="editInformationOnSekhavat">
+                        {% csrf_token %}
+                        <div class="alert alert-warning" style="display: none" name="success" id="success">
+         عملیات تغییر رمز عبور به درستی انجام شد
+                        </div>
+                        <div class="alert alert-warning" style="display: none" name="wrong" id="wrong">
+            رمز عبور قبلی به درستی وارد نشده است
+                        </div>
                         <div class="form-group">
                             <label for="newPhoneNumber" class="col-sm-3 control-label">تلفن همراه</label>
                             <div class="col-sm-9">
@@ -52,7 +100,7 @@
                         <div class="form-group">
                             <label for="currentPassword" class="col-sm-3 control-label">   رمز عبور فعلی</label>
                             <div class="col-sm-9">
-                                <input id="currentPassword" type="password" class="form-control"
+                                <input id="currentPassword" name="currentPassword" type="password" class="form-control"
                                        oninvalid="setCustomValidity('طول پسورد لااقل بایستی ۸ و حداقل یک حرف و رقم انگلیسی داشته باشد')"
                                        onchange="try{setCustomValidity('')}catch(e){}"
                                        pattern="(?=^.{8,}$)(?=.*\d)(?=.*[a-zA-Z]).*$" placeholder="رمز عبور" required>
@@ -61,7 +109,7 @@
                         <div class="form-group">
                             <label for="password" class="col-sm-3 control-label"> رمز عبور جدید</label>
                             <div class="col-sm-9">
-                                <input id="password" type="password" class="form-control"
+                                <input id="password" name="password" type="password" class="form-control"
                                        oninvalid="setCustomValidity('طول پسورد لااقل بایستی ۸ و حداقل یک حرف و رقم انگلیسی داشته باشد')"
                                        onchange="try{setCustomValidity('')}catch(e){}"
                                        pattern="(?=^.{8,}$)(?=.*\d)(?=.*[a-zA-Z]).*$" placeholder="رمز عبور" required>
@@ -70,12 +118,12 @@
                         <div class="form-group">
                             <label for="repassword" class="col-sm-3 control-label">تکرار رمز عبور جدید</label>
                             <div class="col-sm-9">
-                                <input type="password" class="form-control" onchange="checkConfirmValidity(this)" id="repassword" placeholder="تکرار رمز عبور"required>
+                                <input type="password" class="form-control" onchange="checkConfirmValidity(this)" id="repassword" name="repassword" placeholder="تکرار رمز عبور"required>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-4">
-                                <button type="submit" class="btn btn-default">ثبت  تغییرات</button>
+                                <button type="submit" id="changeInfo" class="btn btn-default">ثبت  تغییرات</button>
                             </div>
                         </div>
                     </form>

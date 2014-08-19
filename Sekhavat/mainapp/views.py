@@ -25,7 +25,7 @@ def add_manager(request):
         return render_to_response('add_company.html', c
                                  )
 
-    c["success"]="اپراتور با موفقیت به سامانه اضافه گردید"
+    c["success"]="شرکت با موفقیت به سامانه اضافه گردید"
     manager.name = request.POST['managerName']
     manager.family = request.POST['managerFamily']
     manager.phone = request.POST['phoneNumber']
@@ -81,7 +81,6 @@ def login(request):
     user = auth.authenticate(username=username, password=passw)
     try:
         manager =CompanyManager.objects.get(username=username)
-        print("kooni")
     except CompanyManager.DoesNotExist:
         manager = None
     try:
@@ -133,7 +132,6 @@ def multi_user_checking(request):
 
 def is_logged_in(request, addr):
         user=request.user
-        print("kalle")
         c={}
         c.update(csrf(request))
         c['denied'] = 1
@@ -170,7 +168,29 @@ def log_out(request):
     auth.logout(request)
     return redirect("/login")
 
+def password_validity_checking(request):
+    user = request.user
+    username = user.username
+    password = request.POST['password']
+    print(username)
+    # print(password)
+    c={}
+    c.update(csrf(request))
+    c['succesfullyChanged'] = 0
+    c['wrongPassword'] = 0
+    usermade = auth.authenticate(username=username, password=password)
+    # print(usermade)
 
-
-
-
+    if usermade is None:
+        # print("wrong")
+        c['wrongPassword'] = 1
+        # print(c)
+        return HttpResponse("wrong")
+    else:
+        c['succesfullyChanged'] = 1
+        # print(c)
+        print(user.password)
+        # print(request.POST['newpassword'])
+        user.set_password(request.POST['newpassword'])
+        user.save()
+        return HttpResponse("success")
