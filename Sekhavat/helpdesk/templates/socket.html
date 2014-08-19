@@ -170,21 +170,21 @@
 {#            return false;#}
 {#        });#}
         $("#sendToSekhavat").submit(function(event) {
-{#            event.preventDefault();#}
-{#            addAlert({company_name: 'ویژن تک', helper_name: 'عباس عباسی'});#}
-{#            return false;#}
+{#            event.preventDefault();/#}
         });
     });
 
     function addAlert(msg) {
         console.log(msg);
-        var companies = JSON.parse('[' + msg.company_ids + ']');
-        var company_names = JSON.parse('[' + msg.company_names + ']');
-        var self_company_id = $("#company_id").val();
-        var index = companies.indexOf(parseInt(self_company_id));
-        console.log('See this: ', companies, self_company_id, index);
+        var self_company_id = parseInt($("#company_id").val());
         var company = (msg.sender_company_id == '-1') ? 'سامانه‌ی خادم' : msg.sender_company_name;
-        var emdaadgar = JSON.parse('[' + msg.helper_names + ']')[index];
+        var emdaadgar;
+        for (var i = 0; i < msg.options.length; i++) {
+            if (msg.options[i].company_id == self_company_id) {
+                emdaadgar = msg.options[i].helper_name;
+                break;
+            }
+        }
 
         var html = "<div class=\"alert alert-warning rescue\" id=\"msg_" + msg.task_id + "\">" +
                         "<b class=\"rescue\">" + company + "</b><br />" +
@@ -228,6 +228,15 @@
 
 {% block container %}
     <div id="conn_status" class="alert alert-warning" style="display: none"></div>
+    {% if status == 0 or status == 1 %}
+        <div id="help_status" class="alert alert-{% if status %}success{% else %}danger{% endif %}">
+        {% if status %}
+        ارجاع امداد با موفقیت انجام شد.
+        {% elif status == 0 %}
+        کسی حاضر به پاسخگویی به امداد شما نبود.
+        {% endif %}
+        </div>
+    {% endif %}
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">

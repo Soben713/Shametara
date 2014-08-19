@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
+import json
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import auth
+from django.utils import simplejson
 from django.utils.encoding import smart_str
 from helpdesk.models import HelpTask
 from helpdesk.util import find_nearest_helpers
@@ -49,33 +51,48 @@ def add_help(request):
     if proposed_helpers is {}:
         return HttpResponse('No one found!')
 
-    helper_ids = []
-    helper_names = []
-    company_ids = []
-    company_names = []
+    # helper_ids = []
+    # helper_names = []
+    # company_ids = []
+    # company_names = []
+
+    options = []
 
     for key in proposed_helpers:
-        helper_ids.append(str(proposed_helpers[key].id))
-        helper_names.append(smart_str(u'\"' + proposed_helpers[key].name + u' ' + proposed_helpers[key].family + u'\"'))
-        company_ids.append(str(proposed_helpers[key].company.id))
-        company_names.append(smart_str(u'\"' + proposed_helpers[key].company.name + u'\"'))
+        # helper_ids.append(str(proposed_helpers[key].id))
+        # helper_names.append(smart_str(u'\"' + proposed_helpers[key].name + u' ' + proposed_helpers[key].family + u'\"'))
+        # company_ids.append(str(proposed_helpers[key].company.id))
+        # company_names.append(smart_str(u'\"' + proposed_helpers[key].company.name + u'\"'))
+
+        options.append({
+            'helper_id': proposed_helpers[key].id,
+            'helper_name': smart_str(u'\"' + proposed_helpers[key].name + u' ' + proposed_helpers[key].family + u'\"'),
+            'company_id': proposed_helpers[key].company.id,
+            'company_name': smart_str(u'\"' + proposed_helpers[key].company.name + u'\"')
+        })
 
     params = urllib.urlencode(
         {
             'task_id': task.id,
             'lat': task.latitude,
             'lng': task.longitude,
-            'helper_ids': ','.join(helper_ids),
-            'helper_names': ','.join(helper_names),
-            'company_ids': ','.join(company_ids),
-            'company_names': ','.join(company_names),
+            # 'helper_ids': ','.join(helper_ids),
+            # 'helper_names': ','.join(helper_names),
+            # 'company_ids': ','.join(company_ids),
+            # 'company_names': ','.join(company_names),
             'sender_company_id': company.id,
-            'sender_company_name': smart_str(company.name)
+            'sender_company_name': smart_str(company.name),
+            'options': json.dumps(options)
         })
     f = urllib.urlopen('http://0.0.0.0:4000/?%s' % params)
-    r = f.read()
+    r = json.loads(f.read())
 
-    return HttpResponse(r)
+    if r['status'] == 1:
+        task.helper = Helper.objects.get(id=int(r['helper_id']))
+        task.save()
+        return render(request, 'socket.html', {'status': 1})
+    else:
+        return render(request, 'socket.html', {'status': 0})
 
 
 def update_location(request):
@@ -91,6 +108,10 @@ def update_location(request):
     helper.status = int(request.GET['status'])
 
     helper.save()
+
+    if helper.status == 1:
+        HelpTask.objects.filter(helper=helper)
+
     return HttpResponse('0')
 
 
