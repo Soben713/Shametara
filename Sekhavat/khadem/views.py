@@ -25,6 +25,7 @@ def proccess_req(request):
                                         parts[4],  # machine
                                         parts[5], parts[6],  # name family
                                         parts[7])  # desc
+            result = 1
 
             if result == 1:
                 sms.send_sms(phone, u"عملیات امداد با موفقیت شروع شد")

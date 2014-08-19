@@ -35,6 +35,7 @@ def add_manager(request):
     manager.save()
     return render(request, 'add_company.html', c)
 
+
 def add_operator(request):
     manager = CompanyManager.objects.get(username=request.user.username)
     c={}
@@ -53,7 +54,6 @@ def add_operator(request):
     operator.phone = request.POST['phoneNumber']
     operator.save()
     return render(request, 'add_operator.html',c)
-
 
 
 def add_helper(request):

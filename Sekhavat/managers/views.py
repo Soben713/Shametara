@@ -43,7 +43,11 @@ class HelpTasksView(TemplateView):
     template_name = "managers/report/helptask.html"
 
     def get_context_data(self, **context):
-        context['helptasks'] = HelpTask.objects.all()
+        user, userrole = get_user_role(self.request)
+        if userrole == 'admin':
+            context['helptasks'] = HelpTask.objects.all()
+        elif userrole == 'manager':
+            context['helptasks'] = HelpTask.objects.filter(helper__company=user.company)
         s_p_s=0
         for helptask in HelpTask.objects.all():
             s_p_s+= helptask.shametara_poorsant
@@ -53,6 +57,7 @@ class HelpTasksView(TemplateView):
 
 class Satisfaction(TemplateView):
     template_name = "managers/report/satisfaction.html"
+    khadem_only = False
 
     def get_context_data(self, **context):
         from random import randint
@@ -61,13 +66,28 @@ class Satisfaction(TemplateView):
             'color_r': randint(0, 255),
             'color_g': randint(0, 255),
             'color_b': randint(0, 255),
+            'average_coming_on_time': company.average_coming_on_time(self.khadem_only),
+            'average_nahve_barkhord': company.average_nahve_barkhord(self.khadem_only),
+            'average_lavazem_kafi': company.average_lavazem_kafi(self.khadem_only),
+            'average_danesh_kafi': company.average_danesh_kafi(self.khadem_only),
+            'average_other_rate': company.average_other_rate(self.khadem_only),
         } for company in Company.objects.all()]
         return context
+
+
+class SatisfactionKhademOnly(Satisfaction):
+    khadem_only = True
 
 
 class Financial(TemplateView):
     template_name = "managers/report/financial.html"
 
     def get_context_data(self, **context):
-        context['payments'] = Payment.objects.all()
+        user, userrole = get_user_role(self.request)
+        if userrole == 'admin':
+            context['payments'] = Payment.objects.all()
+            context['companies'] = Company.objects.all()
+        elif userrole == 'manager':
+            context['payments'] = Payment.objects.filter(company=user.company)
+            context['company'] = user.company
         return context

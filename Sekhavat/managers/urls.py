@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
 from django.views.generic.base import TemplateView
-from managers.views import HomeView, MapView, HelpTasksView, Satisfaction, Financial
+from managers.views import HomeView, MapView, HelpTasksView, Satisfaction, Financial, SatisfactionKhademOnly
 
 admin.autodiscover()
 
@@ -12,5 +12,6 @@ urlpatterns = patterns('',
     url(r'^report/financial$', Financial.as_view(), name="shametara_admin_report_financial"),
     url(r'^report/helptasks$', HelpTasksView.as_view(), name="shametara_admin_report_helper"),
     url(r'^report/satisfaction$', Satisfaction.as_view(), name="shametara_admin_report_satisfaction"),
+    url(r'^report/satisfactionkhadem$', SatisfactionKhademOnly.as_view(), name="shametara_admin_report_satisfaction_khadem_only"),
     url(r'^report/uptime$', TemplateView.as_view(template_name='managers/report/uptime.html'), name="company_uptime"),
 )

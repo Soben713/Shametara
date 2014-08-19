@@ -34,40 +34,60 @@ class CompanyManager(Person, User):
         verbose_name_plural = u'مدیرها'
 
 
+class Payment(models.Model):
+    company = models.ForeignKey('Company', verbose_name='شرکت امدادرسان')
+    value = models.IntegerField(verbose_name=u'مقدار پرداخت')
+    pay_date = models.DateTimeField(auto_now_add=True,
+                                    verbose_name=u'تاریخ پرداخت')
+
+    def __unicode__(self):
+        return self.company.name + ": " + str(self.value)
+
+    class Meta:
+        verbose_name = u'پرداخت'
+        verbose_name_plural = u'پرداخت‌ها'
+
+
 class Company(models.Model):
     name = models.CharField(max_length=100, verbose_name=u'نام')
 
-    def _rate(self, field_str):
+    def _rate(self, field_str, khadem_only):
         sum = 0
         num = 0
         for helper in self.helper_set.all():
             for task in helper.helptask_set.all():
-                if task.user_comment is not None:
+                if task.user_comment is not None and (not khadem_only or task.is_from_khadem):
                     num += 1
                     sum += getattr(task.user_comment, field_str)
         if num==0:
             return 0
         return float(sum)/num
 
-    @property
-    def average_other_rate(self):
-        return self._rate('other_rate')
+    def average_other_rate(self, khadem_only):
+        return self._rate('other_rate', khadem_only)
 
-    @property
-    def average_coming_on_time(self):
-        return self._rate('coming_on_time')
+    def average_coming_on_time(self, khadem_only):
+        return self._rate('coming_on_time', khadem_only)
 
-    @property
-    def average_nahve_barkhord(self):
-        return self._rate('nahve_barkhord')
+    def average_nahve_barkhord(self, khadem_only):
+        return self._rate('nahve_barkhord', khadem_only)
 
-    @property
-    def average_lavazem_kafi(self):
-        return self._rate('lavazem_kafi')
+    def average_lavazem_kafi(self, khadem_only):
+        return self._rate('lavazem_kafi', khadem_only)
 
-    @property
-    def average_danesh_kafi(self):
-        return self._rate('danesh_kafi')
+    def average_danesh_kafi(self, khadem_only):
+        return self._rate('danesh_kafi', khadem_only)
+
+    def debt(self):
+        from helpdesk.models import HelpTask
+        debt = 0
+        for task in HelpTask.objects.all():
+            if task.helper.company == self:
+                debt += task.shametara_poorsant
+        for payment in Payment.objects.all():
+            if payment.company == self:
+                debt -= payment.value
+        return debt
 
     def __unicode__(self):
         return self.name
@@ -112,20 +132,6 @@ class Helpee(Person):
     class Meta:
         verbose_name = u'امدادخواه'
         verbose_name_plural = u'امدادخواهان'
-
-
-class Payment(models.Model):
-    company = models.ForeignKey('Company', verbose_name='شرکت امدادرسان')
-    value = models.IntegerField(verbose_name=u'مقدار پرداخت')
-    pay_date = models.DateTimeField(auto_now_add=True,
-                                    verbose_name=u'تاریخ پرداخت')
-
-    def __unicode__(self):
-        return self.company.name + ": " + str(self.value)
-
-    class Meta:
-        verbose_name = u'پرداخت'
-        verbose_name_plural = u'پرداخت‌ها'
 
 
 class Operator(Person, User):

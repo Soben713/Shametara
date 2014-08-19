@@ -20,14 +20,23 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">گزارش‌گیری<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="{% url "shametara_admin_report_map" %}">نقشه‌ی امدادگران</a></li>
-                        <li><a href="{% url "shametara_admin_report_financial" %}">گزارش‌های مالی</a></li>
                         <li><a href="{% url "shametara_admin_report_helper" %}">گزارش امداد</a></li>
-                        <li><a href="{% url "shametara_admin_report_satisfaction" %}">
-                            رضایت‌سنجی امدادخواهان
-                        </a></li>
                         {% if userrole == 'manager' %}
                             <li><a href="{% url "company_uptime" %}">
                                 زمان آماده به کار بودن امدادگران
+                            </a></li>
+                        {% endif %}
+                        <li class="divider"></li>
+                        <li><a href="{% url "shametara_admin_report_financial" %}">
+                            گزارش‌های مالی
+                        </a></li>
+                        <li class="divider"></li>
+                        <li><a href="{% url "shametara_admin_report_satisfaction" %}">
+                            رضایت‌سنجی امدادخواهان
+                        </a></li>
+                        {% if userrole == 'admin' %}
+                            <li><a href="{% url "shametara_admin_report_satisfaction_khadem_only" %}">
+                                رضایت‌سنجی امدادخواهان خادم
                             </a></li>
                         {% endif %}
                     </ul>

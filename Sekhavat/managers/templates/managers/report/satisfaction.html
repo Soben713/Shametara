@@ -32,11 +32,11 @@
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: [{{ company.company.average_coming_on_time|stringformat:"f"  }},
-                            {{ company.company.average_nahve_barkhord|stringformat:"f"  }},
-                            {{ company.company.average_lavazem_kafi |stringformat:"f" }},
-                            {{ company.company.average_danesh_kafi|stringformat:"f"  }},
-                            {{ company.company.average_other_rate |stringformat:"f" }}]
+                        data: [{{ company.average_coming_on_time|stringformat:"f"  }},
+                            {{ company.average_nahve_barkhord|stringformat:"f"  }},
+                            {{ company.average_lavazem_kafi |stringformat:"f" }},
+                            {{ company.average_danesh_kafi|stringformat:"f"  }},
+                            {{ company.average_other_rate |stringformat:"f" }}]
                     }
                     {% if not forloop.last %}
                         ,

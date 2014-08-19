@@ -22,10 +22,43 @@
         var map;
     </script>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     گزارش‌های مالی
+                </div>
+                <div class="panel-body">
+                {% if userrole == 'admin' %}
+                    <table class="table">
+                        <thead>
+                            <th>شرکت</th>
+                            <th>
+                                میزان بدهی (ریال)
+                            </th>
+                        </thead>
+                        <tbody>
+                            {% for company in companies %}
+                            <tr>
+                                <th>{{ company.name }}</th>
+                                <td>{{ company.debt }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% elif userrole == 'manager' %}
+                    <div class="alert alert-warning">
+                        میزان بدهی شما به شام‌تارا:
+                        {{ company.debt }}
+                    ریال
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    گزارش‌های پرداخت‌ها
                     <a class="pull-left print no-print">
                         <span class="glyphicon glyphicon-print"></span>
 
