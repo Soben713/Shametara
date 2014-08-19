@@ -111,3 +111,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "mainapp.processors.datetime_context_processor",
     "mainapp.processors.user_role",
 )
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}
