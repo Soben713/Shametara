@@ -108,5 +108,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
-    "mainapp.processors.datetime_context_processor"
+    "mainapp.processors.datetime_context_processor",
+    "mainapp.processors.user_role",
 )

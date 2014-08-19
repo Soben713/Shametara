@@ -3,7 +3,7 @@
 # Create your views here.
 import sms
 from django.http import HttpResponse
-from helpdesk.views import help_process_start
+from helpdesk.util import help_process_start
 from khadem.models import UserComment
 from helpdesk.models import HelpTask
 from django.views.decorators.csrf import csrf_exempt
@@ -11,46 +11,45 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def proccess_req(request):
-    if request.method == 'GET':
-        phone = request.GET['from']
-        text = request.GET['text']
-        parts = text.split(",")
+    phone = request.POST['from']
+    text = request.POST['text']
+    parts = text.split(",")
+    print 'Testing ... ', text, parts
 
-        if parts[0] == 'h':  # help task request
-            while len(parts) < 7:
-                parts.append("")
-            result = help_process_start(phone,  # phone
-                                        parts[1], parts[2],  # lat lng
-                                        parts[3],  # problem
-                                        parts[4],  # machine
-                                        parts[5], parts[6],  # name family
-                                        parts[7])  # desc
+    if parts[0] == 'h':  # help task request
+        while len(parts) < 7:
+            parts.append("")
+        result = help_process_start(phone,  # phone
+                                    parts[1], parts[2],  # lat lng
+                                    parts[3],  # problem
+                                    parts[4],  # machine
+                                    parts[5], parts[6],  # name family
+                                    parts[7])  # desc
 
-            if result:
-                sms.send_sms(phone, u"عملیات امداد با موفقیت شروع شد")
-            else:
-                sms.send_sms(phone, u"امدادگر مناسبی برای شما یافت نشد")
-        if parts[0].isdigit():
-            doCommentDoingThings(parts[0], phone)
-        return HttpResponse("OK")
-    else:
-        return HttpResponse("FAULT")
+        if result == 1:
+            sms.send_sms(phone, u"عملیات امداد با موفقیت شروع شد")
+        else:
+            sms.send_sms(phone, u"امدادگر مناسبی برای شما یافت نشد")
+    if parts[0].isdigit():
+        doCommentDoingThings(parts[0], phone)
+    return HttpResponse("OK")
 
 
-def endTaskGetComment(helperNum):
+def endTaskGetComment(username, value):
     try:
-        task = HelpTask.objects.get(helper__phone=helperNum)
+        task = HelpTask.objects.get(helper__username=username)
         phone = task.helpee.phone
         task.status = 2  # set status to waiting for comment
+        task.help_price = value
         task.save()
         sms.send_sms(phone,
                      "به سوالات زیر با اعداد بین ۱-۴ به "
                      "صورت یک عدد پنج رقمی پاسخ دهید\n"
-                     "1-دانش کافی امدادگر?\n"
-                     "2-رسیدن به موقع?\n"
-                     "3-نحوه برخورد امدادگر?\n"
-                     "4-لوازم کافی امدادگر?\n"
-                     "5-دیگر موارد\n")
+                     "۱-دانش کافی امدادگر?\n"
+                     "۲-رسیدن به موقع?\n"
+                     "۳-نحوه برخورد امدادگر?\n"
+                     "۴-لوازم کافی امدادگر?\n"
+                     "۵-دیگر موارد\n")
         return True
     except HelpTask.DoesNotExists:
         return False

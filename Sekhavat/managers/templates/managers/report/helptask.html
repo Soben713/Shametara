@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% load gre_to_per %}
+
+{% block menu %}
+    {% include "managers/menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        سامانه‌ی سخاوت
+    </li>
+    <li><a href="{% url "shametara_admin_home" %}">
+        صفحه‌ی اصلی مدیریت
+    </a></li>
+    <li><a href="{% url "shametara_admin_report_helper" %}">
+گزارش امداد
+    </a></li>
+{% endblock %}
+
+{% block container %}
+    <script>
+        var map;
+    </script>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    گزارش امداد
+                    <a class="pull-left print no-print">
+                        <span class="glyphicon glyphicon-print"></span>
+
+                        چاپ
+                    </a>
+                </div>
+                <div class="panel-body" style="padding: 0 !important;">
+                    <form class="no-print form form-inline">
+                        <div style="text-align: center; padding: 15px">
+                            نمایش اطلاعات از تاریخ
+                            <input type="text" class="form-control" value="۱۳/۱/۱۳۹۳">
+                            تا
+                            <input type="text" class="form-control" value="۲۱/۱۲/۱۳۹۳">
+                        </div>
+                    </form>
+                    <hr class="no-print">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>
+                                تاریخ
+                            </td>
+                            <td>
+امدادگر
+                            </td>
+                            <td>
+                                امدادخواه
+                            </td>
+                            <td>
+                                شرکت امدادرسان
+                            </td>
+                            <td>
+                               مبلغ دریافتی (ریال)
+                            </td>
+                            <td>
+                                سهم شام‌تارا (ریال)
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for helptask in helptasks %}
+                        <tr>
+                            <td>
+                                {{ helptask.help_date | gre_to_per }}
+                            </td>
+                            <td>{{ helptask.helper.full_name }}</td>
+                            <td>{{ helptask.helpee.full_name }}</td>
+                            <td>{{ helptask.helper.company }}</td>
+                            <td>{{ helptask.help_price }}</td>
+                            <td>{{ helptask.shametara_poorsant }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="success">
+                            <td colspan="5">جمع</td>
+                            <td>{{ shametara_poorsant_sum }}
+                            ریال</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
