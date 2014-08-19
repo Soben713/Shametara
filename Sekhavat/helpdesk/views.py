@@ -6,9 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.contrib import auth
-import math
 from django.utils.encoding import smart_str
 from helpdesk.models import HelpTask
+from helpdesk.util import find_nearest_helpers
 from mainapp.models import Helpee, Helper, Operator
 from khadem.views import endTaskGetComment
 import urllib
