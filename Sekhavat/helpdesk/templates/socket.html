@@ -38,8 +38,12 @@
         });
 
         socket.on('notif', function(msg) {
-            console.log("Notification: ", msg)
+            console.log("Notification: ", msg);
+            addAlert(msg);
+        });
 
+        socket.on('task-canceled', function(msg) {
+            removeAlert(msg.task_id);
         });
 
         socket.on('disconnect', function() {
@@ -159,23 +163,38 @@
 {#            });#}
 {#            return false;#}
 {#        });#}
+        $("#sendToSekhavat").submit(function(event) {
+{#            event.preventDefault();#}
+{#            addAlert({company_name: 'ویژن تک', helper_name: 'عباس عباسی'});#}
+{#            return false;#}
+        });
     });
 
     function addAlert(msg) {
-        var company = msg.company_name;
-        var emdaadgar = msg.helper_name;
+        var companies = JSON.parse('[' + msg.company_ids + ']');
+        var sender_id = parseInt(msg.sender_company_id);
+        var company_names = JSON.parse('[' + msg.company_names + ']');
+        var index = companies.indexOf(sender_id);
+        console.log(index);
+        var company = company_names[index];
+        var emdaadgar = JSON.parse('[' + msg.helper_names + ']')[index];
 
-        var html = "<div class=\"alert alert-warning rescue\">" +
+        var html = "<div class=\"alert alert-warning rescue\" id=\"msg_" + msg.task_id + "\">" +
                         "<b class=\"rescue\">" + company + "</b><br />" +
                         "متقاضی استفاده از امدادگر " +
                         "<b>" + emdaadgar + "</b> است.<br />" +
                         "<div style=\"text-align: left; padding-top: 7px\">" +
                             "<button class=\"btn btn-success\">قبول امداد</button> " +
-                            "<button class=\"btn btn-danger\">رد امداد</button>" +
+                            "<button class=\"btn btn-danger\" onclick=\"\">رد امداد</button>" +
+                            "<button class=\"btn btn-danger\" onclick=\"cancel()\">رد امداد</button>" +
                         "</div>" +
                     "</div>";
 
         $(html).prependTo($("#alerts"));
+    }
+
+    function removeAlert(msg_id) {
+        $("#msg_" + msg_id).remove();
     }
 
     </script>
@@ -202,7 +221,7 @@
                     ارجاع امداد به سخاوت
                 </div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" action="/helpdesk/add-help" method="POST">
+                    <form class="form-horizontal" id="sendToSekhavat" role="form" action="/helpdesk/add-help" method="POST">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="rescueName" class="col-sm-2 control-label">نام امدادخواه</label>
@@ -263,7 +282,7 @@
                     لیست درخواست‌های امداد به شما
                 </div>
                 <div class="panel-body" id="alerts">
-                    <div class="alert alert-info">
+                   <!--  <div class="alert alert-info">
                         <b class="rescue"> ایران خودرو</b><br />
                         متقاضی استفاده از امدادگر
                         <b>عباس عباسی</b> است.<br />
@@ -280,7 +299,7 @@
                             <button class="btn btn-success">قبول امداد</button>
                             <button class="btn btn-danger">رد امداد</button>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

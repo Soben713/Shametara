@@ -6,7 +6,9 @@ django-extensions==1.3.9
 six==1.7.3
 suds==0.4
 wsgiref==0.1.2
-django_admin_bootstrapped==1.6.6
+<<<<<<< HEAD
 xhtml2pdf>=0.0.6
 reportlab>=2.7,<3
 
+=======
+>>>>>>> a36c7111f033ed8df867a96f19e6df668df937bf

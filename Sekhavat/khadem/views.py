@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Create your views here.
 import sms
 from django.http import HttpResponse
@@ -11,19 +13,23 @@ from django.views.decorators.csrf import csrf_exempt
 def proccess_req(request):
     if request.method == 'GET':
         phone = request.GET['from']
-        phone = phone.replace("+98", "0")
         text = request.GET['text']
-        parts = text.split(" ")
+        parts = text.split(",")
 
         if parts[0] == 'h':  # help task request
+            while len(parts) < 7:
+                parts.append("")
             result = help_process_start(phone,  # phone
                                         parts[1], parts[2],  # lat lng
-                                        phone[3],  # problem
-                                        phone[4],  # machine
-                                        phone[5])  # desc
+                                        parts[3],  # problem
+                                        parts[4],  # machine
+                                        parts[5], parts[6],  # name family
+                                        parts[7])  # desc
 
-            if result:
-                sms.send_sms(phone, "amaliate emdaade shoma shoroo shod.")
+            if result == 1:
+                sms.send_sms(phone, u"عملیات امداد با موفقیت شروع شد")
+            else:
+                sms.send_sms(phone, u"امدادگر مناسبی برای شما یافت نشد")
         if parts[0].isdigit():
             doCommentDoingThings(parts[0], phone)
         return HttpResponse("OK")
@@ -31,14 +37,21 @@ def proccess_req(request):
         return HttpResponse("FAULT")
 
 
-def endTaskGetComment(helperNum):
+def endTaskGetComment(username, value):
     try:
-        task = HelpTask.objects.get(helper__phone=helperNum)
+        task = HelpTask.objects.get(helper__username=username)
         phone = task.helpee.phone
         task.status = 2  # set status to waiting for comment
+        task.help_price = value
         task.save()
-        sms.send_sms(phone, "Baa Salam Emdaade Shoma Be Payan Redid\n"
-                     "Be Farayand Emdad Az 1-4 che nomreii midahid?\n")
+        sms.send_sms(phone,
+                     "به سوالات زیر با اعداد بین ۱-۴ به "
+                     "صورت یک عدد پنج رقمی پاسخ دهید\n"
+                     "۱-دانش کافی امدادگر?\n"
+                     "۲-رسیدن به موقع?\n"
+                     "۳-نحوه برخورد امدادگر?\n"
+                     "۴-لوازم کافی امدادگر?\n"
+                     "۵-دیگر موارد\n")
         return True
     except HelpTask.DoesNotExists:
         return False
@@ -48,8 +61,14 @@ def doCommentDoingThings(ans, phone):
     try:
         comment = UserComment()
         task = HelpTask.objects.get(helpee__phone=phone, status=2)
-        comment.service_rate = int(ans)
-        sms.send_sms(phone, "Didgahe Shoma ba movafaghiat sabt shod.")
+
+        comment.coming_on_time = int(ans[0])
+        comment.nahve_barkhord = int(ans[1])
+        comment.lavazem_kafi = int(ans[2])
+        comment.danesh_kafi = int(ans[3])
+        comment.other_rate = int(ans[4])
+
+        sms.send_sms(phone, "دیدگاه شما با موفقیت ثبت شد. با تشکر از شما")
         comment.save()
         task.user_comment = comment
         task.status = 3  # set status to help finished
@@ -58,4 +77,4 @@ def doCommentDoingThings(ans, phone):
         pass
     except ValueError:
         sms.send_sms(phone,
-                     "peyghame ersali az shoma na motabar bood ba tashkor!")
+                     "پیغام ارسالی از جانب شما نادرست بود!")
