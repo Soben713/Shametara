@@ -169,11 +169,11 @@
                 posting.done(function (data) {
                     console.log(data);
                     if (data == "manager") {
-                        window.location = "/managers/company";
+                        window.location = "/managers/";
                     } else if (data == "operator") {
                         window.location = "/helpdesk";
                     } else if (data == "admin") {
-                        window.location = "/managers/shametara";
+                        window.location = "/managers/";
                     } else {
                         $("#output").removeClass(' alert alert-success');
                         $("#output").addClass("alert alert-danger animated fadeInUp").html("نام کاربری یا رمز عبور اشتباه است");

@@ -9,6 +9,38 @@
   font-weight: normal;
 }
 
+a {
+  cursor: pointer;
+}
+
+@media print {
+  .legend .color {
+    -webkit-print-color-adjust: exact !important;
+  }
+  @page
+  {
+    size: auto;   /* auto is the current printer page size */
+    margin: 0mm;  /* this affects the margin in the printer settings */
+  }
+
+  body
+  {
+    background-color:#FFFFFF;
+//    border: solid 1px black ;
+    margin: 1cm;  /* the margin on the content before printing */
+  }
+  .breadcrumb, .print, .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
+
+.print-only {
+  display: none;
+}
+
 .mapoverlay {
   opacity: 0.9;
   background-color: #52A6D6;
@@ -48,9 +80,9 @@
     height: 12px;
     border-radius: 3px;
     display: inline-block;
+//    background-color: green !important;
   }
   .desc {
     display: inline;
   }
 }
-

@@ -1,37 +1,46 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
 from django.views.generic.base import TemplateView, View, ContextMixin
 from helpdesk.models import HelpTask
 from mainapp.models import Helper, Company, Payment
+from mainapp.processors import get_user_role
 
 
-def add_map_context(context):
-    helpers = Helper.objects.filter(status=1)
-    context['map']={
+def add_map_context(request, context):
+    user, userrole = get_user_role(request)
+
+    helpers = None
+    if userrole == 'admin':
+        helpers = Helper.objects.filter(status=1)
+    elif userrole == 'manager':
+        helpers = Helper.objects.filter(status=1, company=user.company)
+
+    context['map'] = {
         'helpers': helpers
     }
     return context
 
 
-class ShamTaraHomeView(TemplateView):
-    template_name = "managers/shamtara/home.html"
+class HomeView(TemplateView):
+    template_name = "managers/home.html"
 
     def get_context_data(self, **kwargs):
-        add_map_context(kwargs)
+        add_map_context(self.request, kwargs)
         return kwargs
 
 
-class ShamTaraMapView(TemplateView):
-    template_name = "managers/shamtara/report/map.html"
+class MapView(TemplateView):
+    template_name = "managers/report/map.html"
 
     def get_context_data(self, **kwargs):
-        add_map_context(kwargs)
+        add_map_context(self.request, kwargs)
         return kwargs
 
 
-class ShamTaraHelpTasksView(TemplateView):
-    template_name = "managers/shamtara/report/helptask.html"
+class HelpTasksView(TemplateView):
+    template_name = "managers/report/helptask.html"
 
     def get_context_data(self, **context):
         context['helptasks'] = HelpTask.objects.all()
@@ -42,8 +51,8 @@ class ShamTaraHelpTasksView(TemplateView):
         return context
 
 
-class ShamTaraSatisfaction(TemplateView):
-    template_name = "managers/shamtara/report/satisfaction.html"
+class Satisfaction(TemplateView):
+    template_name = "managers/report/satisfaction.html"
 
     def get_context_data(self, **context):
         from random import randint
@@ -56,9 +65,15 @@ class ShamTaraSatisfaction(TemplateView):
         return context
 
 
-class ShamTaraFinancial(TemplateView):
-    template_name = "managers/shamtara/report/financial.html"
+class Financial(TemplateView):
+    template_name = "managers/report/financial.html"
 
     def get_context_data(self, **context):
         context['payments'] = Payment.objects.all()
         return context
+
+
+from easy_pdf.views import PDFTemplateView
+
+class HelloPDFView(PDFTemplateView):
+    template_name = "managers/utility/pdf.html"
