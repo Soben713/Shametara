@@ -7,17 +7,12 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import auth
-from django.utils import simplejson
 from django.utils.encoding import smart_str
-from helpdesk.models import HelpTask
+from helpdesk.models import HelpTask, HelperHistory
 from helpdesk.util import find_nearest_helpers
 from mainapp.models import Helpee, Helper, Operator
 from khadem.views import endTaskGetComment
 import urllib
-
-
-def get_nearest_rescuer(request):
-    pass
 
 
 @login_required
@@ -51,19 +46,9 @@ def add_help(request):
     if proposed_helpers is {}:
         return HttpResponse('No one found!')
 
-    # helper_ids = []
-    # helper_names = []
-    # company_ids = []
-    # company_names = []
-
     options = []
 
     for key in proposed_helpers:
-        # helper_ids.append(str(proposed_helpers[key].id))
-        # helper_names.append(smart_str(u'\"' + proposed_helpers[key].name + u' ' + proposed_helpers[key].family + u'\"'))
-        # company_ids.append(str(proposed_helpers[key].company.id))
-        # company_names.append(smart_str(u'\"' + proposed_helpers[key].company.name + u'\"'))
-
         options.append({
             'helper_id': proposed_helpers[key].id,
             'helper_name': smart_str(u'\"' + proposed_helpers[key].name + u' ' + proposed_helpers[key].family + u'\"'),
@@ -76,10 +61,6 @@ def add_help(request):
             'task_id': task.id,
             'lat': task.latitude,
             'lng': task.longitude,
-            # 'helper_ids': ','.join(helper_ids),
-            # 'helper_names': ','.join(helper_names),
-            # 'company_ids': ','.join(company_ids),
-            # 'company_names': ','.join(company_names),
             'sender_company_id': company.id,
             'sender_company_name': smart_str(company.name),
             'options': json.dumps(options)
@@ -105,7 +86,16 @@ def update_location(request):
 
     helper.latitude = float(request.GET['lat'])
     helper.longitude = float(request.GET['lng'])
-    helper.status = int(request.GET['status'])
+
+    new_status = int(request.GET['status'])
+
+    if helper.status != new_status:
+        hist = HelperHistory()
+        hist.helper = helper
+        hist.status = new_status
+        hist.save()
+
+    helper.status = new_status
 
     helper.save()
 

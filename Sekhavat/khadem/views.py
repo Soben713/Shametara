@@ -35,7 +35,7 @@ def proccess_req(request):
 
 def endTaskGetComment(username, value):
     try:
-        task = HelpTask.objects.get(helper__username=username)
+        task = HelpTask.objects.get(helper__username=username, status=1)
         phone = task.helpee.phone
         task.status = 2  # set status to waiting for comment
         task.help_price = value
@@ -58,18 +58,18 @@ def doCommentDoingThings(ans, phone):
         comment = UserComment()
         task = HelpTask.objects.get(helpee__phone=phone, status=2)
 
-        comment.coming_on_time = int(ans[0])
-        comment.nahve_barkhord = int(ans[1])
-        comment.lavazem_kafi = int(ans[2])
-        comment.danesh_kafi = int(ans[3])
+        comment.coming_on_time = int(ans[1])
+        comment.nahve_barkhord = int(ans[2])
+        comment.lavazem_kafi = int(ans[3])
+        comment.danesh_kafi = int(ans[0])
         comment.other_rate = int(ans[4])
 
-        sms.send_sms(phone, "دیدگاه شما با موفقیت ثبت شد. با تشکر از شما")
+        sms.send_sms(phone, u"دیدگاه شما با موفقیت ثبت شد. با تشکر از شما")
         comment.save()
         task.user_comment = comment
         task.status = 3  # set status to help finished
         task.save()
-    except HelpTask.DoesNotExists:
+    except HelpTask.DoesNotExist:
         pass
     except ValueError:
         sms.send_sms(phone,

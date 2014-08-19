@@ -32,3 +32,9 @@ class HelpTask(models.Model):
     class Meta:
         verbose_name = u'عمل امداد'
         verbose_name_plural = u'اعمال امداد'
+
+
+class HelperHistory(models.Model):
+    helper = models.ForeignKey(Helper)
+    date = models.DateTimeField(auto_now=True)
+    status = models.IntegerField(choices=Helper.STATUS_TYPES, default=1)
