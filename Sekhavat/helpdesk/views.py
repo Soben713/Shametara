@@ -10,6 +10,7 @@ import math
 from django.utils.encoding import smart_str
 from helpdesk.models import HelpTask
 from mainapp.models import Helpee, Helper, Operator
+from Khadem.views import endTaskGetComment
 import urllib
 
 
@@ -178,6 +179,17 @@ def login_helper(request):
     else:
         print("wrong user pass")
     return HttpResponse(result)
+
+
+def help_done(request):
+    username = request.GET["username"]
+    password = request.GET["password"]
+    payment = int(request.GET["payment"])
+    user = auth.authenticate(username=username, password=password)
+    if user is None:
+        return None
+    endTaskGetComment(username, payment)
+    return HttpResponse("0")
 
 
 def index(request):
