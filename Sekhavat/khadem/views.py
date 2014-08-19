@@ -21,7 +21,7 @@ def proccess_req(request):
                                         parts[1], parts[2],  # lat lng
                                         parts[3],  # problem
                                         parts[4],  # machine
-                                        parts[6], parts[7]  # name family
+                                        parts[6], parts[7],  # name family
                                         parts[8]) # desc
 
             if result:
