@@ -5,7 +5,7 @@ from khadem.models import UserComment
 
 
 class HelpTask(models.Model):
-    helper = models.ForeignKey(Helper, verbose_name=u'امدادرسان')
+    helper = models.ForeignKey(Helper, verbose_name=u'امدادرسان', null=True)
     helpee = models.ForeignKey(Helpee, verbose_name=u'کمک خواه', null=True)
     help_price = models.IntegerField(verbose_name=u'سود شام‌تارا', null=True)
     help_date = models.DateTimeField(auto_now_add=True,

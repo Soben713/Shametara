@@ -12,5 +12,5 @@ urlpatterns = patterns('',
     url(r'^add-help$', views.add_help),
     url(r'^update-location$', views.update_location),
     url(r'^login-helper$', views.login_helper),
-    url(r'^$', TemplateView.as_view(template_name='socket.html'))
+    url(r'^$', views.index)
 )
