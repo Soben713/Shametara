@@ -20,10 +20,10 @@ io.on('connection', function(socket) {
 
     socket.on('cancel', function(msg) {
         var tid = msg.task_id;
-        requests[tid]['companies'].splice(requests[tid]['companies'].indexOf(socket.company_id), 1);
+        requests[tid]['companies'].splice(requests[tid]['companies'].indexOf(parseInt(socket.company_id)), 1);
         console.log(socket.company_id + ' canceled');
         socket.emit('task-canceled', { task_id: msg.task_id });
-        console.log('LEN: ', requests[tid]['companies'].length);
+
         if (requests[tid]['companies'].length < 1) {
             requests[tid]['response'].end('0');
             delete requests[tid];
@@ -63,13 +63,9 @@ var server = http.createServer(function(req, res) {
     requests[task_id]['response'] = res;
 
     for (var i = 0; i < sockets.length; i++) {
-        console.log(sockets[i].company_id);
-        if (sockets[i].company_id in companies) {
+        if (companies.indexOf(parseInt(sockets[i].company_id)) >= 0) {
             console.log('Sent data to socket ' + i + ' ...');
             sockets[i].emit('notif', _get);
-        }
-        else {
-            requests[task_id]['companies'].splice(requests[task_id]['companies'].indexOf(sockets[i].company_id), 1);
         }
     }
 
@@ -77,12 +73,12 @@ var server = http.createServer(function(req, res) {
         delete requests[task_id];
         try {
             for (var i = 0; i < sockets.length; i++) {
-                if (sockets[i].company_id in companies) {
+                if (companies.indexOf(parseInt(sockets[i].company_id)) >= 0) {
                     console.log('Sent cancel to socket ' + i + ' ...');
                     sockets[i].emit('task-canceled', { task_id: task_id });
                 }
             }
-            requests[task_id]['response'].end('0');
+            requests[task_id]['responses'].end('0');
             delete requests[task_id];
         }
         catch (ex) {

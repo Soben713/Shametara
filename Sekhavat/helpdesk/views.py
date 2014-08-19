@@ -37,6 +37,10 @@ def add_help(request):
     helpee.save()
     task.helpee = helpee
 
+    company = Operator.objects.filter(id=request.user.id)[0].company
+
+    task.requesting_company = company
+
     task.save()
 
     proposed_helpers = find_nearest_helpers(task.latitude, task.longitude)
@@ -55,8 +59,6 @@ def add_help(request):
         helper_names.append(smart_str(u'\"' + proposed_helpers[key].name + u' ' + proposed_helpers[key].family + u'\"'))
         company_ids.append(str(proposed_helpers[key].company.id))
         company_names.append(smart_str(u'\"' + proposed_helpers[key].company.name + u'\"'))
-
-    company = Operator.objects.filter(id=request.user.id)[0].company
 
     params = urllib.urlencode(
         {

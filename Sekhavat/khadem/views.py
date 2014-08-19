@@ -11,30 +11,28 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def proccess_req(request):
-    if request.method == 'GET':
-        phone = request.GET['from']
-        text = request.GET['text']
-        parts = text.split(",")
+    phone = request.POST['from']
+    text = request.POST['text']
+    parts = text.split(",")
+    print 'Testing ... ', text, parts
 
-        if parts[0] == 'h':  # help task request
-            while len(parts) < 7:
-                parts.append("")
-            result = help_process_start(phone,  # phone
-                                        parts[1], parts[2],  # lat lng
-                                        parts[3],  # problem
-                                        parts[4],  # machine
-                                        parts[5], parts[6],  # name family
-                                        parts[7])  # desc
+    if parts[0] == 'h':  # help task request
+        while len(parts) < 7:
+            parts.append("")
+        result = help_process_start(phone,  # phone
+                                    parts[1], parts[2],  # lat lng
+                                    parts[3],  # problem
+                                    parts[4],  # machine
+                                    parts[5], parts[6],  # name family
+                                    parts[7])  # desc
 
-            if result == 1:
-                sms.send_sms(phone, u"عملیات امداد با موفقیت شروع شد")
-            else:
-                sms.send_sms(phone, u"امدادگر مناسبی برای شما یافت نشد")
-        if parts[0].isdigit():
-            doCommentDoingThings(parts[0], phone)
-        return HttpResponse("OK")
-    else:
-        return HttpResponse("FAULT")
+        if result == 1:
+            sms.send_sms(phone, u"عملیات امداد با موفقیت شروع شد")
+        else:
+            sms.send_sms(phone, u"امدادگر مناسبی برای شما یافت نشد")
+    if parts[0].isdigit():
+        doCommentDoingThings(parts[0], phone)
+    return HttpResponse("OK")
 
 
 def endTaskGetComment(username, value):
