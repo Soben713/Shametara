@@ -22,10 +22,23 @@ io.on('connection', function(socket) {
         var tid = msg.task_id;
         requests[tid]['companies'].splice(requests[tid]['companies'].indexOf(socket.company_id), 1);
         console.log(socket.company_id + ' canceled');
+        socket.emit('task-canceled', { task_id: msg.task_id });
+        console.log('LEN: ', requests[tid]['companies'].length);
+        if (requests[tid]['companies'].length < 1) {
+            requests[tid]['response'].end('0');
+            delete requests[tid];
+        }
+        console.log('sent response');
     });
 
     socket.on('accept', function(msg) {
-
+        requests[msg.task_id]['response'].end('1');
+        socket.emit('task-accepted', { task_id: msg.task_id });
+        for (var i = 0; i < sockets.length; i++) {
+            sockets[i].emit('task-canceled', { task_id: msg.task_id });
+        }
+        console.log('Task assigned to socket ' + socket.company_id);
+        delete requests[msg.task_id];
     });
 
     socket.on('disconnect', function() {
@@ -44,8 +57,10 @@ var server = http.createServer(function(req, res) {
 
     console.log('Companies', companies);
 
-    requests[_get['task_id']] = {};
-    requests[_get['task_id']]['companies'] = companies;
+    var task_id = _get['task_id'];
+    requests[task_id] = {};
+    requests[task_id]['companies'] = companies;
+    requests[task_id]['response'] = res;
 
     for (var i = 0; i < sockets.length; i++) {
         console.log(sockets[i].company_id);
@@ -53,23 +68,26 @@ var server = http.createServer(function(req, res) {
             console.log('Sent data to socket ' + i + ' ...');
             sockets[i].emit('notif', _get);
         }
+        else {
+            requests[task_id]['companies'].splice(requests[task_id]['companies'].indexOf(sockets[i].company_id), 1);
+        }
     }
 
     setTimeout(function () {
-        delete requests[_get['task_id']];
+        delete requests[task_id];
         try {
             for (var i = 0; i < sockets.length; i++) {
                 if (sockets[i].company_id in companies) {
                     console.log('Sent cancel to socket ' + i + ' ...');
-                    sockets[i].emit('task-canceled', { task_id: _get['task_id'] });
+                    sockets[i].emit('task-canceled', { task_id: task_id });
                 }
             }
+            requests[task_id]['response'].end('0');
+            delete requests[task_id];
         }
         catch (ex) {
         }
     }, 30000);
-
-    res.end();
 });
 
 server.listen(4000);

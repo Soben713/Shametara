@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.contrib import auth
 import math
 from django.utils.encoding import smart_str
+import time
 from helpdesk.models import HelpTask
 from mainapp.models import Helpee, Helper, Operator
 from Khadem.views import endTaskGetComment
@@ -18,6 +19,7 @@ def get_nearest_rescuer(request):
     pass
 
 
+@login_required
 def add_help(request):
     task = HelpTask()
     task.latitude = float(request.POST['latitude'])
@@ -55,6 +57,8 @@ def add_help(request):
         company_ids.append(str(proposed_helpers[key].company.id))
         company_names.append(smart_str(u'\"' + proposed_helpers[key].company.name + u'\"'))
 
+    company = Operator.objects.filter(id=request.user.id)[0].company
+
     params = urllib.urlencode(
         {
             'task_id': task.id,
@@ -64,12 +68,13 @@ def add_help(request):
             'helper_names': ','.join(helper_names),
             'company_ids': ','.join(company_ids),
             'company_names': ','.join(company_names),
-            'sender_company_id': Operator.objects.filter(id=request.user.id)[0].company.id
+            'sender_company_id': company.id,
+            'sender_company_name': smart_str(company.name)
         })
     f = urllib.urlopen('http://0.0.0.0:4000/?%s' % params)
-    f.read()
+    r = f.read()
 
-    return HttpResponse('Found and sent')
+    return HttpResponse(r)
 
 
 def find_nearest_helpers(lat, lng):
@@ -140,9 +145,8 @@ def help_process_start(phone, lat, lng, problem, machine, name, family, descript
             'sender_company_id': -1
         })
     f = urllib.urlopen('http://0.0.0.0:4000/?%s' % params)
-    f.read()
-
-    return HttpResponse('Found and sent')
+    r = f.read()
+    return int(r)
 
 
 def update_location(request):
@@ -193,4 +197,4 @@ def help_done(request):
 
 
 def index(request):
-    return render(request, 'socket.html', {"company_id": 1})  # TODO
+    return render(request, 'socket.html', {"company_id": Operator.objects.filter(id=request.user.id)[0].company.id})

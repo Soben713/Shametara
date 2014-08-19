@@ -7,8 +7,9 @@
     <script src="{% static 'components/socket.io-client/socket.io.js' %}"></script>
 
     <script type="text/javascript">
+    var socket;
     $(function() {
-        var socket = io.connect('http://localhost:8080', { 'force new connection' : true });
+        socket = io.connect('http://localhost:8080', { 'force new connection' : true });
         socket.on('connect_error', function() {
             $('#conn_status').html('خطا در اتصال به سرور').removeClass('alert-success')
                     .removeClass('alert-danger')
@@ -51,6 +52,11 @@
                     .removeClass('alert-warning')
                     .addClass('alert-danger');
         });
+
+        socket.on('task-accepted', function(msg) {
+            removeAlert(msg.task_id);
+        });
+
         var car = ["ام‌وی‌ام",
             "بنز",
             "بی‌ام‌و",
@@ -171,12 +177,13 @@
     });
 
     function addAlert(msg) {
+        console.log(msg);
         var companies = JSON.parse('[' + msg.company_ids + ']');
-        var sender_id = parseInt(msg.sender_company_id);
         var company_names = JSON.parse('[' + msg.company_names + ']');
-        var index = companies.indexOf(sender_id);
-        console.log(index);
-        var company = company_names[index];
+        var self_company_id = $("#company_id").val();
+        var index = companies.indexOf(parseInt(self_company_id));
+        console.log('See this: ', companies, self_company_id, index);
+        var company = (msg.sender_company_id == '-1') ? 'سامانه‌ی خادم' : msg.sender_company_name;
         var emdaadgar = JSON.parse('[' + msg.helper_names + ']')[index];
 
         var html = "<div class=\"alert alert-warning rescue\" id=\"msg_" + msg.task_id + "\">" +
@@ -184,9 +191,8 @@
                         "متقاضی استفاده از امدادگر " +
                         "<b>" + emdaadgar + "</b> است.<br />" +
                         "<div style=\"text-align: left; padding-top: 7px\">" +
-                            "<button class=\"btn btn-success\">قبول امداد</button> " +
-                            "<button class=\"btn btn-danger\" onclick=\"\">رد امداد</button>" +
-                            "<button class=\"btn btn-danger\" onclick=\"cancel()\">رد امداد</button>" +
+                            "<button class=\"btn btn-success\" onclick=\"accept(" + msg.task_id + ");\">قبول امداد</button> " +
+                            "<button class=\"btn btn-danger\" onclick=\"cancel(" + msg.task_id + ");\">رد امداد</button>" +
                         "</div>" +
                     "</div>";
 
@@ -195,6 +201,14 @@
 
     function removeAlert(msg_id) {
         $("#msg_" + msg_id).remove();
+    }
+
+    function accept(tskid) {
+        socket.emit('accept', { task_id: tskid });
+    }
+
+    function cancel(tskid) {
+        socket.emit('cancel', { task_id: tskid });
     }
 
     </script>
