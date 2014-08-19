@@ -12,16 +12,17 @@ def proccess_req(request):
     if request.method == 'GET':
         phone = request.GET['from']
         text = request.GET['text']
-        parts = text.split(" ")
+        parts = text.split(",")
 
         if parts[0] == 'h':  # help task request
             while len(parts) < 6:
                 parts.append("")
             result = help_process_start(phone,  # phone
                                         parts[1], parts[2],  # lat lng
-                                        phone[3],  # problem
-                                        phone[4],  # machine
-                                        phone[5])  # desc
+                                        parts[3],  # problem
+                                        parts[4],  # machine
+                                        parts[6], parts[7]  # name family
+                                        parts[8]) # desc
 
             if result:
                 sms.send_sms(phone, "amaliate emdaade shoma shoroo shod.")
