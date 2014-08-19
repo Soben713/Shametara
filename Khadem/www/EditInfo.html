@@ -8,6 +8,7 @@
 <script type="text/javascript" src="js/rtl.jquery.mobile-1.4.0.js"></script>
 <link rel="stylesheet" type="text/css" href="css/rtl.jquery.mobile-1.4.0.css" />
 <script type="text/javascript" src="phonegap.js"></script>
+<script type="text/javascript" src="js/persianDate.js"></script>
 <meta charset="utf-8">
 <script type="text/javascript">
 
@@ -33,7 +34,7 @@
 <div data-role="page">
 
     <div data-role="header">
-        <h1>وارد کردن مشخصات</h1>
+        <h1>ویرایش مشخصات</h1>
     </div><!-- /header -->
 
     <div role="main" class="ui-content">
@@ -80,11 +81,15 @@
     </div><!-- /content -->
 
     <div data-role="footer">
-        <h4>خادم</h4>
+        <h4 id="date"></h4>
     </div><!-- /footer -->
 </div><!-- /page -->
 
 
 </body>
+
+<script type="text/javascript">
+    $("#date").text( persianDate.getDay("name") + " " +persianDate.getDate() + " " + persianDate.getMonth("name") + " " + persianDate.getYear("short") );
+</script>
 
 </html>
