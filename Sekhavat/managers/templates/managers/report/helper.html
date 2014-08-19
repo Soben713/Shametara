@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block menu %}
+    {% include "managers/company/menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        سامانه‌ی سخاوت
+    </li>
+    <li><a href="{% url "company_admin_home" %}">
+        صفحه‌ی اصلی مدیریت
+    </a></li>
+    <li><a href="{% url "company_admin_report_helper" %}">
+گزارش ارسال امدادگران
+    </a></li>
+{% endblock %}
+
+{% block container %}
+    <script>
+        var map;
+    </script>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    گزارش ارسال امدادگران
+                </div>
+                <div class="panel-body" style="padding: 0 !important;">
+                    <form class="form form-inline">
+                        <div style="text-align: center; padding: 15px">
+                            نمایش اطلاعات از تاریخ
+                            <input type="text" class="form-control" value="۱۳/۱/۱۳۹۳">
+                            تا
+                            <input type="text" class="form-control" value="۲۱/۱۲/۱۳۹۳">
+                        </div>
+                    </form>
+                    <hr>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>
+                                تاریخ
+                            </td>
+                            <td>
+                                نوع امداد
+                            </td>
+                            <td>
+                                امدادگر
+                            </td>
+                            <td>
+                                شرکت امدادرسان
+                            </td>
+                            <td>
+                               سود (تومان)
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for x in "xxxxx" %}
+                        <tr>
+                            <td>
+                                ۲۱ فروردین ۱۳۹۳
+                            </td>
+                            <td>باطری یدکی</td>
+                            <td>عباس قادری</td>
+                            <td>ایران خودرو</td>
+                            <td>20,000</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                ۲۱ فروردین ۱۳۹۳
+                            </td>
+                            <td>باطری یدکی</td>
+                            <td>اصغر فرهادی</td>
+                            <td>سایپا</td>
+                            <td>20,000</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="success">
+                            <td colspan="4">جمع</td>
+                            <td>832,000</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

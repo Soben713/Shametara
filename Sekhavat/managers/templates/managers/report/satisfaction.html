@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+{% block menu %}
+    {% include "managers/menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        سامانه‌ی سخاوت
+    </li>
+    <li><a href="{% url "shametara_admin_home" %}">
+        صفحه‌ی اصلی مدیریت
+    </a></li>
+    <li><a href="{% url "shametara_admin_report_satisfaction" %}">
+        رضایت‌سنجی امدادخواهان
+    </a></li>
+{% endblock %}
+
+{% block container %}
+    <script>
+        $(document).ready(function(){
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var data = {
+                labels: ["رسیدن به موقع", "نحوه‌ی برخورد با امدادخواه", "لوازم کافی", "دانش کافی", "دیگر موارد"],
+                datasets: [
+                    {% for company in companies %}
+                    {
+                        label: "",
+                        fillColor: "rgba({{ company.color_r }}, {{ company.color_g }}, {{ company.color_b }}, 0.3)",
+                        strokeColor: "rgba({{ company.color_r }}, {{ company.color_g }}, {{ company.color_b }}, 1)",
+                        pointColor: "rgba({{ company.color_r }}, {{ company.color_g }}, {{ company.color_b }}, 1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: [{{ company.company.average_coming_on_time|stringformat:"f"  }},
+                            {{ company.company.average_nahve_barkhord|stringformat:"f"  }},
+                            {{ company.company.average_lavazem_kafi |stringformat:"f" }},
+                            {{ company.company.average_danesh_kafi|stringformat:"f"  }},
+                            {{ company.company.average_other_rate |stringformat:"f" }}]
+                    }
+                    {% if not forloop.last %}
+                        ,
+                    {% endif %}
+                    {% endfor %}
+                ]
+            };
+            var myRadarChart = new Chart(ctx).Radar(data, {});
+        });
+    </script>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    رضایت‌سنجی امدادخواهان
+                    <a class="pull-left print no-print">
+                        <span class="glyphicon glyphicon-print"></span>
+                        چاپ
+                    </a>
+                </div>
+                <div class="panel-body" style="padding: 0 !important; text-align: center">
+{#                    <form class="form form-inline">#}
+{#                        <div style="text-align: center; padding: 15px">#}
+{#                            نمایش اطلاعات از تاریخ#}
+{#                            <input type="text" class="form-control" value="۱۳/۱/۱۳۹۳">#}
+{#                            تا#}
+{#                            <input type="text" class="form-control" value="۲۱/۱۲/۱۳۹۳">#}
+{#                        </div>#}
+{#                    </form>#}
+{#                    <hr>#}
+                <hr>
+                    <div style="text-align: center">
+                        {% for company in companies %}
+                        <div class="legend" style="display: inline-block; margin-left: 20px">
+                            <span class="color" style="background-color: rgba({{ company.color_r }}, {{ company.color_g }}, {{ company.color_b }}, 1)"></span>
+                            <div class="desc">
+                                {{ company.company.name }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <hr>
+                    <canvas id="myChart" width="600" height="600"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

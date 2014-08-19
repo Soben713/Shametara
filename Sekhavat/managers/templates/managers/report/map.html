@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block menu %}
+    {% include "managers/menu.html" %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li>
+        سامانه‌ی سخاوت
+    </li>
+    <li><a href="{% url "shametara_admin_home" %}">
+        صفحه‌ی اصلی مدیریت
+    </a></li>
+    <li><a href="{% url "shametara_admin_report_map" %}">
+        نقشه‌ی امدادگران
+    </a></li>
+{% endblock %}
+
+{% block container %}
+    <div class="row">
+        <div class="col-md-12">
+            {% include "managers/utility/map.html" %}
+        </div>
+    </div>
+{% endblock %}

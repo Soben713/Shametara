@@ -2,7 +2,7 @@
 from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
 from mainapp.models import CompanyManager, Company, Operator, Helper, ShamManager
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib import auth
 from django.db import IntegrityError
 from django.shortcuts import render_to_response
@@ -33,7 +33,7 @@ def add_manager(request):
 
     manager.company = company
     manager.save()
-    return render_to_response('add_company.html',c)
+    return render(request, 'add_company.html', c)
 
 def add_operator(request):
     manager = CompanyManager.objects.get(username=request.user.username)
@@ -52,7 +52,7 @@ def add_operator(request):
     operator.family = request.POST['operatorFamily']
     operator.phone = request.POST['phoneNumber']
     operator.save()
-    return render_to_response('add_operator.html',c)
+    return render(request, 'add_operator.html',c)
 
 
 
@@ -72,7 +72,7 @@ def add_helper(request):
     helper.family = request.POST['helperFamily']
     helper.phone = request.POST['phoneNumber']
     helper.save()
-    return render_to_response('add_helper.html',c)
+    return render(request, 'add_helper.html',c)
 
 def login(request):
     username=request.POST['username']
@@ -129,8 +129,6 @@ def multi_user_checking(request):
     return HttpResponse("wrongUserName")
 
 
-
-
 def is_logged_in(request, addr):
         user=request.user
         print("kalle")
@@ -142,29 +140,29 @@ def is_logged_in(request, addr):
             username=user.username
             if addr == "addCompany":
                 if username != "admin":
-                    return render_to_response('login.html',c)
+                    return render(request, 'login.html',c)
                 else:
-                    return render_to_response('add_company.html',c)
+                    return render(request, 'add_company.html',c)
             else:
                 if addr == "addOperator":
                     try:
                         manager=CompanyManager.objects.get(username=username)
                     except CompanyManager.DoesNotExist:
-                        return render_to_response('login.html',c)
-                    return render_to_response('add_operator.html',c)
+                        return render(request, 'login.html',c)
+                    return render(request, 'add_operator.html',c)
                 else:
                     if addr == "addHelper":
                          try:
                             operator=Operator.objects.get(username=username)
                          except Operator.DoesNotExist:
-                            return render_to_response('login.html',c)
-                         return render_to_response('add_helper.html',c)
+                            return render(request, 'login.html',c)
+                         return render(request, 'add_helper.html',c)
                     else:
                         if addr == "editInformation":
-                            return render_to_response('edit_information.html',c)
+                            return render(request, 'edit_information.html',c)
 
 
-        return render_to_response("login.html",c)
+        return render(request, "login.html",c)
 
 def log_out(request):
     auth.logout(request)
