@@ -14,7 +14,6 @@ def proccess_req(request):
     phone = request.POST['from']
     text = request.POST['text'].strip()
     parts = text.split(",")
-    print 'Testing ... ', text, parts
 
     if parts[0] == 'h':  # help task request
         while len(parts) < 7:
@@ -42,13 +41,13 @@ def endTaskGetComment(username, value):
         task.help_price = value
         task.save()
         sms.send_sms(phone,
-                     "به سوالات زیر با اعداد بین ۱-۴ به "
-                     "صورت یک عدد پنج رقمی پاسخ دهید\n"
-                     "۱-دانش کافی امدادگر?\n"
-                     "۲-رسیدن به موقع?\n"
-                     "۳-نحوه برخورد امدادگر?\n"
-                     "۴-لوازم کافی امدادگر?\n"
-                     "۵-دیگر موارد\n")
+                     u"به سوالات زیر با اعداد بین ۱-۴ به "
+                     u"صورت یک عدد پنج رقمی پاسخ دهید\n"
+                     u"۱-دانش کافی امدادگر?\n"
+                     u"۲-رسیدن به موقع?\n"
+                     u"۳-نحوه برخورد امدادگر?\n"
+                     u"۴-لوازم کافی امدادگر?\n"
+                     u"۵-دیگر موارد\n")
         return True
     except HelpTask.DoesNotExist:
         return False
