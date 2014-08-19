@@ -8,6 +8,11 @@
         <h3 class="text-center">سامانه‌ی شام تارا</h3>
     </div>
     <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
         <ol class="breadcrumb">
             {% block breadcrumb %}
             {% endblock %}
