@@ -83,7 +83,7 @@ class Company(models.Model):
         from helpdesk.models import HelpTask
         debt = 0
         for task in HelpTask.objects.all():
-            if task.helper.company == self:
+            if task.helper and task.helper.company == self:
                 debt += task.shametara_poorsant
         for payment in Payment.objects.all():
             if payment.company == self:

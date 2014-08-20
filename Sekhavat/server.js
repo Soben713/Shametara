@@ -82,7 +82,7 @@ var server = http.createServer(function(req, res) {
         }
     }
 
-    setTimeout(function () {
+    (function(task_id) { setTimeout(function () {
         delete requests[task_id];
         try {
             for (var i = 0; i < sockets.length; i++) {
@@ -98,7 +98,7 @@ var server = http.createServer(function(req, res) {
         }
         catch (ex) {
         }
-    }, 30000);
+    }, 30000); })(task_id);
 });
 
 server.listen(4000);

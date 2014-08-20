@@ -248,28 +248,36 @@
                             <label for="rescueName" class="col-sm-2 control-label">نام امدادخواه</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="rescueName" name="rescueName" placeholder="نام امدادخواه" pattern="[آ-ی]+">
+                                <input type="text" class="form-control" id="rescueName" name="rescueName" placeholder="نام امدادخواه" pattern="[آ-ی ]+"
+                                        oninvalid="setCustomValidity('نام امدادخواه باید از حروف فارسی تشکیل شود')"
+                                        onchange="try{setCustomValidity('')}catch(e){}" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="phoneNumber" class="col-sm-2 control-label">تلفن همراه</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="تلفن همراه" pattern="[0۰][۹9][0-9۰-۹]{9}">
+                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="تلفن همراه" pattern="[0۰][۹9][0-9۰-۹]{9}"
+                                        oninvalid="setCustomValidity('شماره تلفن همراه ۱۱ رقمی است و با ۰۹شروع میشود')"
+                                        onchange="try{setCustomValidity('')}catch(e){}" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="carModel" class="col-sm-2 control-label">مدل ماشین</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="carModel" name="carModel" data-provide="typeahead" placeholder="مدل ماشین" pattern="[آ-ی۰-۹ ]+">
+                                <input type="text" class="form-control" id="carModel" name="carModel" data-provide="typeahead" placeholder="مدل ماشین" pattern="[آ-ی۰-۹ ]+"
+                                        oninvalid="setCustomValidity('تنها از حروف و اعداد فارسی برای مدل ماشین استفاده شود')"
+                                        onchange="try{setCustomValidity('')}catch(e){}" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="problem" class="col-sm-2 control-label">مورد امداد</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="problem" name="problem" data-provide="typeahead" placeholder="مورد امداد" pattern="[آ-ی]+">
+                                <input type="text" class="form-control" id="problem" name="problem" data-provide="typeahead" placeholder="مورد امداد" pattern="[آ-ی ]+"
+                                        oninvalid="setCustomValidity('مورد امداد تنها از حروف فارسی تشکیل می‌شود.')"
+                                        onchange="try{setCustomValidity('')}catch(e){}" required>
                             </div>
                         </div>
                         <div class="form-group">
