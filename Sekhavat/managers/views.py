@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.views.generic.base import TemplateView, View, ContextMixin
-from helpdesk.models import HelpTask
+from helpdesk.models import HelpTask, HelperHistory
 from mainapp.models import Helper, Company, Payment
 from mainapp.processors import get_user_role
 
@@ -90,4 +90,25 @@ class Financial(TemplateView):
         elif userrole == 'manager':
             context['payments'] = Payment.objects.filter(company=user.company)
             context['company'] = user.company
+        return context
+
+
+class Customers(TemplateView):
+    template_name = "managers/report/customers.html"
+
+    def get_context_data(self, **context):
+        user, userrole = get_user_role(self.request)
+        context['helptasks'] = HelpTask.objects.filter(requesting_company=user.company)
+        return context
+
+
+class Uptime(TemplateView):
+    template_name = "managers/report/uptime.html"
+
+    def get_context_data(self, **context):
+        user, userrole = get_user_role(self.request)
+        context['history'] = [{
+            'item': item,
+            'status': Helper.STATUS_TYPES[item.status - 1][1]
+        } for item in HelperHistory.objects.filter(helper__company=user.company)]
         return context

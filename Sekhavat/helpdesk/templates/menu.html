@@ -1,3 +1,5 @@
+{% load gre_to_per %}
+
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -25,6 +27,10 @@
 
 
             <ul class="nav navbar-nav navbar-left">
+                <p class="navbar-text">
+                    <span class="glyphicon glyphicon-time"></span>
+                    {{ now | gre_to_per }}
+                </p>
                 <p class="navbar-text">
                     خوش آمدید
                 </p>

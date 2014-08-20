@@ -5,7 +5,13 @@
 {% block body %}
     {% block menu %}{% endblock %}
     <div class="print header print-only">
-        <h3 class="text-center">سامانه‌ی شام تارا</h3>
+        {% if userrole == 'manager' %}
+            <h3 class="text-center">
+                شرکت
+                {{ user.company }}
+            </h3>
+        {% endif %}
+        <h5 class="text-center">سامانه‌ی شام تارا</h5>
     </div>
     <div class="container">
         {% if messages %}

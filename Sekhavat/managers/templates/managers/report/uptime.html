@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% load gre_to_per %}
 
 {% block menu %}
     {% include "managers/menu.html" %}
@@ -22,15 +23,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     زمان آماده به کار بودن امدادگران
+                    <a class="pull-left print no-print">
+                        <span class="glyphicon glyphicon-print"></span>
+
+                        چاپ
+                    </a>
                 </div>
                 <div class="panel-body" style="padding: 0 !important; text-align: center">
-                    <form class="form form-inline">
-                        <div style="text-align: center; padding: 15px">
-                            نمایش اطلاعات امدادگر با شماره پرسنلی
-                            <input type="text" class="form-control" value="۱۳۱۱۳۹۳">
-                        </div>
-                    </form>
-                    <hr>
                     <table class="table">
                         <thead>
                         <tr>
@@ -38,23 +37,19 @@
                                 تاریخ
                             </td>
                             <td>
-                                تعداد امداد
+                                امدادگر
                             </td>
                             <td>
-                                زمانی که در دسترس بوده
-                            </td>
-                            <td>
-                                سود کسب شده
+                                وضعیت
                             </td>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for x in "xxxxx" %}
+                        {% for h in history %}
                         <tr>
-                            <td>فروردین</td>
-                            <td>2</td>
-                            <td>16':23" <span class="glyphicon glyphicon-time"></span> </td>
-                            <td>۱۳۳,۰۰۰</td>
+                            <td>{{ h.item.date | gre_to_per }}</td>
+                            <td>{{ h.item.helper.full_name }}</td>
+                            <td>{{ h.status }}</td>
                         </tr>
                         {% endfor %}
                         </tbody>

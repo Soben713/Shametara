@@ -57,7 +57,11 @@
 {% endblock %}
 
 {% block menu %}
-    {% include 'managers/menu.html' %}
+    {% if userrole == 'admin' or userrole == 'manager' %}
+        {% include 'managers/menu.html' %}
+    {% else %}
+        {% include 'menu.html' %}
+    {% endif %}
 {% endblock %}
 
 {% block breadcrumb %}
