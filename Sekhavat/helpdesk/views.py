@@ -121,7 +121,10 @@ def login_helper(request):
     print(username)
     print(password)
     if user is not None and helper is not None:
-        result = "helper"
+        result = "helper,"
+        result += user.name+","
+        result += user.family
+
         print("logged in")
     else:
         print("wrong user pass")
