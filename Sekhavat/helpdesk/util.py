@@ -1,5 +1,7 @@
+import json
 import urllib
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.utils.datetime_safe import datetime
 from django.utils.encoding import smart_str
 import math
@@ -7,6 +9,7 @@ from helpdesk.models import HelpTask
 from mainapp.models import Helpee, Helper
 
 __author__ = 'moreka'
+
 
 def find_nearest_helpers(lat, lng):
     helpers = Helper.objects.all()
@@ -53,28 +56,29 @@ def help_process_start(phone, lat, lng, problem, machine, name, family, descript
     if proposed_helpers is {}:
         return HttpResponse('No one found!')
 
-    helper_ids = []
-    helper_names = []
-    company_ids = []
-    company_names = []
+    options = []
 
     for key in proposed_helpers:
-        helper_ids.append(str(proposed_helpers[key].id))
-        helper_names.append(smart_str(u'\"' + proposed_helpers[key].name + u' ' + proposed_helpers[key].family + u'\"'))
-        company_ids.append(str(proposed_helpers[key].company.id))
-        company_names.append(smart_str(u'\"' + proposed_helpers[key].company.name + u'\"'))
+        options.append({
+            'helper_id': proposed_helpers[key].id,
+            'helper_name': smart_str(u'\"' + proposed_helpers[key].name + u' ' + proposed_helpers[key].family + u'\"'),
+            'company_id': proposed_helpers[key].company.id,
+            'company_name': smart_str(u'\"' + proposed_helpers[key].company.name + u'\"')
+        })
 
     params = urllib.urlencode(
         {
             'task_id': task.id,
             'lat': task.latitude,
             'lng': task.longitude,
-            'helper_ids': ','.join(helper_ids),
-            'helper_names': ','.join(helper_names),
-            'company_ids': ','.join(company_ids),
-            'company_names': ','.join(company_names),
-            'sender_company_id': -1
+            'sender_company_id': -1,
+            'options': json.dumps(options)
         })
     f = urllib.urlopen('http://0.0.0.0:4000/?%s' % params)
-    r = f.read()
-    return int(r)
+    r = json.loads(f.read())
+
+    if r['status'] == 1:
+        task.helper = Helper.objects.get(id=int(r['helper_id']))
+        task.save()
+        return 1
+    return 0

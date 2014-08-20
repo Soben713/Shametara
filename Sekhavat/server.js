@@ -38,9 +38,10 @@ io.on('connection', function(socket) {
 
     socket.on('accept', function(msg) {
 
-        for (var i = 0; i < requests[msg.task_id]['options'].length; i++) {
-            if (requests[msg.task_id]['options'][i].company_id == parseInt(socket.company_id)) {
-                requests[msg.task_id]['response'].end('{ "status": 1, "helper_id": ' + requests[msg.task_id]['options'][i].helper_id + ' }');
+        var task = requests[msg.task_id];
+        for (var i = 0; i < task['options'].length; i++) {
+            if (task['options'][i].company_id == parseInt(socket.company_id)) {
+                task['response'].end('{ "status": 1, "helper_id": ' + task['options'][i].helper_id + ' }');
                 break;
             }
         }

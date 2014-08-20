@@ -18,3 +18,4 @@ Shame/cache/**
 *.sqlite3
 Khadem/platforms/**
 Sekhavat/.idea
+Sekhavat/run.sh

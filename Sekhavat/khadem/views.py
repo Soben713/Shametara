@@ -14,7 +14,6 @@ def proccess_req(request):
     phone = request.POST['from']
     text = request.POST['text'].strip()
     parts = text.split(",")
-    print 'Testing ... ', text, parts
 
     if parts[0] == 'h':  # help task request
         while len(parts) < 7:
@@ -36,21 +35,21 @@ def proccess_req(request):
 
 def endTaskGetComment(username, value):
     try:
-        task = HelpTask.objects.get(helper__username=username)
+        task = HelpTask.objects.get(helper__username=username, status=1)
         phone = task.helpee.phone
         task.status = 2  # set status to waiting for comment
         task.help_price = value
         task.save()
         sms.send_sms(phone,
-                     "به سوالات زیر با اعداد بین ۱-۴ به "
-                     "صورت یک عدد پنج رقمی پاسخ دهید\n"
-                     "۱-دانش کافی امدادگر?\n"
-                     "۲-رسیدن به موقع?\n"
-                     "۳-نحوه برخورد امدادگر?\n"
-                     "۴-لوازم کافی امدادگر?\n"
-                     "۵-دیگر موارد\n")
+                     u"به سوالات زیر با اعداد بین ۱-۴ به "
+                     u"صورت یک عدد پنج رقمی پاسخ دهید\n"
+                     u"۱-دانش کافی امدادگر?\n"
+                     u"۲-رسیدن به موقع?\n"
+                     u"۳-نحوه برخورد امدادگر?\n"
+                     u"۴-لوازم کافی امدادگر?\n"
+                     u"۵-دیگر موارد\n")
         return True
-    except HelpTask.DoesNotExists:
+    except HelpTask.DoesNotExist:
         return False
 
 
@@ -59,18 +58,18 @@ def doCommentDoingThings(ans, phone):
         comment = UserComment()
         task = HelpTask.objects.get(helpee__phone=phone, status=2)
 
-        comment.coming_on_time = int(ans[0])
-        comment.nahve_barkhord = int(ans[1])
-        comment.lavazem_kafi = int(ans[2])
-        comment.danesh_kafi = int(ans[3])
+        comment.coming_on_time = int(ans[1])
+        comment.nahve_barkhord = int(ans[2])
+        comment.lavazem_kafi = int(ans[3])
+        comment.danesh_kafi = int(ans[0])
         comment.other_rate = int(ans[4])
 
-        sms.send_sms(phone, "دیدگاه شما با موفقیت ثبت شد. با تشکر از شما")
+        sms.send_sms(phone, u"دیدگاه شما با موفقیت ثبت شد. با تشکر از شما")
         comment.save()
         task.user_comment = comment
         task.status = 3  # set status to help finished
         task.save()
-    except HelpTask.DoesNotExists:
+    except HelpTask.DoesNotExist:
         pass
     except ValueError:
         sms.send_sms(phone,

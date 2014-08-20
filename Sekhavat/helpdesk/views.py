@@ -4,20 +4,15 @@ from datetime import datetime
 import json
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.contrib import auth
-from django.utils import simplejson
+from django.contrib import auth, messages
 from django.utils.encoding import smart_str
-from helpdesk.models import HelpTask
+from helpdesk.models import HelpTask, HelperHistory
 from helpdesk.util import find_nearest_helpers
 from mainapp.models import Helpee, Helper, Operator
 from khadem.views import endTaskGetComment
 import urllib
-
-
-def get_nearest_rescuer(request):
-    pass
 
 
 @login_required
@@ -49,21 +44,12 @@ def add_help(request):
     print 'proP: '
     print proposed_helpers
     if proposed_helpers is {}:
-        return HttpResponse('No one found!')
-
-    # helper_ids = []
-    # helper_names = []
-    # company_ids = []
-    # company_names = []
+        messages.error(request, 'امدادگری یافت نشد.')
+        return HttpResponseRedirect('/helpdesk')
 
     options = []
 
     for key in proposed_helpers:
-        # helper_ids.append(str(proposed_helpers[key].id))
-        # helper_names.append(smart_str(u'\"' + proposed_helpers[key].name + u' ' + proposed_helpers[key].family + u'\"'))
-        # company_ids.append(str(proposed_helpers[key].company.id))
-        # company_names.append(smart_str(u'\"' + proposed_helpers[key].company.name + u'\"'))
-
         options.append({
             'helper_id': proposed_helpers[key].id,
             'helper_name': smart_str(u'\"' + proposed_helpers[key].name + u' ' + proposed_helpers[key].family + u'\"'),
@@ -76,10 +62,6 @@ def add_help(request):
             'task_id': task.id,
             'lat': task.latitude,
             'lng': task.longitude,
-            # 'helper_ids': ','.join(helper_ids),
-            # 'helper_names': ','.join(helper_names),
-            # 'company_ids': ','.join(company_ids),
-            # 'company_names': ','.join(company_names),
             'sender_company_id': company.id,
             'sender_company_name': smart_str(company.name),
             'options': json.dumps(options)
@@ -90,9 +72,11 @@ def add_help(request):
     if r['status'] == 1:
         task.helper = Helper.objects.get(id=int(r['helper_id']))
         task.save()
-        return render(request, 'socket.html', {'status': 1})
+        messages.success(request, 'ارجاع امداد با موفقیت انجام شد.')
+        return HttpResponseRedirect('/helpdesk')
     else:
-        return render(request, 'socket.html', {'status': 0})
+        messages.error(request, 'کسی حاضر به پاسخگویی به امداد شما نبود.')
+        return HttpResponseRedirect('/helpdesk')
 
 
 def update_location(request):
@@ -105,13 +89,25 @@ def update_location(request):
 
     helper.latitude = float(request.GET['lat'])
     helper.longitude = float(request.GET['lng'])
-    helper.status = int(request.GET['status'])
+
+    new_status = int(request.GET['status'])
+
+    if helper.status != new_status:
+        hist = HelperHistory()
+        hist.helper = helper
+        hist.status = new_status
+        hist.save()
+
+    helper.status = new_status
 
     helper.save()
 
     if helper.status == 1:
-        HelpTask.objects.filter(helper=helper)
-
+        tasks = HelpTask.objects.filter(helper=helper, status=1)
+        if len(tasks) > 0:
+            helper.status = 3
+            helper.save()
+            return HttpResponse(('3,%f,%f' % (tasks[0].latitude, tasks[0].longitude)))
     return HttpResponse('0')
 
 
@@ -128,7 +124,10 @@ def login_helper(request):
     print(username)
     print(password)
     if user is not None and helper is not None:
-        result = "helper"
+        result = "helper,"
+        result += user.name+","
+        result += user.family
+
         print("logged in")
     else:
         print("wrong user pass")
