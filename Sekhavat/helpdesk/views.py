@@ -4,9 +4,9 @@ from datetime import datetime
 import json
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.utils.encoding import smart_str
 from helpdesk.models import HelpTask, HelperHistory
 from helpdesk.util import find_nearest_helpers
@@ -44,7 +44,8 @@ def add_help(request):
     print 'proP: '
     print proposed_helpers
     if proposed_helpers is {}:
-        return HttpResponse('No one found!')
+        messages.error(request, 'امدادگری یافت نشد.')
+        return HttpResponseRedirect('/helpdesk')
 
     options = []
 
@@ -71,9 +72,11 @@ def add_help(request):
     if r['status'] == 1:
         task.helper = Helper.objects.get(id=int(r['helper_id']))
         task.save()
-        return render(request, 'socket.html', {'status': 1})
+        messages.success(request, 'ارجاع امداد با موفقیت انجام شد.')
+        return HttpResponseRedirect('/helpdesk')
     else:
-        return render(request, 'socket.html', {'status': 0})
+        messages.error(request, 'کسی حاضر به پاسخگویی به امداد شما نبود.')
+        return HttpResponseRedirect('/helpdesk')
 
 
 def update_location(request):
