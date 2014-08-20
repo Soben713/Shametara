@@ -58,8 +58,13 @@
                 {% endif %}
                 </a></li>
                 <li><a href="/editInformation">
-                        ویرایش مشخصات فردی
+                        ویرایش مشخصات فردی</li>
                 </a>
+                {% if userrole == 'manager' %}
+                    <li><a href="/payment">
+                        پرداخت پول</li>
+                   </a>
+                {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-left">
                 <p class="navbar-text">

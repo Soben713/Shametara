@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
-from mainapp.models import CompanyManager, Company, Operator, Helper, ShamManager
+from mainapp.models import CompanyManager, Company, Operator, Helper, ShamManager, Payment
 from django.shortcuts import redirect, render
 from django.contrib import auth,messages
 from django.db import IntegrityError
@@ -214,6 +214,17 @@ def password_validity_checking(request):
         user.set_password(request.POST['newpassword'])
         user.save()
         return HttpResponse("success")
+
+def payment_send(request):
+    c = {}
+    c.update(csrf(request))
+    p = Payment()
+    p.value = request.POST['pay_val']
+    p.company = CompanyManager.objects.get(username=request.user.username).company
+    p.save()
+    messages.add_message(request,messages.SUCCESS,"با تشکر از پرداخت پول شما")
+    return render(request, "pay.html", c)
+
 
 def send_cooperation_request(request):
         company = Company()

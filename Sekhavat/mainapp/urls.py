@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 from mainapp.views import add_manager,add_helper,add_operator,login,multi_user_checking,is_logged_in,log_out,password_validity_checking
-from mainapp.views import send_cooperation_request,CompanyRequests,acceptNewCompany
+from mainapp.views import send_cooperation_request,CompanyRequests,acceptNewCompany,payment_send
 
 from django.contrib import admin
 from django.views.generic.base import TemplateView
@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     url(r'^checkRequests$',CompanyRequests.as_view(),name="check_requests"),
     url(r'^NotAuthenticatedManager$', TemplateView.as_view(template_name='NotAuthenticatedManager.html'),name="NotAuthenticatedManager"),
     url(r'^acceptNewCompany/(?P<companyName>.*)$',acceptNewCompany),
-
-       url(r'^$', TemplateView.as_view(template_name='main.html'), name="main_page")
+    url(r'^payment$',TemplateView.as_view(template_name='pay.html')),
+    url(r'^paymentSend$', payment_send, name="payment_send"),
+    url(r'^$', TemplateView.as_view(template_name='main.html'), name="main_page"),
 )
