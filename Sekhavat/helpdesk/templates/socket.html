@@ -228,15 +228,13 @@
 
 {% block container %}
     <div id="conn_status" class="alert alert-warning" style="display: none"></div>
-    {% if status == 0 or status == 1 %}
-        <div id="help_status" class="alert alert-{% if status %}success{% else %}danger{% endif %}">
-        {% if status %}
-        ارجاع امداد با موفقیت انجام شد.
-        {% elif status == 0 %}
-        کسی حاضر به پاسخگویی به امداد شما نبود.
-        {% endif %}
-        </div>
-    {% endif %}
+{#    {% if messages %}#}
+{#        {% for message in messages %}#}
+{#            <div id="help_status" class="alert alert-primary">#}
+{#                {{ message }}#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">
