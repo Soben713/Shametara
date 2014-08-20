@@ -9,7 +9,7 @@
     <script type="text/javascript">
     var socket;
     $(function() {
-        socket = io.connect('http://localhost:8080', { 'force new connection' : true });
+        socket = io.connect('http://www.huri.ir:8080', { 'force new connection' : true });
         socket.on('connect_error', function() {
             $('#conn_status').html('خطا در اتصال به سرور').removeClass('alert-success')
                     .removeClass('alert-danger')
@@ -248,28 +248,28 @@
                             <label for="rescueName" class="col-sm-2 control-label">نام امدادخواه</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="rescueName" name="rescueName" placeholder="نام امدادخواه">
+                                <input type="text" class="form-control" id="rescueName" name="rescueName" placeholder="نام امدادخواه" pattern="[آ-ی]+">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="phoneNumber" class="col-sm-2 control-label">تلفن همراه</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="تلفن همراه">
+                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="تلفن همراه" pattern="[0۰][۹9][0-9۰-۹]{9}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="carModel" class="col-sm-2 control-label">مدل ماشین</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="carModel" name="carModel" data-provide="typeahead" placeholder="مدل ماشین">
+                                <input type="text" class="form-control" id="carModel" name="carModel" data-provide="typeahead" placeholder="مدل ماشین" pattern="[آ-ی۰-۹ ]+">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="problem" class="col-sm-2 control-label">مورد امداد</label>
 
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="problem" name="problem" data-provide="typeahead" placeholder="مورد امداد">
+                                <input type="text" class="form-control" id="problem" name="problem" data-provide="typeahead" placeholder="مورد امداد" pattern="[آ-ی]+">
                             </div>
                         </div>
                         <div class="form-group">

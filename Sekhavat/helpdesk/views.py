@@ -125,8 +125,8 @@ def login_helper(request):
     print(password)
     if user is not None and helper is not None:
         result = "helper,"
-        result += user.name+","
-        result += user.family
+        result += helper.name+","
+        result += helper.family
 
         print("logged in")
     else:
