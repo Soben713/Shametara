@@ -12,9 +12,9 @@
     <li><a href="{% url "shametara_admin_home" %}">
         صفحه‌ی اصلی مدیریت
     </a></li>
-    <li><a href="{% url "shametara_admin_report_financial" %}">
+    <li>
         گزارش درخواست های رسیده
-    </a></li>
+    </li>
 {% endblock %}
 
 {% block container %}
@@ -55,7 +55,7 @@
                             <td>{{ pendingCompany.manager.family }}</td>
                             <td>{{ pendingCompany.company.name }}</td>
                             <td>{{ pendingCompany.manager.phone}}</td>
-                            <td><a href="acceptNewCompany/{{pendingCompany.company.name}}"> پذیرش همکاری</a></td>
+                            <td><a href="/acceptNewCompany/{{pendingCompany.company.name}}"> پذیرش همکاری</a></td>
                         </tr>
                         {% endfor %}
                         </tbody>
